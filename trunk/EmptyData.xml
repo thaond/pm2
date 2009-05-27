@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <MARKETDATE/>
+    <STOCKMASTER/>
+    <QUOTE/>
+    <PORTFOLIO/>
+    <TRADINGACC/>
+    <BUYTRANSACTION/>
+    <SELLTRANSACTION/>
+    <TRADE/>
+    <STOPLOSS/>
+    <WATCHLISTGROUP/>
+    <WATCHLIST/>
+    <IPO/>
+    <CA_DEMERGERBASE/>
+    <CA_DEMERGERLIST/>
+    <CA_DIVIDENT/>
+    <CA_SPLIT/>
+    <CA_BONUS/>
+    <CA_BONUS_MAPPING/>
+    <CA_SPLIT_MAPPING/>
+    <CA_DEMERGER_MAPPING/>
+    <ICICI_STOCKCODE_MAPPING/>
+    <YAHOO_STOCKCODE_MAPPING/>
+    <FUNDTRANSACTION/>
+    <T_HOLDING/>
+    <CORPRESULT/>
+</dataset>

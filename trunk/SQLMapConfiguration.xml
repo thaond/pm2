@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+<!-- Always ensure to use the correct XML header as above! -->
+<sqlMapConfig>
+    <!-- The properties (name=value) in the file specified here can be used placeholders in this config
+     file (e.g. "${driver}". The file is usually relative to the classpath and is optional. -->
+    <!-- These settings control SqlMap configuration details, primarily to do with transaction
+     management. They are all optional (see the Developer Guide for more). -->
+    <settings
+            cacheModelsEnabled="true"
+            enhancementEnabled="true"
+            lazyLoadingEnabled="false"
+            maxRequests="32"
+            maxSessions="10"
+            maxTransactions="5"
+            useStatementNamespaces="false"
+            />
+
+    <!-- Type aliases allow you to use a shorter name for long fully qualified class names. -->
+    <typeAlias alias="pmdate" type="pm.util.PMDate"/>
+
+    <typeHandler javaType="pmdate" callback="pm.dao.ibatis.handler.PMDateHandler"/>
+
+    <!-- Configure a datasource to use with this SQL Map using SimpleDataSource.
+     Notice the use of the properties from the above resource -->
+    <transactionManager type="JDBC">
+        <dataSource type="SIMPLE">
+            <property name="JDBC.Driver"
+                      value="${DB_DRIVER}"/>
+            <property name="JDBC.ConnectionURL"
+                      value="${DB_URL}"/>
+            <!--<property name="JDBC.Driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>-->
+            <!--<property name="JDBC.ConnectionURL" value="jdbc:derby:pmDBProd;create=true"/>-->
+            <property name="JDBC.Username" value="${DB_USER}"/>
+            <property name="JDBC.Password" value="${DB_PASSWORD}"/>
+            <!--
+                                    <property name="JDBC.Driver" value="org.hsqldb.jdbcDriver"/>
+                                    <property name="JDBC.ConnectionURL" value="jdbc:hsqldb:hsql://localhost/xdb"/>
+                                    <property name="JDBC.Username" value="sa"/>
+                                    <property name="JDBC.Password" value=""/>
+            -->
+        </dataSource>
+    </transactionManager>
+    <!-- Identify all SQL Map XML files to be loaded by this SQL map. Notice the paths
+     are relative to the classpath. For now, we only have one -->
+    <sqlMap resource="pm/dao/ibatis/sqlmap/StockMaster.xml"/>
+    <sqlMap resource="pm/dao/ibatis/sqlmap/Quote.xml"/>
+    <sqlMap resource="pm/dao/ibatis/sqlmap/Date.xml"/>
+    <sqlMap resource="pm/dao/ibatis/sqlmap/Account.xml"/>
+    <sqlMap resource="pm/dao/ibatis/sqlmap/Transaction.xml"/>
+    <sqlMap resource="pm/dao/ibatis/sqlmap/Portfolio.xml"/>
+    <sqlMap resource="pm/dao/ibatis/sqlmap/Watchlist.xml"/>
+    <sqlMap resource="pm/dao/ibatis/sqlmap/IPO.xml"/>
+    <sqlMap resource="pm/dao/ibatis/sqlmap/CompanyAction.xml"/>
+    <sqlMap resource="pm/dao/ibatis/sqlmap/FundTransaction.xml"/>
+    <sqlMap resource="pm/dao/ibatis/sqlmap/CompanyResult.xml"/>
+</sqlMapConfig>
+

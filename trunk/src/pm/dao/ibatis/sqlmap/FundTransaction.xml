@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="FundTransaction">
+
+    <parameterMap id="param-fundTransaction" class="pm.vo.FundTransactionVO">
+        <parameter property="tradingAccount.id"/>
+        <parameter property="portfolio.id"/>
+        <parameter property="date" typeHandler="pm.dao.ibatis.handler.PMDateHandler"/>
+        <parameter property="amount"/>
+        <parameter property="transactionReason" typeHandler="pm.dao.ibatis.handler.FundTransactionReasonHandler"/>
+        <parameter property="details"/>
+    </parameterMap>
+
+    <insert id="insertFundTransaction" parameterMap="param-fundTransaction">
+        INSERT INTO FUNDTRANSACTION (TRADINGACCID,PORTFOLIOID,TDATE,AMOUNT,REASONCODE,
+        DETAIL) VALUES (?,?,?,?,?,?)
+    </insert>
+
+    <resultMap id="result-fundTransaction" class="pm.vo.FundTransactionVO">
+        <result property="tradingAccount" select="getTradingAccById" column="TRADINGACCID"/>
+        <result property="portfolio" select="getPortfolioById" column="PORTFOLIOID"/>
+        <result property="date" column="TDATE" typeHandler="pm.dao.ibatis.handler.PMDateHandler"/>
+        <result property="amount"/>
+        <result property="transactionReason" column="REASONCODE"
+                typeHandler="pm.dao.ibatis.handler.FundTransactionReasonHandler"/>
+        <result property="details" column="DETAIL"/>
+    </resultMap>
+
+    <select id="getFundTransactions" resultMap="result-fundTransaction" parameterClass="java.util.Map">
+        SELECT * FROM FUNDTRANSACTION
+        <dynamic prepend="WHERE">
+            <isNotNull prepend="AND" property="PortfolioID">
+                PORTFOLIOID = #PortfolioID#
+            </isNotNull>
+            <isNotNull prepend="AND" property="TradingAccID">
+                TRADINGACCID = #TradingAccID#
+            </isNotNull>
+        </dynamic>
+    </select>
+
+    <select id="getBalance" resultClass="java.lang.Float" parameterClass="java.util.Map">
+        SELECT SUM(AMOUNT) FROM FUNDTRANSACTION
+        <dynamic prepend="WHERE">
+            <isNotNull prepend="AND" property="PortfolioID">
+                PORTFOLIOID = #PortfolioID#
+            </isNotNull>
+            <isNotNull prepend="AND" property="TradingAccID">
+                TRADINGACCID = #TradingAccID#
+            </isNotNull>
+        </dynamic>
+    </select>
+
+    <select id="getInvestedAmount" resultClass="java.lang.Float" parameterClass="java.util.Map">
+        SELECT SUM(AMOUNT) FROM FUNDTRANSACTION WHERE REASONCODE in (0, 1)
+        <dynamic prepend="AND">
+            <isNotNull prepend="AND" property="PortfolioID">
+                PORTFOLIOID = #PortfolioID#
+            </isNotNull>
+            <isNotNull prepend="AND" property="TradingAccID">
+                TRADINGACCID = #TradingAccID#
+            </isNotNull>
+        </dynamic>
+    </select>
+
+</sqlMap>

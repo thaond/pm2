@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Transact">
+    <resultMap id="transactionResultMapping" class="pm.vo.TransactionVO">
+        <result property="id" column="ID"/>
+        <result property="dateVal" column="TDATE"/>
+        <result property="actionString" column="TRANSACTIONTYPE"/>
+        <result property="qty" column="QTY"/>
+        <result property="price" column="PRICE"/>
+        <result property="dayTrading" column="DELIVERYTYPE"/>
+        <result property="brokerage" column="BROKERAGE"/>
+        <result property="stockCode" column="STOCKCODE"/>
+        <result property="portfolio" column="PORTFOLIONAME"/>
+        <result property="tradingAc" column="TRADINGACCNAME"/>
+    </resultMap>
+
+    <select id="getBuyTransactionList" resultMap="transactionResultMapping" parameterClass="java.util.Map">
+        SELECT BUYTRANSACTION.ID, TDATE,'Buy' as TRANSACTIONTYPE, QTY, PRICE, DELIVERYTYPE, BROKERAGE,
+        STOCKMASTER.STOCKCODE, PORTFOLIO.NAME AS PORTFOLIONAME, TRADINGACC.NAME AS TRADINGACCNAME
+        FROM BUYTRANSACTION
+        INNER JOIN STOCKMASTER ON STOCKID = STOCKMASTER.ID
+        INNER JOIN PORTFOLIO ON PORTFOLIOID = PORTFOLIO.ID
+        INNER JOIN TRADINGACC ON TRADINGACCID = TRADINGACC.ID
+        <dynamic prepend="WHERE">
+            <isNotNull prepend="AND" property="portfolioName">
+                PORTFOLIO.NAME = #portfolioName#
+            </isNotNull>
+            <isNotNull prepend="AND" property="tradingACCName">
+                TRADINGACC.NAME = #tradingACCName#
+            </isNotNull>
+            <isNotNull prepend="AND" property="dayTrading">
+                BUYTRANSACTION.DELIVERYTYPE = #dayTrading#
+            </isNotNull>
+            <isNotNull prepend="AND" property="stockCode">
+                STOCKMASTER.STOCKCODE = #stockCode#
+            </isNotNull>
+        </dynamic>
+    </select>
+
+    <select id="getBuyTransactionByID" resultMap="transactionResultMapping" parameterClass="java.lang.Integer">
+        SELECT BUYTRANSACTION.ID, TDATE,'Buy' as TRANSACTIONTYPE, QTY, PRICE, DELIVERYTYPE, BROKERAGE,
+        STOCKMASTER.STOCKCODE, PORTFOLIO.NAME AS PORTFOLIONAME, TRADINGACC.NAME AS TRADINGACCNAME
+        FROM BUYTRANSACTION
+        INNER JOIN STOCKMASTER ON STOCKID = STOCKMASTER.ID
+        INNER JOIN PORTFOLIO ON PORTFOLIOID = PORTFOLIO.ID
+        INNER JOIN TRADINGACC ON TRADINGACCID = TRADINGACC.ID
+        WHERE BUYTRANSACTION.ID = #value#
+    </select>
+
+    <select id="getSellTransactionList" resultMap="transactionResultMapping" parameterClass="java.util.Map">
+        SELECT SELL.ID, SELL.TDATE,'Sell' as TRANSACTIONTYPE, TRADE.QTY, SELL.PRICE, (SELL.BROKERAGE/SELL.QTY)
+        *TRADE.QTY as BROKERAGE,
+        BUYTRANSACTION.DELIVERYTYPE,
+        STOCKMASTER.STOCKCODE, PORTFOLIO.NAME AS PORTFOLIONAME, TRADINGACC.NAME AS TRADINGACCNAME
+        FROM SELLTRANSACTION as SELL,TRADE,BUYTRANSACTION
+        INNER JOIN STOCKMASTER ON STOCKID = STOCKMASTER.ID
+        INNER JOIN PORTFOLIO ON PORTFOLIOID = PORTFOLIO.ID
+        INNER JOIN TRADINGACC ON TRADINGACCID = TRADINGACC.ID
+        WHERE BUYTRANSACTION.ID = TRADE.BUYID AND SELL.ID = TRADE.SELLID
+        <isNotNull prepend="AND" property="portfolioName">
+            PORTFOLIO.NAME = #portfolioName#
+        </isNotNull>
+        <isNotNull prepend="AND" property="tradingACCName">
+            TRADINGACC.NAME = #tradingACCName#
+        </isNotNull>
+        <isNotNull prepend="AND" property="dayTrading">
+            BUYTRANSACTION.DELIVERYTYPE = #dayTrading#
+        </isNotNull>
+        <isNotNull prepend="AND" property="stockCode">
+            STOCKMASTER.STOCKCODE = #stockCode#
+        </isNotNull>
+    </select>
+
+    <select id="getSellTransactionByID" resultMap="transactionResultMapping" parameterClass="java.lang.Integer">
+        SELECT SELL.ID, SELL.TDATE,'Sell' as TRANSACTIONTYPE, TRADE.QTY, SELL.PRICE, (SELL.BROKERAGE/SELL.QTY)
+        *TRADE.QTY as BROKERAGE,
+        BUYTRANSACTION.DELIVERYTYPE,
+        STOCKMASTER.STOCKCODE, PORTFOLIO.NAME AS PORTFOLIONAME, TRADINGACC.NAME AS TRADINGACCNAME
+        FROM SELLTRANSACTION as SELL,TRADE,BUYTRANSACTION
+        INNER JOIN STOCKMASTER ON STOCKID = STOCKMASTER.ID
+        INNER JOIN PORTFOLIO ON PORTFOLIOID = PORTFOLIO.ID
+        INNER JOIN TRADINGACC ON TRADINGACCID = TRADINGACC.ID
+        WHERE BUYTRANSACTION.ID = TRADE.BUYID AND SELL.ID = TRADE.SELLID
+        AND SELL.ID = #value#
+    </select>
+
+    <parameterMap id="buy-transaction-insert" class="pm.vo.TransactionVO">
+        <parameter property="dateVal"/>
+        <parameter property="qty"/>
+        <parameter property="price"/>
+        <parameter property="dayTrading"/>
+        <parameter property="brokerage"/>
+        <parameter property="stockCode"/>
+        <parameter property="portfolio"/>
+        <parameter property="tradingAc"/>
+    </parameterMap>
+
+    <insert id="insertBuyTransaction" parameterMap="buy-transaction-insert">
+        INSERT INTO BUYTRANSACTION (ID,TDATE, QTY, PRICE, DELIVERYTYPE, BROKERAGE, STOCKID, PORTFOLIOID,
+        TRADINGACCID) VALUES (DEFAULT, ?, ?, ?, ?, ?, (SELECT ID FROM STOCKMASTER WHERE STOCKCODE=? AND LISTED = 1),
+        (SELECT ID FROM PORTFOLIO WHERE NAME=?), (SELECT ID FROM TRADINGACC WHERE NAME=?))
+        <selectKey keyProperty="id" resultClass="int">
+            values IDENTITY_VAL_LOCAL()
+        </selectKey>
+    </insert>
+
+    <update id="updateBuyTransaction" parameterClass="pm.vo.TransactionVO">
+        UPDATE BUYTRANSACTION SET TDATE=#dateVal#, QTY=#qty#, PRICE=#price#, DELIVERYTYPE=#dayTrading#,
+        BROKERAGE=#brokerage#,
+        STOCKID = (SELECT ID FROM STOCKMASTER WHERE STOCKCODE=#stockCode# AND LISTED = 1),
+        PORTFOLIOID=(SELECT ID FROM PORTFOLIO WHERE NAME=#portfolio#), TRADINGACCID=(SELECT ID FROM TRADINGACC WHERE
+        NAME=#tradingAc#)
+        WHERE ID=#id#
+    </update>
+
+    <parameterMap id="sell-transaction-insert" class="pm.vo.TransactionVO">
+        <parameter property="dateVal"/>
+        <parameter property="qty"/>
+        <parameter property="price"/>
+        <parameter property="brokerage"/>
+    </parameterMap>
+
+    <insert id="insertSellTransaction" parameterMap="sell-transaction-insert">
+        INSERT INTO SELLTRANSACTION (ID,TDATE, QTY, PRICE, BROKERAGE)
+        VALUES (DEFAULT,?, ?, ?, ?)
+        <selectKey keyProperty="id" resultClass="int">
+            values IDENTITY_VAL_LOCAL()
+        </selectKey>
+    </insert>
+
+    <update id="updateSellTransaction" parameterClass="pm.vo.TransactionVO">
+        UPDATE SELLTRANSACTION SET TDATE=#dateVal#, QTY=#qty#, PRICE=#price#, BROKERAGE=#brokerage# WHERE ID=#id#
+    </update>
+
+
+    <resultMap id="tradeMapping" class="pm.vo.TradeVO">
+        <result property="id" column="ID"/>
+        <result property="buyId" column="BUYID"/>
+        <result property="sellId" column="SELLID"/>
+        <result property="stock" column="STOCKCODE"/>
+        <result property="qty" column="QTY"/>
+        <result property="PDateVal" column="PDATE"/>
+        <result property="purchasePrice" column="PPRICE"/>
+        <result property="SDateVal" column="SDATE"/>
+        <result property="salePrice" column="SPRICE"/>
+        <result property="brokerage" column="BROK"/>
+        <result property="divident" column="DIVIDENT" nullValue="0.0"/>
+        <result property="dayTrading" column="DELIVERYTYPE"/>
+        <result property="portfolio" column="PORTFOLIONAME"/>
+        <result property="tradingAc" column="TRADINGACCNAME"/>
+    </resultMap>
+
+    <select id="getCompletedTradeDetails" resultMap="tradeMapping" parameterClass="java.util.Map">
+        SELECT TRADE.ID as ID, Sell.ID as SELLID, Buy.Id as BUYID, STOCKMASTER.STOCKCODE,
+        Buy.TDATE AS PDATE, TRADE.QTY, Buy.PRICE as PPRICE,
+        (Buy.BROKERAGE/Buy.Qty*TRADE.QTY + Sell.BROKERAGE/Sell.QTY*TRADE.QTY) AS BROK,
+        Sell.TDATE AS SDATE, Sell.PRICE as SPRICE,
+        DIVIDENT as DIVIDENT,
+        PORTFOLIO.NAME AS PORTFOLIONAME, TRADINGACC.NAME AS TRADINGACCNAME,
+        Buy.DELIVERYTYPE
+        FROM BUYTRANSACTION AS Buy
+        JOIN TRADE ON BUYID = BUY.ID
+        JOIN SELLTRANSACTION as SELL on Sell.ID = SELLID
+        JOIN STOCKMASTER ON Buy.STOCKID = STOCKMASTER.ID
+        JOIN PORTFOLIO ON Buy.PORTFOLIOID = PORTFOLIO.ID
+        JOIN TRADINGACC ON Buy.TRADINGACCID = TRADINGACC.ID
+        <dynamic prepend="WHERE">
+            <isNotNull prepend="AND" property="portfolioName">
+                PORTFOLIO.NAME = #portfolioName#
+            </isNotNull>
+            <isNotNull prepend="AND" property="tradingACCName">
+                TRADINGACC.NAME = #tradingACCName#
+            </isNotNull>
+            <isNotNull prepend="AND" property="dayTrading">
+                Buy.DELIVERYTYPE = #dayTrading#
+            </isNotNull>
+            <isNotNull prepend="AND" property="stockCode">
+                STOCKMASTER.STOCKCODE = #stockCode#
+            </isNotNull>
+        </dynamic>
+    </select>
+
+    <resultMap id="holdingMapping" class="pm.vo.TradeVO">
+        <result property="buyId" column="ID"/>
+        <result property="stock" column="STOCKCODE"/>
+        <result property="qty" column="QTY"/>
+        <result property="PDateVal" column="PDATE"/>
+        <result property="purchasePrice" column="PPRICE"/>
+        <result property="brokerage" column="BROK"/>
+        <result property="divident" column="DIVIDENT"/>
+        <result property="dayTrading" column="DELIVERYTYPE"/>
+        <result property="portfolio" column="PORTFOLIONAME"/>
+        <result property="tradingAc" column="TRADINGACCNAME"/>
+    </resultMap>
+
+    <select id="getHoldingDetails" resultMap="holdingMapping" parameterClass="java.util.Map">
+        SELECT
+        Buy.ID, STOCKMASTER.STOCKCODE, Buy.TDATE AS PDATE, Buy.PRICE as PPRICE,
+        HOLDING.HOLDINGQTY as QTY, Buy.BROKERAGE / Buy.QTY * HOLDING.HOLDINGQTY as BROK,
+        DIVIDENT as DIVIDENT,
+        PORTFOLIO.NAME AS PORTFOLIONAME, TRADINGACC.NAME AS TRADINGACCNAME, 'Buy' as TRANSACTIONTYPE,Buy.DELIVERYTYPE
+        FROM T_HOLDING AS HOLDING,
+        BUYTRANSACTION AS BUY,STOCKMASTER,PORTFOLIO,TRADINGACC
+        WHERE
+        HOLDING.BuyID = Buy.ID AND HOLDING.HOLDINGQTY > 0 and Buy.STOCKID = STOCKMASTER.ID and
+        Buy.PORTFOLIOID = PORTFOLIO.ID and Buy.TRADINGACCID = TRADINGACC.ID
+        <isNotNull prepend="AND" property="portfolioName">
+            PORTFOLIO.NAME = #portfolioName#
+        </isNotNull>
+        <isNotNull prepend="AND" property="tradingACCName">
+            TRADINGACC.NAME = #tradingACCName#
+        </isNotNull>
+        <isNotNull prepend="AND" property="dayTrading">
+            Buy.DELIVERYTYPE = #dayTrading#
+        </isNotNull>
+        <isNotNull prepend="AND" property="stockCode">
+            STOCKMASTER.STOCKCODE = #stockCode#
+        </isNotNull>
+        ORDER By PDATE
+
+
+    </select>
+
+    <insert id="insertTrade" parameterClass="java.util.Map">
+        INSERT INTO TRADE (BUYID, SELLID, QTY, DIVIDENT) VALUES (#BUYID#, #SELLID#, #QTY#,
+        CALCULATEDIVIDENTFORTRADE(#BUYID#, #SELLID#, #QTY#))
+    </insert>
+
+    <update id="updateTrade" parameterClass="pm.vo.TransactionMapping">
+        UPDATE TRADE SET BUYID=#buyId#, SELLID=#sellId#, QTY=#qty#,
+        DIVIDENT = CALCULATEDIVIDENTFORTRADE(#buyId#, #sellId#, #qty#)
+        WHERE ID=#id#
+    </update>
+
+    <resultMap id="transactionMapping" class="pm.vo.TransactionMapping">
+        <result property="id" column="ID"/>
+        <result property="buyId" column="BUYID"/>
+        <result property="sellId" column="SELLID"/>
+        <result property="qty" column="QTY"/>
+    </resultMap>
+    <select id="getTransactionMapping" resultMap="transactionMapping">
+        SELECT * FROM TRADE
+    </select>
+
+    <parameterMap id="icici-transaction" class="pm.vo.ICICITransaction">
+        <parameter property="date" typeHandler="pm.dao.ibatis.handler.PMDateHandler"/>
+        <parameter property="qty"/>
+        <parameter property="price"/>
+        <parameter property="action" typeHandler="pm.dao.ibatis.handler.TransactionTypeHandler"/>
+        <parameter property="dayTrading"/>
+        <parameter property="brokerage"/>
+        <parameter property="iciciCode"/>
+        <parameter property="portfolio" javaType="string" jdbcType="VARCHAR"/>
+        <parameter property="orderRef"/>
+    </parameterMap>
+
+    <insert id="insertICICITransaction" parameterMap="icici-transaction">
+        INSERT INTO ICICITRANSACTION (ID,TDATE, QTY, PRICE, TRANSACTIONTYPE, DELIVERYTYPE, BROKERAGE, ICICICODE,
+        PORTFOLIOID, ORDERREF)
+        VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, (SELECT ID FROM PORTFOLIO WHERE NAME=?), ?)
+        <selectKey keyProperty="id" resultClass="int">
+            values IDENTITY_VAL_LOCAL()
+        </selectKey>
+    </insert>
+    <update id="updateICICITransaction" parameterMap="icici-transaction">
+        UPDATE ICICITRANSACTION SET TDATE = ?, QTY = ?, PRICE = ?, TRANSACTIONTYPE =?,
+        DELIVERYTYPE =?, BROKERAGE =?, ICICICODE =?, PORTFOLIOID =(SELECT ID FROM PORTFOLIO WHERE NAME=?)
+        WHERE ORDERREF =?
+    </update>
+
+    <resultMap id="icici-transaction-get" class="pm.vo.ICICITransaction">
+        <result property="id" column="ID"/>
+        <result property="date" column="TDATE" typeHandler="pm.dao.ibatis.handler.PMDateHandler"/>
+        <result property="qty" column="QTY"/>
+        <result property="price" column="PRICE"/>
+        <result property="action" column="TRANSACTIONTYPE" typeHandler="pm.dao.ibatis.handler.TransactionTypeHandler"/>
+        <result property="dayTrading" column="DELIVERYTYPE"/>
+        <result property="brokerage" column="BROKERAGE"/>
+        <result property="stockCode" column="STOCKCODE"/>
+        <result property="iciciCode" column="ICICICODE"/>
+        <result property="portfolio" column="PORTFOLIONAME"/>
+        <result property="orderRef" column="ORDERREF"/>
+    </resultMap>
+    <select id="getICICITransaction" resultMap="icici-transaction-get">
+        SELECT ICICITRANSACTION.ID,TDATE, QTY, PRICE, TRANSACTIONTYPE, DELIVERYTYPE, BROKERAGE, STOCKMASTER.STOCKCODE as
+        STOCKCODE,
+        ICICITRANSACTION.ICICICODE as ICICICODE, PORTFOLIO.NAME as PORTFOLIONAME, ORDERREF
+        FROM ICICITRANSACTION LEFT OUTER JOIN ICICI_STOCKCODE_MAPPING ON ICICI_STOCKCODE_MAPPING.ICICICODE =
+        ICICITRANSACTION.ICICICODE
+        LEFT OUTER JOIN STOCKMASTER ON ICICI_STOCKCODE_MAPPING.STOCKID = STOCKMASTER.ID LEFT OUTER JOIN PORTFOLIO ON
+        PORTFOLIO.ID = PORTFOLIOID
+    </select>
+
+</sqlMap>

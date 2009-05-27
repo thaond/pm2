@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="CompanyResult">
+
+    <parameterMap id="CorpResult" class="pm.vo.CorpResultVO">
+        <parameter property="stockCode"/>
+        <parameter property="startDate" typeName="pmdate"/>
+        <parameter property="endDate" typeName="pmdate"/>
+        <parameter property="timeline" typeHandler="pm.dao.ibatis.handler.CorpResultTimeLineHandler"/>
+        <parameter property="period"/>
+        <parameter property="auditedFlag"/>
+        <parameter property="consolidatedFlag"/>
+        <parameter property="bankingFlag"/>
+        <parameter property="year"/>
+        <parameter property="eps"/>
+        <parameter property="faceValue"/>
+        <parameter property="paidUpEquityShareCapital"/>
+        <parameter property="netProfit"/>
+        <parameter property="nonRecurringIncome"/>
+        <parameter property="nonRecurringExpense"/>
+        <parameter property="adjustedNetProfit"/>
+        <parameter property="interestCost"/>
+        <parameter property="netSales"/>
+    </parameterMap>
+
+    <insert id="saveCompanyResult" parameterMap="CorpResult">
+        INSERT INTO CORPRESULT (STOCKID,STARTDATE,ENDDATE,TIMELINE,PERIOD,AUDITED,CONSOLIDATED,BANKING,RESULTYEAR,EPS,
+        FACEVALUe,SHARECAPITAL,NETPL,NONRECURRINGINCOMR,NONRECURRINGEXPENSE,ADJUSTEDNETPL,INTERESTCOST,NETSALES)
+        VALUES ((SELECT ID FROM STOCKMASTER WHERE STOCKCODE=?),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        <selectKey keyProperty="id" resultClass="int">
+            values IDENTITY_VAL_LOCAL()
+        </selectKey>
+    </insert>
+
+    <resultMap id="CorpResult" class="pm.vo.CorpResultVO">
+        <result property="id"/>
+        <result property="stockCode" select="getStockCodeByID" column="STOCKID"/>
+        <result property="startDate" javaType="pmdate"/>
+        <result property="endDate" javaType="pmdate"/>
+        <result property="timeline" typeHandler="pm.dao.ibatis.handler.CorpResultTimeLineHandler"/>
+        <result property="period"/>
+        <result property="auditedFlag"/>
+        <result property="consolidatedFlag"/>
+        <result property="bankingFlag"/>
+        <result property="year"/>
+        <result property="eps"/>
+        <result property="faceValue"/>
+        <result property="paidUpEquityShareCapital"/>
+        <result property="netProfit"/>
+        <result property="nonRecurringIncome"/>
+        <result property="nonRecurringExpense"/>
+        <result property="adjustedNetProfit"/>
+        <result property="interestCost"/>
+        <result property="netSales"/>
+    </resultMap>
+    <select id="getCompanyResult" resultMap="CorpResult" parameterClass="java.lang.Integer">
+        SELECT * FROM CORPRESULT WHERE STOCKID = #value#
+    </select>
+
+</sqlMap>

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <STOCKMASTER ID="1" STOCKCODE="CODE1" COMPANYNAME="" SERIES="0"
+                 PAIDUPVALUE="0" MARKETLOT="0" FACEVALUE="20"
+                 DATEOFLIST="20050101" ISIN="ISIN1" LISTED="1"/>
+</dataset>
+

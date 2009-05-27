@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="CompanyAction">
+
+    <resultMap id="CAMap" class="pm.vo.CompanyActionVO">
+        <result property="id" column="ID"/>
+        <result property="exDateVal" column="EXDATE"/>
+        <result property="stockCode" column="STOCKCODE"/>
+        <result property="actionVal" column="ACTION"/>
+        <result property="dsbValue" column="DSBVALUE"/>
+        <result property="base" column="BASE"/>
+        <result property="percentageValue" column="ISPERCENTAGE"/>
+    </resultMap>
+
+    <select id="getDivident" resultMap="CAMap">
+        SELECT CA_DIVIDENT.ID, EXDATE, 'Divident' as ACTION, DIVIDENT as DSBVALUE, 1 as BASE, ISPERCENTAGE, SM.STOCKCODE
+        FROM CA_DIVIDENT, STOCKMASTER as SM
+        WHERE STOCKID = SM.ID
+        <isParameterPresent prepend="AND">
+            SM.STOCKCODE = #value#
+        </isParameterPresent>
+    </select>
+
+    <insert id="insertDivident" parameterClass="pm.vo.CompanyActionVO">
+        INSERT INTO CA_DIVIDENT (EXDATE,DIVIDENT,ISPERCENTAGE,STOCKID) VALUES (#exDateVal#,#dsbValue#,#percentageValue#,
+        (SELECT ID FROM STOCKMASTER WHERE STOCKCODE=#stockCode# AND LISTED = 1))
+        <selectKey keyProperty="id" resultClass="int">
+            values IDENTITY_VAL_LOCAL()
+        </selectKey>
+    </insert>
+
+    <update id="updateDivident" parameterClass="pm.vo.CompanyActionVO">
+        UPDATE CA_DIVIDENT set EXDATE=#exDateVal#,DIVIDENT=#dsbValue#,ISPERCENTAGE=#percentageValue#,
+        STOCKID=(SELECT ID FROM STOCKMASTER WHERE STOCKCODE=#stockCode# AND LISTED = 1) WHERE ID=#id#
+    </update>
+
+    <select id="getSplit" resultMap="CAMap">
+        SELECT CA_SPLIT.ID, EXDATE, 'Split' as ACTION, NEWFACEVALUE as DSBVALUE, OLDFACEVALUE as BASE, 0 as
+        ISPERCENTAGE, SM.STOCKCODE
+        FROM CA_SPLIT, STOCKMASTER as SM
+        WHERE STOCKID = SM.ID
+        <isParameterPresent prepend="AND">
+            SM.STOCKCODE = #value#
+        </isParameterPresent>
+    </select>
+    <insert id="insertSplit" parameterClass="pm.vo.CompanyActionVO">
+        INSERT INTO CA_SPLIT (EXDATE,NEWFACEVALUE,OLDFACEVALUE,STOCKID) VALUES (#exDateVal#,#dsbValue#,#base#,
+        (SELECT ID FROM STOCKMASTER WHERE STOCKCODE=#stockCode# AND LISTED = 1))
+        <selectKey keyProperty="id" resultClass="int">
+            values IDENTITY_VAL_LOCAL()
+        </selectKey>
+    </insert>
+
+    <select id="getBonus" resultMap="CAMap">
+        SELECT CA_BONUS.ID, EXDATE, 'Bonus' as ACTION, BONUS as DSBVALUE, BASE,0 as ISPERCENTAGE, SM.STOCKCODE
+        FROM CA_BONUS, STOCKMASTER as SM
+        WHERE STOCKID = SM.ID
+        <isParameterPresent prepend="AND">
+            SM.STOCKCODE = #value#
+        </isParameterPresent>
+    </select>
+    <insert id="insertBonus" parameterClass="pm.vo.CompanyActionVO">
+        INSERT INTO CA_BONUS (EXDATE,BONUS,BASE,STOCKID) VALUES (#exDateVal#,#dsbValue#,#base#,
+        (SELECT ID FROM STOCKMASTER WHERE STOCKCODE=#stockCode# AND LISTED = 1))
+        <selectKey keyProperty="id" resultClass="int">
+            values IDENTITY_VAL_LOCAL()
+        </selectKey>
+    </insert>
+
+    <resultMap id="CADemergerMap" class="pm.vo.CompanyActionVO">
+        <result property="id" column="ID"/>
+        <result property="exDateVal" column="EXDATE"/>
+        <result property="stockCode" column="STOCKCODE"/>
+        <result property="actionVal" column="ACTION"/>
+        <result property="base" column="BASE"/>
+        <result property="dsbValue" column="DSBVALUE"/>
+        <result property="demergerData" column="id" select="getDemergerList"/>
+    </resultMap>
+
+    <select id="getDemerger" resultMap="CADemergerMap">
+        SELECT CA_DEMERGERBASE.ID, EXDATE, 'Demerger' as ACTION, BASE, SM.STOCKCODE, 1 as DSBVALUE
+        FROM CA_DEMERGERBASE, STOCKMASTER as SM
+        WHERE STOCKID = SM.ID
+        <isParameterPresent prepend="AND">
+            SM.STOCKCODE = #value#
+        </isParameterPresent>
+    </select>
+
+    <insert id="insertDemergerBase" parameterClass="pm.vo.CompanyActionVO">
+        INSERT INTO CA_DEMERGERBASE (EXDATE,BASE,STOCKID) VALUES (#exDateVal#,#base#,
+        (SELECT ID FROM STOCKMASTER WHERE STOCKCODE=#stockCode# AND LISTED = 1))
+        <selectKey keyProperty="id" resultClass="int">
+            values IDENTITY_VAL_LOCAL()
+        </selectKey>
+    </insert>
+
+    <resultMap id="CADemergerList" class="pm.vo.DemergerVO">
+        <result property="bookValueRatio" column="BOOKVALUERATIO"/>
+        <result property="newStockCode" column="STOCKCODE"/>
+        <result property="baseID" column="DEMERGERID"/>
+    </resultMap>
+    <select id="getDemergerList" resultMap="CADemergerList" parameterClass="java.lang.Integer">
+        SELECT BOOKVALUERATIO, SM.STOCKCODE, DEMERGERID
+        FROM CA_DEMERGERLIST, STOCKMASTER as SM
+        WHERE STOCKID = SM.ID AND DEMERGERID = #value#
+    </select>
+
+    <insert id="insertDemergerList" parameterClass="pm.vo.DemergerVO">
+        INSERT INTO CA_DEMERGERLIST (BOOKVALUERATIO,DEMERGERID,STOCKID) VALUES (#bookValueRatio#,#baseID#,
+        (SELECT ID FROM STOCKMASTER WHERE STOCKCODE=#newStockCode# AND LISTED = 1))
+    </insert>
+
+    <insert id="insertBonusMapping" parameterClass="pm.vo.ActionMapping">
+        INSERT INTO CA_BONUS_MAPPING (BONUSID,TRANSACTIONID) VALUES (#actionId#,#transactionId#)
+    </insert>
+    <select id="getBonusMapping" resultClass="pm.vo.ActionMapping">
+        SELECT BONUSID as actionId,TRANSACTIONID as transactionId FROM CA_BONUS_MAPPING
+    </select>
+
+    <insert id="insertSplitMapping" parameterClass="pm.vo.ActionMapping">
+        INSERT INTO CA_SPLIT_MAPPING (SPLITID,TRANSACTIONID) VALUES (#actionId#,#transactionId#)
+    </insert>
+    <select id="getSplitMapping" resultClass="pm.vo.ActionMapping">
+        SELECT SPLITID as actionId,TRANSACTIONID as transactionId FROM CA_SPLIT_MAPPING
+    </select>
+
+    <insert id="insertDemergerMapping" parameterClass="pm.vo.ActionMapping">
+        INSERT INTO CA_DEMERGER_MAPPING (DEMERGERID,TRANSACTIONID) VALUES (#actionId#,#transactionId#)
+    </insert>
+    <select id="getDemergerMapping" resultClass="pm.vo.ActionMapping">
+        SELECT DEMERGERID as actionId,TRANSACTIONID as transactionId FROM CA_DEMERGER_MAPPING
+    </select>
+
+    <statement id="resetDivident" parameterClass="java.lang.Integer">
+        CALL RESETDIVIDENT(#value#)
+    </statement>
+
+    <update id="updateStockID" parameterClass="java.util.Map">
+        UPDATE $table$ SET STOCKID=#to# WHERE STOCKID=#from#
+    </update>
+
+</sqlMap>

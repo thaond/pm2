@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="portfolio">
+
+    <insert id="insertStopLoss" parameterClass="pm.vo.StopLossVO">
+        INSERT INTO STOPLOSS
+        (STOPLOSS2,STOPLOSS1,TARGET1,TARGET2,STOCKID,PORTFOLIOID)
+        VALUES
+        (#stopLoss2#,#stopLoss1#,#target1#,#target2#,
+        (SELECT ID FROM STOCKMASTER WHERE STOCKCODE=#stockCode# and LISTED=1),
+        (SELECT ID FROM PORTFOLIO WHERE NAME=#portfolioName#))
+    </insert>
+
+    <resultMap id="stopLossMap" class="pm.vo.StopLossVO">
+        <result property="id" column="ID"/>
+        <result property="stopLoss2" column="STOPLOSS2"/>
+        <result property="stopLoss1" column="STOPLOSS1"/>
+        <result property="target1" column="TARGET1"/>
+        <result property="target2" column="TARGET2"/>
+        <result property="stockCode" column="STOCKCODE"/>
+        <result property="portfolioName" column="NAME"/>
+    </resultMap>
+    <select id="getStopLoss" resultMap="stopLossMap" parameterClass="java.util.Map">
+        SELECT STOPLOSS.ID,STOPLOSS2,STOPLOSS1,TARGET1,TARGET2,STOCKMASTER.STOCKCODE,PORTFOLIO.NAME
+        FROM STOPLOSS,PORTFOLIO,STOCKMASTER
+        WHERE PORTFOLIOID=PORTFOLIO.ID AND
+        STOCKID=STOCKMASTER.ID
+        <isNotNull prepend="AND" property="portfolioName">
+            PORTFOLIO.NAME = #portfolioName#
+        </isNotNull>
+        <isNotNull prepend="AND" property="stockCode">
+            STOCKMASTER.STOCKCODE = #stockCode#
+        </isNotNull>
+
+    </select>
+
+    <update id="updateStopLoss" parameterClass="pm.vo.StopLossVO">
+        UPDATE STOPLOSS SET
+        STOPLOSS2=#stopLoss2#, STOPLOSS1=#stopLoss1#, TARGET1=#target1#, TARGET2=#target2#
+        WHERE ID = #id#
+    </update>
+
+    <delete id="deleteStopLoss" parameterClass="java.util.Map">
+        DELETE FROM STOPLOSS WHERE PORTFOLIOID= #portfolioId# AND STOCKID = #stockId#
+    </delete>
+
+    <delete id="deleteAllStopLoss" parameterClass="java.lang.Integer">
+        DELETE FROM STOPLOSS WHERE PORTFOLIOID=#value#
+    </delete>
+</sqlMap>

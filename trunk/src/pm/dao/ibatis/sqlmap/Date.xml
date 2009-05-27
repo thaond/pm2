@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Date">
+
+    <cacheModel id="date-cache" type="LRU" readOnly="true">
+        <flushInterval hours="24"/>
+        <flushOnExecute statement="insertDate"/>
+        <flushOnExecute statement="setNSEQuoteStatus"/>
+        <property name="size" value="250"/>
+    </cacheModel>
+
+    <cacheModel id="nsequotestatus-cache" type="LRU" readOnly="true">
+        <flushInterval hours="24"/>
+        <flushOnExecute statement="insertDate"/>
+        <flushOnExecute statement="setNSEQuoteStatus"/>
+        <property name="size" value="250"/>
+    </cacheModel>
+
+    <select id="getDate" parameterClass="java.util.Map"
+            resultClass="pm.util.PMDate" cacheModel="date-cache">
+        SELECT DATEVAL as intVal FROM MARKETDATE
+        <dynamic prepend="WHERE">
+            <isNotNull prepend="AND" property="dateVal">
+                DATEVAL = #dateVal#
+            </isNotNull>
+            <isNotNull prepend="AND" property="stDate">
+                <![CDATA[ DATEVAL >= #stDate# ]]>
+            </isNotNull>
+            <isNotNull prepend="AND" property="enDate">
+                <![CDATA[ DATEVAL <= #enDate# ]]>
+            </isNotNull>
+        </dynamic>
+        ORDER BY DATEVAL
+    </select>
+
+    <select id="getDatesFromDate" parameterClass="pmdate" resultClass="pmdate">
+        SELECT DATEVAL as intVal FROM MARKETDATE where <![CDATA[ DATEVAL >= #intVal# ]]> ORDER BY DATEVAL
+    </select>
+
+    <select id="getDatesToDate" parameterClass="pmdate" resultClass="pmdate">
+        SELECT DATEVAL as intVal FROM MARKETDATE where <![CDATA[ DATEVAL <= #intVal# ]]>  ORDER BY DATEVAL DESC
+    </select>
+
+    <select id="getLastDate" resultClass="pmdate">
+        SELECT MAX(DATEVAL) FROM MARKETDATE
+    </select>
+
+    <select id="getQuoteDates" resultClass="pmdate">
+        SELECT DATEVAL FROM MARKETDATE WHERE NSEQUOTES = 1 ORDER BY DATEVAL
+    </select>
+
+    <select id="lastWorkingDay" parameterClass="pmdate" resultClass="pmdate">
+        SELECT MAX(DATEVAL) FROM MARKETDATE WHERE DATEVAL <![CDATA[ <= ]]> #value#
+    </select>
+
+    <select id="firstWorkingDay" parameterClass="pmdate" resultClass="pmdate">
+        SELECT MIN(DATEVAL) FROM MARKETDATE WHERE DATEVAL <![CDATA[ >= ]]> #value#
+    </select>
+
+    <select id="nextQuoteDate" parameterClass="pmdate" resultClass="pmdate">
+        SELECT MIN(DATEVAL) FROM MARKETDATE WHERE NSEQUOTES is null
+    </select>
+
+    <insert id="insertDate" parameterClass="pmdate">
+        INSERT INTO MARKETDATE (DATEVAL) VALUES #value#
+    </insert>
+
+    <update id="setNSEQuoteStatus" parameterClass="pmdate">
+        UPDATE MARKETDATE SET NSEQUOTES = 1 WHERE DATEVAL=#value#
+    </update>
+
+    <resultMap id="get-nsequotestatus-result" class="java.lang.Boolean">
+        <result property="value" column="NSEQUOTES" nullValue="0"/>
+    </resultMap>
+
+    <select id="getNSEQuoteStatus" parameterClass="pmdate"
+            resultMap="get-nsequotestatus-result" cacheModel="nsequotestatus-cache">
+        SELECT NSEQUOTES FROM MARKETDATE WHERE DATEVAL=#value#
+    </select>
+
+</sqlMap>

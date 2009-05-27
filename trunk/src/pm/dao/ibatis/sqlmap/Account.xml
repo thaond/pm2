@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Accounts">
+
+    <cacheModel id="portfolio-details-cache" type="LRU" readOnly="true">
+        <flushInterval hours="24"/>
+        <flushOnExecute statement="insertPortfolio"/>
+        <flushOnExecute statement="updatePortfolio"/>
+    </cacheModel>
+
+    <select id="getPortfolioList" resultClass="pm.vo.PortfolioDetailsVO"
+            cacheModel="portfolio-details-cache">
+        SELECT ID as id, NAME as name, ALERT as alertEnabled FROM PORTFOLIO
+    </select>
+
+    <select id="getPortfolioById" resultClass="pm.vo.PortfolioDetailsVO"
+            parameterClass="java.lang.Integer"
+            cacheModel="portfolio-details-cache">
+        SELECT ID as id, NAME as name, ALERT as alertEnabled FROM PORTFOLIO
+        where id = #value#
+    </select>
+
+    <select id="getPortfolioByName" resultClass="pm.vo.PortfolioDetailsVO"
+            parameterClass="java.lang.String"
+            cacheModel="portfolio-details-cache">
+        SELECT ID as id, NAME as name, ALERT as alertEnabled FROM PORTFOLIO
+        where NAME = #value#
+    </select>
+
+    <insert id="insertPortfolio" parameterClass="pm.vo.PortfolioDetailsVO">
+        INSERT INTO PORTFOLIO (NAME,ALERT) VALUES (#name#,#alertEnabled#)
+    </insert>
+
+    <update id="updatePortfolio" parameterClass="pm.vo.PortfolioDetailsVO">
+        UPDATE PORTFOLIO SET NAME=#name#, ALERT=#alertEnabled# WHERE ID = #id#
+    </update>
+
+    <cacheModel id="trading-account-cache" type="LRU" readOnly="true">
+        <flushInterval hours="24"/>
+        <flushOnExecute statement="insertTradingAcc"/>
+        <flushOnExecute statement="updateTradingAcc"/>
+    </cacheModel>
+
+    <select id="getTradingAccList" resultClass="pm.vo.TradingAccountVO"
+            cacheModel="trading-account-cache">
+        SELECT ID as id, NAME as name, BROKERAGETYPE as brokerageTypeName FROM
+        TRADINGACC
+    </select>
+
+    <select id="getTradingAccById" resultClass="pm.vo.TradingAccountVO"
+            parameterClass="java.lang.Integer"
+            cacheModel="trading-account-cache">
+        SELECT ID as id, NAME as name, BROKERAGETYPE as brokerageTypeName FROM
+        TRADINGACC where id = #value#
+    </select>
+
+    <select id="getTradingAccByName" resultClass="pm.vo.TradingAccountVO"
+            parameterClass="java.lang.String"
+            cacheModel="trading-account-cache">
+        SELECT ID as id, NAME as name, BROKERAGETYPE as brokerageTypeName FROM
+        TRADINGACC where NAME = #value#
+    </select>
+
+    <insert id="insertTradingAcc" parameterClass="pm.vo.TradingAccountVO">
+        INSERT INTO TRADINGACC (NAME,BROKERAGETYPE) VALUES
+        (#name#,#brokerageTypeName#)
+    </insert>
+
+    <update id="updateTradingAcc" parameterClass="pm.vo.TradingAccountVO">
+        UPDATE TRADINGACC SET NAME=#name#, BROKERAGETYPE=#brokerageTypeName#
+        WHERE ID = #id#
+    </update>
+
+</sqlMap>

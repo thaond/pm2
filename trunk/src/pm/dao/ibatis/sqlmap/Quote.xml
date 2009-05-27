@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Quote">
+    <resultMap id="quoteMapping" class="pm.vo.QuoteVO">
+        <result property="dateVal" column="DATEID"/>
+        <result property="open" column="SOPEN"/>
+        <result property="high" column="SHIGH"/>
+        <result property="low" column="SLOW"/>
+        <result property="lastPrice" column="SCLOSE"/>
+        <result property="volume" column="SVOLUME"/>
+        <result property="prevClose" column="SPREVCLOSE"/>
+        <result property="tradeValue" column="STRADEVALUE"/>
+        <result property="perDeliveryQty" column="SPERDELIVERYQTY"/>
+        <result property="stockVO" column="STOCKID" select="getStockByID"/>
+    </resultMap>
+
+    <select id="getQuote" parameterClass="java.lang.String"
+            resultMap="quoteMapping">
+        SELECT * FROM QUOTE WHERE STOCKID = (SELECT ID FROM STOCKMASTER WHERE
+        STOCKCODE = #value# AND LISTED=1)
+        ORDER BY DATEID
+    </select>
+
+    <select id="getLastQuote" parameterClass="java.lang.String"
+            resultMap="quoteMapping">
+        SELECT * FROM QUOTE WHERE STOCKID = (SELECT ID FROM STOCKMASTER WHERE
+        STOCKCODE = #value# AND LISTED=1)
+        AND DATEID = (SELECT MAX(DATEID) FROM QUOTE WHERE STOCKID = (SELECT ID
+        FROM STOCKMASTER WHERE STOCKCODE =
+        #value#))
+    </select>
+
+    <select id="getLastQuoteForID" parameterClass="java.lang.Integer"
+            resultMap="quoteMapping">
+        SELECT * FROM QUOTE WHERE STOCKID = #value# AND DATEID = (SELECT
+        MAX(DATEID) FROM QUOTE WHERE STOCKID = #value#)
+    </select>
+
+    <select id="getQuoteForStockDate" parameterClass="java.util.Map"
+            resultMap="quoteMapping">
+        SELECT * FROM QUOTE WHERE STOCKID = (SELECT ID FROM STOCKMASTER WHERE
+        STOCKCODE = #StockCode# AND LISTED=1)
+        AND DATEID = #PMDate#
+    </select>
+
+    <select id="getQuoteForStockIDDate" parameterClass="java.util.Map"
+            resultMap="quoteMapping">
+        SELECT * FROM QUOTE WHERE STOCKID = #StockID# AND DATEID = #PMDate#
+    </select>
+
+    <select id="getQuoteForStockDateRange" parameterClass="java.util.Map"
+            resultMap="quoteMapping">
+
+        SELECT * FROM QUOTE WHERE STOCKID = (SELECT ID FROM STOCKMASTER WHERE
+        STOCKCODE = #StockCode# AND LISTED=1)
+        <isNotNull prepend="AND" property="fromDate">
+            <![CDATA[ DATEID >= #fromDate# ]]>
+        </isNotNull>
+        <isNotNull prepend="AND" property="toDate">
+            <![CDATA[ DATEID <= #toDate# ]]>
+        </isNotNull>
+        ORDER BY DATEID
+    </select>
+
+    <select id="getQuoteForDateRange" parameterClass="java.util.Map"
+            resultMap="quoteMapping">
+        SELECT * FROM QUOTE WHERE
+        <![CDATA[ DATEID >= #fromDate# ]]>
+        AND
+        <![CDATA[ DATEID <= #toDate# ]]>
+        ORDER BY DATEID
+    </select>
+
+    <select id="getQuoteForDate" parameterClass="java.lang.Integer"
+            resultMap="quoteMapping">
+        SELECT * FROM QUOTE WHERE DATEID=#value#
+    </select>
+
+    <parameterMap id="quote-insert" class="pm.vo.QuoteVO">
+        <parameter property="dateVal"/>
+        <parameter property="open"/>
+        <parameter property="high"/>
+        <parameter property="low"/>
+        <parameter property="lastPrice"/>
+        <parameter property="volume"/>
+        <parameter property="prevClose"/>
+        <parameter property="tradeValue"/>
+        <parameter property="perDeliveryQty"/>
+        <parameter property="stockVO.stockCode"/>
+    </parameterMap>
+
+    <insert id="insertQuote" parameterMap="quote-insert">
+        INSERT INTO QUOTE (DATEID, SOPEN, SHIGH, SLOW, SCLOSE, SVOLUME,
+        SPREVCLOSE, STRADEVALUE,
+        SPERDELIVERYQTY, STOCKID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, (SELECT ID
+        FROM STOCKMASTER WHERE STOCKCODE=? AND
+        LISTED = 1))
+    </insert>
+
+    <update id="updateQuote" parameterClass="pm.vo.QuoteVO">
+        UPDATE QUOTE SET SOPEN=#open#, SHIGH= #high#, SLOW= #low#,
+        SCLOSE=#lastPrice#, SVOLUME=#volume#,
+        SPREVCLOSE=#prevClose#, STRADEVALUE=#tradeValue#, SPERDELIVERYQTY
+        =#perDeliveryQty#
+        WHERE DATEID=#dateVal# and STOCKID = (SELECT ID FROM STOCKMASTER WHERE
+        STOCKCODE=#stockVO.stockCode# AND LISTED
+        = 1)
+    </update>
+
+
+</sqlMap>
