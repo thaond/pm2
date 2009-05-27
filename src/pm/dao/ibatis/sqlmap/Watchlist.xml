@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="watchlist">
+
+    <select id="getWatchlistGroup" resultClass="pm.vo.WatchlistDetailsVO">
+        SELECT ID as id, NAME as name, ALERT as alertEnabled FROM WATCHLISTGROUP
+    </select>
+
+    <insert id="insertWatchlistGroup" parameterClass="pm.vo.WatchlistDetailsVO">
+        INSERT INTO WATCHLISTGROUP (NAME,ALERT) VALUES (#name#,#alertEnabled#)
+    </insert>
+
+    <update id="updateWatchlistGroup" parameterClass="pm.vo.WatchlistDetailsVO">
+        UPDATE WATCHLISTGROUP SET NAME=#name#, ALERT=#alertEnabled# WHERE ID = #id#
+    </update>
+
+    <insert id="insertWatchlist" parameterClass="pm.vo.WatchlistVO">
+        INSERT INTO WATCHLIST
+        (FLOOR,CEIL,WATCHLISTGROUPID,STOCKID)
+        VALUES
+        (#floor#,#ceil#,#watchlistGroupId#,
+        (SELECT ID FROM STOCKMASTER WHERE STOCKCODE=#stockCode# and LISTED=1))
+    </insert>
+
+    <resultMap id="watchlistMap" class="pm.vo.WatchlistVO">
+        <result property="id" column="ID"/>
+        <result property="floor" column="FLOOR"/>
+        <result property="ceil" column="CEIL"/>
+        <result property="stockCode" column="STOCKCODE"/>
+        <result property="watchlistGroupId" column="WATCHLISTGROUPID"/>
+    </resultMap>
+
+    <select id="getAllWatchlist" resultMap="watchlistMap" parameterClass="java.util.Map">
+        SELECT WL.ID,WL.FLOOR,WL.CEIL,STOCKMASTER.STOCKCODE,WL.WATCHLISTGROUPID
+        FROM WATCHLIST AS WL,STOCKMASTER
+        WHERE WL.STOCKID=STOCKMASTER.ID
+        <dynamic prepend="and">
+            <isPropertyAvailable property="groupId">WL.WATCHLISTGROUPID=#groupId#</isPropertyAvailable>
+        </dynamic>
+        <dynamic prepend="and">
+            <isPropertyAvailable property="stockId">WL.STOCKID=#stockId#</isPropertyAvailable>
+        </dynamic>
+    </select>
+
+    <update id="updateWatchlist" parameterClass="pm.vo.WatchlistVO">
+        UPDATE WATCHLIST SET
+        FLOOR=#floor#, CEIL=#ceil#
+        WHERE ID = #id#
+    </update>
+
+    <delete id="deleteAllWatchlist" parameterClass="java.lang.Integer">
+        DELETE FROM WATCHLIST WHERE WATCHLISTGROUPID=#value#
+    </delete>
+
+    <delete id="deleteWLByStockId" parameterClass="java.lang.Integer">
+        DELETE FROM WATCHLIST WHERE STOCKID=#value#
+    </delete>
+
+    <select id="getWatchlist" parameterClass="java.lang.Integer" resultMap="watchlistMap">
+        SELECT WL.ID,WL.FLOOR,WL.CEIL,STOCKMASTER.STOCKCODE,WL.WATCHLISTGROUPID
+        FROM WATCHLIST AS WL,STOCKMASTER
+        WHERE WL.ID=#value# and WL.STOCKID=STOCKMASTER.ID
+
+    </select>
+
+
+</sqlMap>

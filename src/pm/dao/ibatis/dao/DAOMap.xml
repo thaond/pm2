@@ -1,0 +1,20 @@
+<!DOCTYPE daoConfig PUBLIC "-//iBATIS.com//DTD DAO Configuration 2.0//EN" "http://www.ibatis.com/dtd/dao-2.dtd">
+<daoConfig>
+    <context id="sqlmap">
+        <transactionManager type="SQLMAP">
+            <property name="SqlMapConfigResource" value="SQLMapConfiguration.xml"/>
+        </transactionManager>
+        <dao interface="pm.dao.ibatis.dao.IStockDAO" implementation="pm.dao.ibatis.dao.StockDAO"/>
+        <dao interface="pm.dao.ibatis.dao.IQuoteDAO" implementation="pm.dao.ibatis.dao.QuoteDAO"/>
+        <dao interface="pm.dao.ibatis.dao.IDateDAO" implementation="pm.dao.ibatis.dao.DateDAO"/>
+        <dao interface="pm.dao.ibatis.dao.IAccountDAO" implementation="pm.dao.ibatis.dao.AccountDAO"/>
+        <dao interface="pm.dao.ibatis.dao.ITransactionDAO" implementation="pm.dao.ibatis.dao.TransactionDAO"/>
+        <dao interface="pm.dao.ibatis.dao.IPortfolioDAO" implementation="pm.dao.ibatis.dao.PortfolioDAO"/>
+        <dao interface="pm.dao.ibatis.dao.IWatchlistDAO" implementation="pm.dao.ibatis.dao.WatchlistDAO"/>
+        <dao interface="pm.dao.ibatis.dao.IIPODAO" implementation="pm.dao.ibatis.dao.IPODAO"/>
+        <dao interface="pm.dao.ibatis.dao.ICompanyActionDAO" implementation="pm.dao.ibatis.dao.CompanyActionDAO"/>
+        <dao interface="pm.dao.ibatis.dao.IFundTransactionDAO" implementation="pm.dao.ibatis.dao.FundTransactionDAO"/>
+        <dao interface="pm.dao.ibatis.dao.ICompanyResultDAO" implementation="pm.dao.ibatis.dao.CompanyResultDAO"/>
+    </context>
+</daoConfig>
+

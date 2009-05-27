@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ipo">
+
+    <resultMap id="IPOMap" class="pm.vo.IPOVO">
+        <result property="id" column="ID"/>
+        <result property="ipoCode" column="IPOCODE"/>
+        <result property="applyDateVal" column="APPLYDATE"/>
+        <result property="applyQty" column="APPLYQTY"/>
+        <result property="applyPrice" column="APPLYPRICE"/>
+        <result property="appliedAmount" column="APPLIEDAMOUNT"/>
+        <result property="allotedTransaction" column="ALLOTMENTID"
+                select="getBuyTransactionByID"/>
+        <result property="refundedDateVal" column="REFUNDDATE" nullValue="0"/>
+        <result property="refundAmount" column="REFUNDAMOUNT" nullValue="0"/>
+        <result property="portfolio" column="PORTFOLIOID"
+                select="getPortfolioById"/>
+        <result property="tradingAcc" column="TRADINGACCID"
+                select="getTradingAccById"/>
+    </resultMap>
+    <select id="getIPOTransaction" resultMap="IPOMap"
+            parameterClass="java.util.Map">
+        SELECT ID, IPOCODE, APPLYDATE, APPLYQTY, APPLYPRICE, APPLIEDAMOUNT,
+        ALLOTMENTID, REFUNDDATE, REFUNDAMOUNT, PORTFOLIOID, TRADINGACCID
+        FROM IPO
+        <dynamic prepend="WHERE">
+            <isNotNull prepend="AND" property="PortfolioID">
+                PORTFOLIOID = #PortfolioID#
+            </isNotNull>
+            <isNotNull prepend="AND" property="TradingAccID">
+                TRADINGACCID = #TradingAccID#
+            </isNotNull>
+        </dynamic>
+    </select>
+
+    <insert id="insertIPOApply" parameterClass="pm.vo.IPOVO">
+        INSERT INTO IPO (IPOCODE, APPLYDATE, APPLYQTY, APPLYPRICE,
+        APPLIEDAMOUNT, PORTFOLIOID, TRADINGACCID)
+        VALUES
+        (#ipoCode#,#applyDateVal#,#applyQty#,#applyPrice#,#appliedAmount#,
+        #portfolio.id#,#tradingAcc.id#)
+    </insert>
+    <update id="updateIPO" parameterClass="pm.vo.IPOVO">
+        UPDATE IPO SET IPOCODE=#ipoCode#, APPLYDATE=#applyDateVal#,
+        APPLYQTY=#applyQty#, APPLYPRICE=#applyPrice#,
+        APPLIEDAMOUNT=#appliedAmount#,
+        ALLOTMENTID=#allotmentId#,
+        REFUNDDATE=#refundedDateVal#, REFUNDAMOUNT=#refundAmount#,
+        PORTFOLIOID=#portfolio.id#,TRADINGACCID=#tradingAcc.id#
+        WHERE ID=#id#
+    </update>
+
+</sqlMap>

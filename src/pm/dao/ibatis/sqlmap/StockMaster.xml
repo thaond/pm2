@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Stock">
+
+    <resultMap id="stockMapping" class="pm.vo.StockVO">
+        <result property="id" column="ID"/>
+        <result property="stockCode" column="STOCKCODE"/>
+        <result property="companyName" column="COMPANYNAME"/>
+        <result property="seriesVal" column="SERIES"/>
+        <result property="paidupValue" column="PAIDUPVALUE" nullValue="0"/>
+        <result property="marketLot" column="MARKETLOT" nullValue="0"/>
+        <result property="faceValue" column="FACEVALUE" nullValue="0"/>
+        <result property="dateofListingVal" column="DATEOFLIST"/>
+        <result property="isin" column="ISIN"/>
+        <result property="listedVal" column="LISTED"/>
+    </resultMap>
+
+    <cacheModel id="stock-details-cache" type="LRU" readOnly="true">
+        <flushInterval hours="2"/>
+        <flushOnExecute statement="updateStock"/>
+        <flushOnExecute statement="insertStock"/>
+        <flushOnExecute statement="deleteStock"/>
+        <property name="size" value="1500"/>
+    </cacheModel>
+
+    <cacheModel id="icici-mapping-cache" type="LRU" readOnly="true">
+        <flushInterval hours="24"/>
+    </cacheModel>
+
+    <cacheModel id="yahoo-mapping-cache" type="LRU" readOnly="true">
+        <flushInterval hours="24"/>
+    </cacheModel>
+
+    <select id="getStock" parameterClass="java.lang.String"
+            resultMap="stockMapping" cacheModel="stock-details-cache">
+        SELECT * FROM STOCKMASTER WHERE STOCKCODE=#value# and LISTED=1
+    </select>
+
+    <select id="getICICICode" parameterClass="java.lang.String"
+            resultClass="java.lang.String" cacheModel="icici-mapping-cache">
+        SELECT ICICICODE FROM ICICI_STOCKCODE_MAPPING, STOCKMASTER WHERE
+        STOCKID=ID and STOCKCODE=#value# and LISTED=1
+    </select>
+
+    <update id="updateICICICodeMapping" parameterClass="java.util.Map">
+        UPDATE ICICI_STOCKCODE_MAPPING SET STOCKID = #stockID# WHERE ICICICODE = #iciciCode#
+    </update>
+
+    <insert id="insertICICICodeIfMissing" parameterClass="java.lang.String">
+        INSERT INTO ICICI_STOCKCODE_MAPPING(ICICICODE) SELECT #value# FROM SYSIBM.SYSDUMMY1 WHERE NOT EXISTS
+        (SELECT 1 FROM ICICI_STOCKCODE_MAPPING WHERE ICICICODE = #value#)
+    </insert>
+
+    <select id="getYahooCode" parameterClass="java.lang.String"
+            resultClass="java.lang.String" cacheModel="icici-mapping-cache">
+        SELECT YAHOOCODE FROM YAHOO_STOCKCODE_MAPPING, STOCKMASTER WHERE
+        STOCKID=ID and STOCKCODE=#value# and LISTED=1
+    </select>
+
+    <cacheModel id="stockByID-details-cache" type="LRU" readOnly="true">
+        <flushOnExecute statement="updateStock"/>
+        <flushOnExecute statement="insertStock"/>
+        <flushOnExecute statement="deleteStock"/>
+        <property name="size" value="1500"/>
+    </cacheModel>
+
+    <select id="getStockByID" parameterClass="java.lang.String"
+            resultMap="stockMapping"
+            cacheModel="stockByID-details-cache">
+        SELECT * FROM STOCKMASTER WHERE ID=#value#
+    </select>
+
+    <parameterMap id="insert-stock-param" class="pm.vo.StockVO">
+        <parameter property="stockCode"/>
+        <parameter property="companyName"/>
+        <parameter property="seriesVal"/>
+        <parameter property="paidupValue"/>
+        <parameter property="marketLot"/>
+        <parameter property="faceValue"/>
+        <parameter property="dateofListingVal"/>
+        <parameter property="isin"/>
+        <parameter property="listedVal"/>
+    </parameterMap>
+
+    <statement id="insertStock" parameterMap="insert-stock-param">
+        insert into STOCKMASTER
+        (STOCKCODE,COMPANYNAME,SERIES,PAIDUPVALUE,MARKETLOT,FACEVALUE,DATEOFLIST,ISIN,LISTED)
+        values (?,?,?,?,?,?,?,?,?)
+    </statement>
+
+    <parameterMap id="update-stock-param" class="pm.vo.StockVO">
+        <parameter property="stockCode"/>
+        <parameter property="companyName"/>
+        <parameter property="seriesVal"/>
+        <parameter property="paidupValue"/>
+        <parameter property="marketLot"/>
+        <parameter property="faceValue"/>
+        <parameter property="dateofListingVal"/>
+        <parameter property="isin"/>
+        <parameter property="listedVal"/>
+        <parameter property="id"/>
+    </parameterMap>
+
+    <update id="updateStock" parameterMap="update-stock-param">
+        update STOCKMASTER set
+        STOCKCODE=?,COMPANYNAME=?,SERIES=?,PAIDUPVALUE=?,MARKETLOT=?,FACEVALUE=?,
+        DATEOFLIST=?,ISIN=?, LISTED=? where ID=?
+    </update>
+
+    <cacheModel id="stock-list-cache" type="LRU" readOnly="false">
+        <flushInterval hours="6"/>
+        <flushOnExecute statement="updateStock"/>
+        <flushOnExecute statement="insertStock"/>
+        <flushOnExecute statement="deleteStock"/>
+        <property name="size" value="1500"/>
+    </cacheModel>
+
+    <select id="getStockList" resultMap="stockMapping"
+            cacheModel="stock-list-cache">
+        select * from STOCKMASTER where LISTED=1 and SERIES = 0 order by
+        STOCKCODE
+    </select>
+
+    <select id="getStockListIncIndex" resultMap="stockMapping"
+            cacheModel="stock-list-cache">
+        select * from STOCKMASTER where LISTED=1 order by STOCKCODE
+    </select>
+
+    <select id="getIndexList" resultMap="stockMapping"
+            cacheModel="stock-list-cache">
+        select * from STOCKMASTER where LISTED=1 and SERIES = 1 order by
+        STOCKCODE
+    </select>
+
+    <delete id="deleteStock" parameterClass="java.lang.Integer">
+        DELETE FROM STOCKMASTER WHERE id=#value#
+    </delete>
+
+    <select id="getStockCodeByID" resultClass="java.lang.String" parameterClass="java.lang.Integer">
+        SELECT STOCKCODE FROM STOCKMASTER WHERE id = #value#
+    </select>
+
+    <select id="iCICICodeMapping" resultClass="java.util.HashMap">
+        SELECT ICICICODE, STOCKMASTER.STOCKCODE AS STOCKCODE FROM ICICI_STOCKCODE_MAPPING
+        LEFT OUTER JOIN STOCKMASTER ON ICICI_STOCKCODE_MAPPING.STOCKID = STOCKMASTER.ID
+    </select>
+
+</sqlMap>
