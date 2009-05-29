@@ -2,8 +2,6 @@ package pm.dao.derby;
 
 import com.ibatis.common.jdbc.ScriptRunner;
 import org.apache.log4j.Logger;
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 import pm.AppLoader;
 import pm.util.AppConfig;
 
@@ -16,7 +14,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class DBManager extends MockObjectTestCase {
+public class DBManager {
 
     private static Logger logger = Logger.getLogger(DBManager.class);
 
@@ -85,14 +83,7 @@ public class DBManager extends MockObjectTestCase {
     public static Connection getConnection() {
         if (connection == null) connection = createNewConnection();
         return connection;
-//        return new DBManager().mockConnection();
     }
-
-    public Connection mockConnection() {
-        Mock mock = mock(Connection.class);
-        return (Connection) mock.proxy();
-    }
-
 
     public static void main(String[] str) {
         AppLoader.initConsoleLogger();
