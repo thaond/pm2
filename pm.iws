@@ -34,15 +34,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pm/AppLoader.java" afterPath="$PROJECT_DIR$/src/pm/AppLoader.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pm/tools/CorpActionSynchronizer.java" afterPath="$PROJECT_DIR$/src/pm/tools/CorpActionSynchronizer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/derby.jar" afterPath="$PROJECT_DIR$/lib/derby.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pm.ipr" afterPath="$PROJECT_DIR$/pm.ipr" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pm.properties" afterPath="$PROJECT_DIR$/pm.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pm.iml" afterPath="$PROJECT_DIR$/pm.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pm/dao/ibatis/dao/ICompanyResultDAO.java" afterPath="$PROJECT_DIR$/src/pm/dao/ibatis/dao/ICompanyResultDAO.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pm/bo/StockMasterBO.java" afterPath="$PROJECT_DIR$/src/pm/bo/StockMasterBO.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pm/dao/ibatis/dao/CompanyResultDAO.java" afterPath="$PROJECT_DIR$/src/pm/dao/ibatis/dao/CompanyResultDAO.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pm.iws" afterPath="$PROJECT_DIR$/pm.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/derbyclient.jar" afterPath="$PROJECT_DIR$/lib/derbyclient.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pm/dao/derby/DBManager.java" afterPath="$PROJECT_DIR$/src/pm/dao/derby/DBManager.java" />
     </list>
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
@@ -55,10 +51,10 @@
     <SUITE FILE_PATH="C:/Users/tpalanis/.IntelliJIdea70/system/coverage/PM$DefaultTaskDetailTest$DefaultTaskDetailTest.es" NAME="DefaultTaskDetailTest" MODIFIED="1199005766260" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="emma" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>pm.util.taskdetail.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="../IntelliJIDEA70/coverage/pm$All in PM$All in pm.es" NAME="All in PM" MODIFIED="1209831911831" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="emma" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="C:/Users/tpalanis/.IntelliJIdea70/system/coverage/PM$All in PM$All in PM.es" NAME="All in PM" MODIFIED="1199027316302" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="emma" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>pm.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="C:/Users/tpalanis/.IntelliJIdea70/system/coverage/PM$All in PM$All in PM.es" NAME="All in PM" MODIFIED="1199027316302" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="emma" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="../IntelliJIDEA70/coverage/pm$All in PM$All in pm.es" NAME="All in PM" MODIFIED="1209831911831" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="emma" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>pm.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="Users/thiyagu/Library/Caches/IntelliJIDEA70/coverage/pm$All in PM$default package.es" NAME="All in PM" MODIFIED="1209831807141" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="emma" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
@@ -239,93 +235,37 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="StockMasterBO.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/pm/bo/StockMasterBO.java">
+      <file leaf-file-name="LoadTransData.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/pm/tools/LoadTransData.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="170" column="52" selection-start="6707" selection-end="6707" vertical-scroll-proportion="0.0">
+            <state line="49" column="32" selection-start="1352" selection-end="1352" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ICompanyResultDAO.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/pm/dao/ibatis/dao/ICompanyResultDAO.java">
+      <file leaf-file-name="AppLoader.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/pm/AppLoader.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="53" selection-start="382" selection-end="382" vertical-scroll-proportion="0.0">
+            <state line="29" column="13" selection-start="676" selection-end="676" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ICompanyActionDAO.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/pm/dao/ibatis/dao/ICompanyActionDAO.java">
+      <file leaf-file-name="build.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/build.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="53" selection-start="699" selection-end="729" vertical-scroll-proportion="0.0">
+            <state line="9" column="35" selection-start="263" selection-end="263" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CompanyResultDAO.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/pm/dao/ibatis/dao/CompanyResultDAO.java">
+      <file leaf-file-name="DBManager.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/pm/dao/derby/DBManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="31" column="44" selection-start="892" selection-end="892" vertical-scroll-proportion="0.0">
-              <folding>
-                <marker date="1243348651000" expanded="false" signature="35:224" placeholder="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CompanyBO.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/pm/bo/CompanyBO.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="13" selection-start="551" selection-end="551" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CompanyActionDAO.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/pm/dao/ibatis/dao/CompanyActionDAO.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="119" column="0" selection-start="3484" selection-end="4022" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StockMasterBOTest.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/pm/bo/StockMasterBOTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="292" column="48" selection-start="13704" selection-end="13704" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BrokerageCalculatorTest.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/pm/tools/BrokerageCalculatorTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="40" column="13" selection-start="4231" selection-end="4231" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CorpActionSynchronizer.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/pm/tools/CorpActionSynchronizer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="135" column="0" selection-start="4292" selection-end="4292" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pm.properties" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pm.properties">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="14" selection-start="14" selection-end="14" vertical-scroll-proportion="0.0">
+            <state line="4" column="41" selection-start="119" selection-end="119" vertical-scroll-proportion="0.14503817">
               <folding />
             </state>
           </provider>
@@ -389,23 +329,9 @@
           <option name="myItemId" value="pm" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
         <PATH_ELEMENT>
           <option name="myItemId" value="pm" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="Libraries" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.LibraryGroupNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
         </PATH_ELEMENT>
       </PATH>
       <PATH>
@@ -418,227 +344,7 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="Libraries" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.LibraryGroupNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="dbunit-2.1.jar" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="Libraries" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.LibraryGroupNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="dbunit-2.1.jar" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="dbunit" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="Libraries" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.LibraryGroupNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="test" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="test" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="tools" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="test" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="bo" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="test" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="src" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="src" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="src" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="pm" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="tools" />
+          <option name="myItemId" value="pm2" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -676,11 +382,11 @@
   <component name="PropertiesComponent">
     <property name="cvs_file_history_treeWidth0" value="171" />
     <property name="cvs_file_history_treeOrder4" value="4" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth2" value="93" />
     <property name="cvs_file_history_flatWidth2" value="170" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth2" value="93" />
     <property name="cvs_file_history_flatOrder4" value="4" />
-    <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
     <property name="cvs_file_history_flatWidth1" value="170" />
+    <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder4" value="4" />
     <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_flatOrder2" value="2" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth4" value="905" />
@@ -698,16 +404,16 @@
     <property name="GoToClass.includeJavaFiles" value="false" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder0" value="0" />
-    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_flatOrder4" value="4" />
     <property name="cvs_file_history_treeOrder1" value="1" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_flatOrder4" value="4" />
     <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeWidth2" value="92" />
     <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeWidth3" value="92" />
     <property name="cvs_file_history_treeWidth1" value="170" />
     <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeWidth0" value="92" />
     <property name="cvs_file_history_treeOrder6" value="6" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth0" value="89" />
     <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeOrder2" value="2" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth0" value="89" />
     <property name="cvs_file_history_treeWidth2" value="170" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder1" value="1" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
@@ -716,9 +422,9 @@
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers" value="false" />
     <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_flatOrder3" value="3" />
     <property name="cvs_file_history_flatOrder5" value="5" />
-    <property name="GenerateAntBuildDialog.backupFiles" value="false" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth1" value="127" />
     <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeOrder5" value="5" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth1" value="127" />
+    <property name="GenerateAntBuildDialog.backupFiles" value="false" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit3" />
     <property name="cvs_file_history_treeOrder0" value="0" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth3" value="89" />
@@ -771,8 +477,8 @@
     <property name="cvs_file_history_treeOrder2" value="2" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth4" value="887" />
     <property name="cvs_file_history_treeWidth5" value="170" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder0" value="0" />
     <property name="cvs_file_history_flatWidth0" value="171" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder0" value="0" />
     <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_flatWidth4" value="95" />
   </component>
   <component name="RecentsManager">
@@ -947,9 +653,9 @@
       </method>
     </configuration>
     <list size="3">
-      <item index="0" class="java.lang.String" itemvalue="Application.AppLoader" />
-      <item index="1" class="java.lang.String" itemvalue="Application.DBManager" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.StockMasterBOTest.testRemoveDuplicate" />
+      <item index="0" class="java.lang.String" itemvalue="JUnit.StockMasterBOTest.testRemoveDuplicate" />
+      <item index="1" class="java.lang.String" itemvalue="Application.AppLoader" />
+      <item index="2" class="java.lang.String" itemvalue="Application.DBManager" />
     </list>
   </component>
   <component name="SQLPlugin.ProjectConfiguration">
@@ -1061,15 +767,15 @@
       <window_info id="Dataflow to this" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" />
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22950819" sideWeight="0.5" order="7" side_tool="false" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22850679" sideWeight="0.7178808" order="0" side_tool="false" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22850679" sideWeight="0.7509934" order="0" side_tool="false" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41986755" sideWeight="0.5" order="1" side_tool="false" x="22" y="312" width="1395" height="497" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24981949" sideWeight="0.5" order="1" side_tool="false" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39911798" sideWeight="0.5" order="6" side_tool="false" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27284768" sideWeight="0.5" order="18" side_tool="false" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26957637" sideWeight="0.5" order="18" side_tool="false" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="20" side_tool="false" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16930836" sideWeight="0.5" order="14" side_tool="false" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2397351" sideWeight="0.5" order="19" side_tool="false" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16892911" sideWeight="0.7509934" order="14" side_tool="false" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2397351" sideWeight="0.5" order="19" side_tool="false" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3152318" sideWeight="0.5" order="2" side_tool="false" x="22" y="314" width="1396" height="502" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39983714" sideWeight="0.5" order="0" side_tool="false" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42119205" sideWeight="0.5" order="4" side_tool="false" />
@@ -1088,19 +794,19 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" />
       <window_info id="IDEtalk History" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="17" side_tool="false" />
       <window_info id="Build" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="false" />
-      <window_info id="DBHelper" active="false" anchor="left" auto_hide="true" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.329455" sideWeight="0.5" order="4" side_tool="false" x="571" y="210" width="538" height="601" />
       <window_info id="JProfiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32697946" sideWeight="0.5" order="13" side_tool="false" />
+      <window_info id="DBHelper" active="false" anchor="left" auto_hide="true" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.329455" sideWeight="0.5" order="4" side_tool="false" x="571" y="210" width="538" height="601" />
       <window_info id="Duplicates" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5614754" sideWeight="0.5" order="12" side_tool="false" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" />
       <window_info id="DBOutput" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3289183" sideWeight="0.5" order="16" side_tool="false" />
-      <window_info id="Slice" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="CVS" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32786885" sideWeight="0.5" order="23" side_tool="false" />
-      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" />
+      <window_info id="Slice" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="Structure101" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" />
+      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" />
       <window_info id="EJB" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" />
       <window_info id="Module Dependencies" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" />
-      <window_info id="IDE talk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" />
       <window_info id="WebServices" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295583" sideWeight="0.5" order="21" side_tool="false" />
+      <window_info id="IDE talk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24898785" sideWeight="0.5" order="1" side_tool="false" />
       <window_info id="File View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" />
@@ -1233,6 +939,14 @@
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />
+    <buildFile url="file://$PROJECT_DIR$/build.xml">
+      <antCommandLine value="" />
+      <runInBackground value="true" />
+      <targetFilters />
+      <treeView value="true" />
+      <verbose value="true" />
+      <viewClosedWhenNoErrors value="false" />
+    </buildFile>
   </component>
   <component name="com.intellij.ide.util.scopeChooser.ScopeChooserConfigurable" proportions="0.16666667" version="1">
     <option name="myLastEditedConfigurable" value="Shared Scopes" />
@@ -1254,89 +968,10 @@
     <option name="multicastPort" value="3274" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/pm/dao/derby/DBManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/createDB.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="405" column="0" selection-start="0" selection-end="11982" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/dbunit-2.1.jar!/org/dbunit/DatabaseTestCase.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pm/dao/ibatis/dao/StockDAO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="73" column="0" selection-start="2076" selection-end="2076" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pm/dao/ibatis/sqlmap/CompanyAction.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pm/dao/ibatis/sqlmap/Account.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/pm/dao/ibatis/dao/CompanyActionDAO.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="119" column="0" selection-start="3484" selection-end="4022" vertical-scroll-proportion="0.0">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pm/bo/CompanyBO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="13" selection-start="551" selection-end="551" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pm/bo/StockMasterBO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="170" column="52" selection-start="6707" selection-end="6707" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pm/dao/ibatis/dao/ICompanyActionDAO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="53" selection-start="699" selection-end="729" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pm/dao/ibatis/dao/ICompanyResultDAO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="53" selection-start="382" selection-end="382" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pm/dao/ibatis/dao/CompanyResultDAO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="44" selection-start="892" selection-end="892" vertical-scroll-proportion="0.0">
-          <folding>
-            <marker date="1243348651000" expanded="false" signature="35:224" placeholder="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1364,6 +999,85 @@
     <entry file="file://$PROJECT_DIR$/pm.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="14" selection-start="14" selection-end="14" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/externalTest/pm/net/icici/CompanyNameLookupExternalTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="13" selection-start="70" selection-end="70" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/externalTest/pm/net/icici/SymbolLookupExternalTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="13" selection-start="153" selection-end="153" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/externalTest/pm/net/icici/TransactionDownloaderExternalTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="13" selection-start="201" selection-end="201" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/externalTest/pm/net/ICICIQuoteDownloaderExternalTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="13" selection-start="135" selection-end="135" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/externalTest/pm/net/NSEExternalTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="13" selection-start="389" selection-end="389" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/externalTest/pm/net/NSESymbolChangeDownloaderExternalTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="13" selection-start="187" selection-end="187" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/externalTest/pm/net/YahooQuoteDownloaderExternalTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pm/tools/LoadTransData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="49" column="32" selection-start="1352" selection-end="1352" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pm/AppLoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="13" selection-start="676" selection-end="676" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="35" selection-start="263" selection-end="263" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pm/dao/derby/DBManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="41" selection-start="119" selection-end="119" vertical-scroll-proportion="0.14503817">
           <folding />
         </state>
       </provider>
