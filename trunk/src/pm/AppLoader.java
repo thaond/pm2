@@ -47,8 +47,9 @@ public class AppLoader {
     public static void main(String[] args) throws SQLException {
         initLogger();
         if (args.length < 1) {
-            logger.error("Usage: pm.AppLoader ui | scheduler | download | alert | bhav2pm | checkSymbolChange | restorelog | downloadCompResult | downloadCompAction | execStmt");
-            System.out.println("Usage: pm.AppLoader ui | scheduler | download | alert | bhav2pm | checkSymbolChange | restorelog | downloadCompResult | downloadCompAction | execStmt");
+            String message = "Usage: pm.AppLoader ui | scheduler | download | alert | bhav2pm | checkSymbolChange | restorelog | downloadCompResult | downloadCompAction | execStmt | loadIciciTransaction";
+            logger.error(message);
+            System.out.println(message);
             System.out.println("Terminating...");
             logger.error("Terminating...");
             System.exit(0);
@@ -81,7 +82,7 @@ public class AppLoader {
             try {
                 new BhavToPMConverter().processData();
             } catch (NullPointerException e) {
-                e.printStackTrace(); 
+                e.printStackTrace();
             }
         } else if (args[0].equalsIgnoreCase("checkSymbolChange")) {
             logger.info("Starting checkSymbolChange");
@@ -97,6 +98,8 @@ public class AppLoader {
             new CorpActionDownloadManager(TaskManager.getExecutor());
         } else if (args[0].equalsIgnoreCase("execStmt") && args.length >= 2) {
             executeStmt(args[1]);
+        } else if (args[0].equalsIgnoreCase("loadIciciTransaction")) {
+            new pm.net.icici.ICICICSVTransactionLoader().load();
         }
     }
 
