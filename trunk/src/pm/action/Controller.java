@@ -241,4 +241,8 @@ public class Controller {
     public static boolean isDuplicate(TransactionVO transVO) {
         return new TradingBO().isDuplicate(transVO);
     }
+
+    public static Map<String, String> getIciciMapping() {
+        return DAOManager.getStockDAO().iciciCodeMapping();
+    }
 }

@@ -44,6 +44,7 @@ public class WelcomeScreen extends JPanel {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.add(getIndexChart(), BorderLayout.CENTER);
+//        panel.add(new IciciNseCodeMappingView(false), BorderLayout.SOUTH);
         return panel;
 
     }
