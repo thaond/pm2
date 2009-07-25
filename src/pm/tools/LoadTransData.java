@@ -57,6 +57,15 @@ public class LoadTransData {
         DBManager.shutDown();
     }
 
+    void loadQuotes(int quoteStartDate, String appStartDate) {
+        cleanupTables(false);
+        resetDownloadDates(appStartDate);
+        System.out.println("Loading Stocklist");
+        loadStockList();
+        System.out.println("Loading Quotes");
+        loadQuotesFromFiles(quoteStartDate);
+    }
+
     void loadData(String appStartDate, int quoteStartDate, String transLogFilePath,
                   String compActLogFilePath, boolean renameLogFiles, boolean onlyLog) {
         System.out.println("Loading DB");
@@ -148,11 +157,11 @@ public class LoadTransData {
         return stocks;
     }
 
-    private void moveBuysToFirst(TreeMap logDetails) {
+    void moveBuysToFirst(TreeMap logDetails) {
         for (Object daysData : logDetails.values()) {
             Vector<TransactionVO> sellVOs = new Vector<TransactionVO>();
             Vector vDaysData = (Vector) daysData;
-            for (int i = vDaysData.size() - 1; i > 0; i--) {
+            for (int i = vDaysData.size() - 1; i >= 0; i--) {
                 if (vDaysData.get(i) instanceof TransactionVO) {
                     TransactionVO transVO = (TransactionVO) vDaysData.get(i);
                     if (transVO.getAction() == AppConst.TRADINGTYPE.Sell) {
