@@ -317,5 +317,9 @@ public class PortfolioBO {
     IPortfolioDAO dao() {
         return DAOManager.getPortfolioDAO();
     }
+
+    public List<TradeVO> getFiniancialYearTransaction(TradingAccountVO tradingAc, PortfolioDetailsVO portfolio, FinYear finYear) {
+        return DAOManager.getTransactionDAO().soldDuringFinYear(tradingAc, portfolio, finYear);
+    }
 }
 

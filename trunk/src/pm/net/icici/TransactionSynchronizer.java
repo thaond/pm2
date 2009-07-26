@@ -17,18 +17,18 @@ public class TransactionSynchronizer {
         ITransactionDAO iTransactionDAO = DAOManager.getTransactionDAO();
         List<ICICITransaction> iciciTransactions = iTransactionDAO.iciciTransactions();
         List<TransactionVO> transactions = iTransactionDAO.getTransactionList("ICICI_Direct", null);
-        for (ICICITransaction iciciTransaction : iciciTransactions) {
+        for (TransactionVO transaction : transactions) {
             boolean matched = false;
-            for (TransactionVO transaction : transactions) {
+            for (ICICITransaction iciciTransaction : iciciTransactions) {
                 if (match(iciciTransaction, transaction)) {
                     matched = true;
                     break;
                 }
             }
             if (!matched) {
-                iciciTransaction.setPortfolio("Thiyagu");
-                iciciTransaction.setTradingAc("ICICI_Direct");
-                System.out.println(iciciTransaction.getDetails());
+//                iciciTransaction.setPortfolio("Thiyagu");
+//                iciciTransaction.setTradingAc("ICICI_Direct");
+                System.out.println(transaction.getDetails());
             }
         }
     }

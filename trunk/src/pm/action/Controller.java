@@ -245,4 +245,8 @@ public class Controller {
     public static Map<String, String> getIciciMapping() {
         return DAOManager.getStockDAO().iciciCodeMapping();
     }
+
+    public static List<TradeVO> getFiniancialYearTransaction(TradingAccountVO tradingAc, PortfolioDetailsVO portfolio, FinYear finYear) {
+        return new PortfolioBO().getFiniancialYearTransaction(tradingAc, portfolio, finYear);
+    }
 }

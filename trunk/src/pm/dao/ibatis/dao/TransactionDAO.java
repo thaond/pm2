@@ -3,10 +3,7 @@ package pm.dao.ibatis.dao;
 import com.ibatis.dao.client.DaoManager;
 import com.ibatis.dao.client.template.SqlMapDaoTemplate;
 import pm.util.AppConst;
-import pm.vo.ICICITransaction;
-import pm.vo.TradeVO;
-import pm.vo.TransactionMapping;
-import pm.vo.TransactionVO;
+import pm.vo.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -211,4 +208,20 @@ public class TransactionDAO extends SqlMapDaoTemplate implements ITransactionDAO
         values.put("QTY", saleQty);
         super.insert("insertTrade", values);
     }
+
+    public List<TradeVO> soldDuringFinYear(TradingAccountVO tradingAc, PortfolioDetailsVO portfolio, FinYear finYear) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        if (!tradingAc.isAll()) {
+            params.put("tradingId", tradingAc.getId());
+        }
+        if (!portfolio.isAll()) {
+            params.put("portfolioId", portfolio.getId());
+        }
+        params.put("startDate", finYear.startDate());
+        params.put("endDate", finYear.endDate());
+
+        return super.queryForList("findFinancialYearTrade", params);
+    }
+
+
 }

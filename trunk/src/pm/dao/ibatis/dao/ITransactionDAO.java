@@ -1,10 +1,7 @@
 package pm.dao.ibatis.dao;
 
 import pm.util.AppConst;
-import pm.vo.ICICITransaction;
-import pm.vo.TradeVO;
-import pm.vo.TransactionMapping;
-import pm.vo.TransactionVO;
+import pm.vo.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -53,5 +50,7 @@ public interface ITransactionDAO {
     void updateOrInsertICICITransaction(ICICITransaction transaction);
 
     List<ICICITransaction> iciciTransactions();
+
+    List<TradeVO> soldDuringFinYear(TradingAccountVO tradingAc, PortfolioDetailsVO portfolio, FinYear finYear);
 
 }
