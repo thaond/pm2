@@ -50,32 +50,4 @@ public abstract class AbstractViewTransaction extends AbstractPMPanel {
         return splitPane;
     }
 
-    private Component buildTopPanel() {
-        JPanel panel = new JPanel();
-        UIHelper.buildChildPanel(panel);
-        panel.setMinimumSize(new Dimension(UIHelper.WIDTH, 60));
-        panel.setPreferredSize(new Dimension(UIHelper.WIDTH, 60));
-        panel.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(2, 10, 2, 2);
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-
-        panel.add(UIHelper.createLabel("Trading Account"), gbc);
-        gbc.gridx++;
-        panel.add(tradeAcList, gbc);
-
-        gbc.gridx++;
-        panel.add(UIHelper.createLabel("Porfolio"), gbc);
-
-        gbc.gridx++;
-        panel.add(portfolioList, gbc);
-
-        gbc.gridx++;
-        gbc.insets = new Insets(2, 20, 2, 2);
-        panel.add(getSubmitButton(), gbc);
-
-        return panel;
-    }
 }

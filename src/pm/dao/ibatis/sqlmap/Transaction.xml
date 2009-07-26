@@ -292,4 +292,30 @@
         PORTFOLIO.ID = PORTFOLIOID
     </select>
 
+    <select id="findFinancialYearTrade" resultMap="tradeMapping" parameterClass="java.util.Map">
+        SELECT TRADE.ID as ID, Sell.ID as SELLID, Buy.Id as BUYID, STOCKMASTER.STOCKCODE,
+        Buy.TDATE AS PDATE, TRADE.QTY, Buy.PRICE as PPRICE,
+        (Buy.BROKERAGE/Buy.Qty*TRADE.QTY + Sell.BROKERAGE/Sell.QTY*TRADE.QTY) AS BROK,
+        Sell.TDATE AS SDATE, Sell.PRICE as SPRICE,
+        DIVIDENT as DIVIDENT,
+        PORTFOLIO.NAME AS PORTFOLIONAME, TRADINGACC.NAME AS TRADINGACCNAME,
+        Buy.DELIVERYTYPE
+        FROM BUYTRANSACTION AS Buy
+        JOIN TRADE ON BUYID = BUY.ID
+        JOIN SELLTRANSACTION as SELL on Sell.ID = SELLID
+        JOIN STOCKMASTER ON Buy.STOCKID = STOCKMASTER.ID
+        JOIN PORTFOLIO ON Buy.PORTFOLIOID = PORTFOLIO.ID
+        JOIN TRADINGACC ON Buy.TRADINGACCID = TRADINGACC.ID
+        WHERE <![CDATA[ SELL.TDATE >= #startDate# ]]> AND  <![CDATA[ SELL.TDATE <= #endDate# ]]>
+        <isNotNull prepend="AND" property="portfolioName">
+            Buy.PORTFOLIOID = #portfolioId#
+        </isNotNull>
+        <isNotNull prepend="AND" property="tradingACCName">
+            Buy.TRADINGACCID = #tradingId#
+        </isNotNull>
+        <isNotNull prepend="AND" property="stockCode">
+            STOCKMASTER.STOCKCODE = #stockCode#
+        </isNotNull>
+    </select>
+
 </sqlMap>

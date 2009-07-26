@@ -73,4 +73,8 @@ public class TradingAccountVO extends Account {
     public String getBrokerageTypeName() {
         return this.brokeragetype.name();
     }
+
+    public boolean isAll() {
+        return this == ALL;
+    }
 }

@@ -298,6 +298,7 @@ public class PortfolioManager extends JFrame implements ActionListener {
         menu.add(getMenuItem("Stop Loss", PortfolioStopLoss.class));
         menu.add(getMenuItem("Company Action", CompanyAction.class));
         menu.add(getMenuItem("Manage Accounts", ManageAccounts.class));
+        menu.add(getMenuItem("IT", ITView.class));
         return menu;
     }
 

@@ -61,4 +61,8 @@ public class PortfolioDetailsVO extends Account implements Comparable {
     public String toString() {
         return name;
     }
+
+    public boolean isAll() {
+        return this == ALL;
+    }
 }

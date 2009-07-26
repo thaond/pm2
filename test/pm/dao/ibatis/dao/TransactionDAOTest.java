@@ -1,6 +1,9 @@
 package pm.dao.ibatis.dao;
 
+import pm.bo.TradingBO;
 import pm.util.AppConst;
+import static pm.util.AppConst.TRADINGTYPE.Buy;
+import static pm.util.AppConst.TRADINGTYPE.Sell;
 import pm.util.PMDate;
 import pm.vo.*;
 
@@ -21,15 +24,15 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
     }
 
     public void testGetTransactionById() throws Exception {
-        TransactionVO transaction = new TransactionVO(new PMDate(1, 1, 2006), "CODE1", AppConst.TRADINGTYPE.Buy, 10f, 100f, 115f,
+        TransactionVO transaction = new TransactionVO(new PMDate(1, 1, 2006), "CODE1", Buy, 10f, 100f, 115f,
                 "PortfolioName", "TradingACCName", false);
         int id = 1;
-        TransactionVO transVO = DAOManager.getTransactionDAO().getTransaction(id, AppConst.TRADINGTYPE.Buy);
+        TransactionVO transVO = DAOManager.getTransactionDAO().getTransaction(id, Buy);
         assertEquals(transaction, transVO);
 
-        transaction = new TransactionVO(new PMDate(5, 2, 2006), "CODE1", AppConst.TRADINGTYPE.Sell, 5f, 220f, 125f,
+        transaction = new TransactionVO(new PMDate(5, 2, 2006), "CODE1", Sell, 5f, 220f, 125f,
                 "PortfolioName", "TradingACCName", false);
-        transVO = DAOManager.getTransactionDAO().getTransaction(id, AppConst.TRADINGTYPE.Sell);
+        transVO = DAOManager.getTransactionDAO().getTransaction(id, Sell);
         assertEquals(transaction, transVO);
 
     }
@@ -44,8 +47,8 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
         String stockCode = "CODE1";
         String portfolioName = "PortfolioName";
         String tradingAcName = "TradingACCName";
-        TransactionVO buyTransaction = new TransactionVO(new PMDate(1, 1, 2006), stockCode, AppConst.TRADINGTYPE.Buy, 10f, 100f, 115f, portfolioName, tradingAcName, false);
-        TransactionVO sellTransaction = new TransactionVO(new PMDate(5, 2, 2006), stockCode, AppConst.TRADINGTYPE.Sell, 5f, 220f, 125f, portfolioName, tradingAcName, false);
+        TransactionVO buyTransaction = new TransactionVO(new PMDate(1, 1, 2006), stockCode, Buy, 10f, 100f, 115f, portfolioName, tradingAcName, false);
+        TransactionVO sellTransaction = new TransactionVO(new PMDate(5, 2, 2006), stockCode, Sell, 5f, 220f, 125f, portfolioName, tradingAcName, false);
 
         List<TransactionVO> transactionVOs = DAOManager.getTransactionDAO().getTransactionList(null, null);
         assertTrue(transactionVOs.contains(buyTransaction));
@@ -72,15 +75,15 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
         String portfolioName2 = "PortfolioName2";
         String tradingAcName = "TradingACCName";
         String tradingAcName2 = "TradingACCName2";
-        TransactionVO buyTransaction = new TransactionVO(new PMDate(9, 1, 2006), stockCode, AppConst.TRADINGTYPE.Buy, 20f, 180f, 915f, portfolioName2, tradingAcName, false);
-        TransactionVO sellTransaction = new TransactionVO(new PMDate(8, 10, 2006), stockCode, AppConst.TRADINGTYPE.Sell, 10f, 1020f, 925f, portfolioName2, tradingAcName, false);
+        TransactionVO buyTransaction = new TransactionVO(new PMDate(9, 1, 2006), stockCode, Buy, 20f, 180f, 915f, portfolioName2, tradingAcName, false);
+        TransactionVO sellTransaction = new TransactionVO(new PMDate(8, 10, 2006), stockCode, Sell, 10f, 1020f, 925f, portfolioName2, tradingAcName, false);
         List<TransactionVO> transactionVOs = DAOManager.getTransactionDAO().getTransactionList(tradingAcName, portfolioName2);
         assertEquals(4, transactionVOs.size());
         assertTrue(transactionVOs.contains(buyTransaction));
         assertTrue(transactionVOs.contains(sellTransaction));
 
-        buyTransaction = new TransactionVO(new PMDate(9, 1, 2006), stockCode, AppConst.TRADINGTYPE.Buy, 20f, 180f, 915f, portfolioName, tradingAcName2, false);
-        sellTransaction = new TransactionVO(new PMDate(8, 10, 2006), stockCode, AppConst.TRADINGTYPE.Sell, 10f, 1020f, 925f, portfolioName, tradingAcName2, false);
+        buyTransaction = new TransactionVO(new PMDate(9, 1, 2006), stockCode, Buy, 20f, 180f, 915f, portfolioName, tradingAcName2, false);
+        sellTransaction = new TransactionVO(new PMDate(8, 10, 2006), stockCode, Sell, 10f, 1020f, 925f, portfolioName, tradingAcName2, false);
         transactionVOs = DAOManager.getTransactionDAO().getTransactionList(tradingAcName2, portfolioName);
         assertEquals(2, transactionVOs.size());
         assertTrue(transactionVOs.contains(buyTransaction));
@@ -95,15 +98,15 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
         String tradingAcName = "TradingACCName2";
         ITransactionDAO dao = DAOManager.getTransactionDAO();
         float qty = 100f;
-        int buyId = dao.insertTransaction(new TransactionVO(buyDate, stockCode, AppConst.TRADINGTYPE.Buy, qty, 1000f, 150f, portfolioName, tradingAcName, false));
+        int buyId = dao.insertTransaction(new TransactionVO(buyDate, stockCode, Buy, qty, 1000f, 150f, portfolioName, tradingAcName, false));
         PMDate sellDate = new PMDate(5, 1, 2000);
-        TransactionVO saleTrans = new TransactionVO(sellDate, stockCode, AppConst.TRADINGTYPE.Sell, qty, 1200f, 250f, portfolioName, tradingAcName, false);
+        TransactionVO saleTrans = new TransactionVO(sellDate, stockCode, Sell, qty, 1200f, 250f, portfolioName, tradingAcName, false);
         HashMap<Integer, Float> hashMap = new HashMap<Integer, Float>();
         hashMap.put(buyId, qty);
         dao.insertSaleTransaction(saleTrans, hashMap);
 
         List<TransactionVO> transactionVOs = DAOManager.getTransactionDAO().getTransactionList(tradingAcName, portfolioName);
-        TransactionVO transactionVO = getTransactionForStockCode(transactionVOs, buyDate, AppConst.TRADINGTYPE.Buy, false);
+        TransactionVO transactionVO = getTransactionForStockCode(transactionVOs, buyDate, Buy, false);
         assertNotNull(transactionVO);
         assertEquals(100f, transactionVO.getQty());
         assertEquals(1000f, transactionVO.getPrice());
@@ -112,7 +115,7 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
         assertEquals(portfolioName, transactionVO.getPortfolio());
         assertEquals(tradingAcName, transactionVO.getTradingAc());
 
-        transactionVO = getTransactionForStockCode(transactionVOs, sellDate, AppConst.TRADINGTYPE.Sell, false);
+        transactionVO = getTransactionForStockCode(transactionVOs, sellDate, Sell, false);
         assertNotNull(transactionVO);
         assertEquals(100f, transactionVO.getQty());
         assertEquals(1200f, transactionVO.getPrice());
@@ -126,16 +129,16 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
         String tradingAcName = "TradingACCName2";
         float qty = 1010f;
         ITransactionDAO dao = DAOManager.getTransactionDAO();
-        int buyId = dao.insertTransaction(new TransactionVO(buyDate, stockCode, AppConst.TRADINGTYPE.Buy, qty, 1000f, 150f, portfolioName, tradingAcName, true));
+        int buyId = dao.insertTransaction(new TransactionVO(buyDate, stockCode, Buy, qty, 1000f, 150f, portfolioName, tradingAcName, true));
         PMDate sellDate = new PMDate(5, 1, 2000);
 
-        TransactionVO saleTrans = new TransactionVO(sellDate, stockCode, AppConst.TRADINGTYPE.Sell, qty, 1200f, 250f, portfolioName, tradingAcName, true);
+        TransactionVO saleTrans = new TransactionVO(sellDate, stockCode, Sell, qty, 1200f, 250f, portfolioName, tradingAcName, true);
         HashMap<Integer, Float> hashMap = new HashMap<Integer, Float>();
         hashMap.put(buyId, qty);
         dao.insertSaleTransaction(saleTrans, hashMap);
 
         List<TransactionVO> transactionVOs = DAOManager.getTransactionDAO().getTransactionList(tradingAcName, portfolioName);
-        TransactionVO transactionVO = getTransactionForStockCode(transactionVOs, buyDate, AppConst.TRADINGTYPE.Buy, true);
+        TransactionVO transactionVO = getTransactionForStockCode(transactionVOs, buyDate, Buy, true);
         assertNotNull(transactionVO);
         assertEquals(1010f, transactionVO.getQty());
         assertEquals(1000f, transactionVO.getPrice());
@@ -144,7 +147,7 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
         assertEquals(portfolioName, transactionVO.getPortfolio());
         assertEquals(tradingAcName, transactionVO.getTradingAc());
 
-        transactionVO = getTransactionForStockCode(transactionVOs, sellDate, AppConst.TRADINGTYPE.Sell, true);
+        transactionVO = getTransactionForStockCode(transactionVOs, sellDate, Sell, true);
         assertNotNull(transactionVO);
         assertEquals(1010f, transactionVO.getQty());
         assertEquals(1200f, transactionVO.getPrice());
@@ -465,15 +468,15 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
         ITransactionDAO transactionDAO = DAOManager.getTransactionDAO();
         List<TransactionVO> existingTransList = transactionDAO.getTransactionList(null, null);
 
-        TransactionVO buyTransaction = new TransactionVO(new PMDate(1, 3, 2006), "CODE2", AppConst.TRADINGTYPE.Buy, 1f, 10f, 15f,
+        TransactionVO buyTransaction = new TransactionVO(new PMDate(1, 3, 2006), "CODE2", Buy, 1f, 10f, 15f,
                 "PortfolioName2", "TradingACCName2", true);
         buyTransaction.setId(id);
         transactionDAO.updateTransaction(buyTransaction);
 
-        TransactionVO transVO = transactionDAO.getTransaction(id, AppConst.TRADINGTYPE.Buy);
+        TransactionVO transVO = transactionDAO.getTransaction(id, Buy);
         assertEquals(buyTransaction, transVO);
 
-        TransactionVO sellTransaction = transactionDAO.getTransaction(id, AppConst.TRADINGTYPE.Sell);
+        TransactionVO sellTransaction = transactionDAO.getTransaction(id, Sell);
         sellTransaction.setPrice(12f);
         sellTransaction.setQty(1f);
         sellTransaction.setDate(new PMDate(1, 1, 2005));
@@ -503,18 +506,18 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
         String portfolioName2 = "PortfolioName2";
         String tradingAcName = "TradingACCName";
         String tradingAcName2 = "TradingACCName2";
-        TransactionVO buyTransaction = new TransactionVO(new PMDate(9, 1, 2006), stockCode, AppConst.TRADINGTYPE.Buy, 20f, 180f, 915f, portfolioName2, tradingAcName, false);
-        TransactionVO sellTransaction = new TransactionVO(new PMDate(8, 10, 2006), stockCode, AppConst.TRADINGTYPE.Sell, 10f, 1020f, 925f, portfolioName2, tradingAcName, false);
-        List<TransactionVO> transactionVOs = DAOManager.getTransactionDAO().getTransactionList(tradingAcName, portfolioName2, AppConst.TRADINGTYPE.Buy);
+        TransactionVO buyTransaction = new TransactionVO(new PMDate(9, 1, 2006), stockCode, Buy, 20f, 180f, 915f, portfolioName2, tradingAcName, false);
+        TransactionVO sellTransaction = new TransactionVO(new PMDate(8, 10, 2006), stockCode, Sell, 10f, 1020f, 925f, portfolioName2, tradingAcName, false);
+        List<TransactionVO> transactionVOs = DAOManager.getTransactionDAO().getTransactionList(tradingAcName, portfolioName2, Buy);
         assertEquals(2, transactionVOs.size());
         assertTrue(transactionVOs.contains(buyTransaction));
         assertFalse(transactionVOs.contains(sellTransaction));
-        transactionVOs = DAOManager.getTransactionDAO().getTransactionList(tradingAcName, portfolioName2, AppConst.TRADINGTYPE.Sell);
+        transactionVOs = DAOManager.getTransactionDAO().getTransactionList(tradingAcName, portfolioName2, Sell);
         assertEquals(2, transactionVOs.size());
         assertFalse(transactionVOs.contains(buyTransaction));
         assertTrue(transactionVOs.contains(sellTransaction));
 
-        transactionVOs = DAOManager.getTransactionDAO().getTransactionList(null, null, AppConst.TRADINGTYPE.Buy);
+        transactionVOs = DAOManager.getTransactionDAO().getTransactionList(null, null, Buy);
         boolean flagPort1 = false, flagPort2 = false, flagTrad1 = false, flagTrad2 = false;
 
         for (TransactionVO transactionVO : transactionVOs) {
@@ -530,7 +533,7 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
             if (transactionVO.getPortfolio().equals(portfolioName2)) {
                 flagPort2 = true;
             }
-            assertEquals(AppConst.TRADINGTYPE.Buy, transactionVO.getAction());
+            assertEquals(Buy, transactionVO.getAction());
         }
 
         assertTrue(flagPort1);
@@ -538,7 +541,7 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
         assertTrue(flagTrad1);
         assertTrue(flagTrad2);
 
-        transactionVOs = DAOManager.getTransactionDAO().getTransactionList(null, null, AppConst.TRADINGTYPE.Sell);
+        transactionVOs = DAOManager.getTransactionDAO().getTransactionList(null, null, Sell);
         flagPort1 = flagPort2 = flagTrad1 = flagTrad2 = false;
 
         for (TransactionVO transactionVO : transactionVOs) {
@@ -554,7 +557,7 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
             if (transactionVO.getPortfolio().equals(portfolioName2)) {
                 flagPort2 = true;
             }
-            assertEquals(AppConst.TRADINGTYPE.Sell, transactionVO.getAction());
+            assertEquals(Sell, transactionVO.getAction());
         }
 
         assertTrue(flagPort1);
@@ -571,9 +574,9 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
         List<TransactionVO> transList = DAOManager.getTransactionDAO().getTransactionList(tradingAcName, portfolioName, stockCode, false);
         assertEquals(20, transList.size());
         int[] ids = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-        verifyTransactionOrderAndType(transList, ids, 0, 9, AppConst.TRADINGTYPE.Buy);
+        verifyTransactionOrderAndType(transList, ids, 0, 9, Buy);
         int[] sellids = {1, 2, 3, 4, 4, 5, 6, 7, 7, 8, 9};
-        verifyTransactionOrderAndType(transList, sellids, 9, 20, AppConst.TRADINGTYPE.Sell);
+        verifyTransactionOrderAndType(transList, sellids, 9, 20, Sell);
     }
 
     public void testGetTransactionListForPortfolioNameTradingAcNameStockDayTrade() {
@@ -583,16 +586,16 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
         List<TransactionVO> transList = DAOManager.getTransactionDAO().getTransactionList(tradingAcName, portfolioName, stockCode, true);
         assertEquals(2, transList.size());
         int[] ids = {15};
-        verifyTransactionOrderAndType(transList, ids, 0, 1, AppConst.TRADINGTYPE.Buy);
+        verifyTransactionOrderAndType(transList, ids, 0, 1, Buy);
         int[] sellids = {13};
-        verifyTransactionOrderAndType(transList, sellids, 1, 2, AppConst.TRADINGTYPE.Sell);
+        verifyTransactionOrderAndType(transList, sellids, 1, 2, Sell);
     }
 
     public void testGetTransactionListForSplitedSellTransaction() {
 
         String portfolioName = "PortfolioName";
         String tradingAcName = "TradingACCName";
-        List<TransactionVO> transList = DAOManager.getTransactionDAO().getTransactionList(tradingAcName, portfolioName, AppConst.TRADINGTYPE.Sell);
+        List<TransactionVO> transList = DAOManager.getTransactionDAO().getTransactionList(tradingAcName, portfolioName, Sell);
         Map<Integer, Float> mapBrok = new HashMap<Integer, Float>();
         Map<Integer, Float> mapQty = new HashMap<Integer, Float>();
         for (TransactionVO transactionVO : transList) {
@@ -632,7 +635,7 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
         String stockCode = "CODE3";
         String portfolioName = "PortfolioName";
         String tradingAcName = "TradingACCName";
-        TransactionVO buyTransaction = new TransactionVO(new PMDate(9, 1, 2006), stockCode, AppConst.TRADINGTYPE.Buy, 20f, 180f, 915f, portfolioName, tradingAcName, false);
+        TransactionVO buyTransaction = new TransactionVO(new PMDate(9, 1, 2006), stockCode, Buy, 20f, 180f, 915f, portfolioName, tradingAcName, false);
         ITransactionDAO transactionDAO = DAOManager.getTransactionDAO();
         int buyID = transactionDAO.insertTransaction(buyTransaction);
         List<TradeVO> holdingVOList = transactionDAO.getHoldingDetails(tradingAcName, portfolioName, stockCode, false);
@@ -642,26 +645,26 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
 
     public void testGetTrasactionList_Account_StockCode_ActionType() {
         ITransactionDAO iTransactionDAO = DAOManager.getTransactionDAO();
-        List<TransactionVO> list = iTransactionDAO.getTransactionList(null, null, "CODE1", AppConst.TRADINGTYPE.Buy);
+        List<TransactionVO> list = iTransactionDAO.getTransactionList(null, null, "CODE1", Buy);
         assertEquals(13, list.size());
-        list = iTransactionDAO.getTransactionList("TradingACCName", "PortfolioName", "CODE1", AppConst.TRADINGTYPE.Buy);
+        list = iTransactionDAO.getTransactionList("TradingACCName", "PortfolioName", "CODE1", Buy);
         assertEquals(10, list.size());
-        list = iTransactionDAO.getTransactionList("TradingACCName", "PortfolioName", "CODE2", AppConst.TRADINGTYPE.Buy);
+        list = iTransactionDAO.getTransactionList("TradingACCName", "PortfolioName", "CODE2", Buy);
         assertEquals(2, list.size());
 
     }
 
     public void testUpdateStockId() {
         final ITransactionDAO dao = DAOManager.getTransactionDAO();
-        assertEquals("CODE16NEW", dao.getTransaction(502, AppConst.TRADINGTYPE.Buy).getStockCode());
+        assertEquals("CODE16NEW", dao.getTransaction(502, Buy).getStockCode());
         dao.updateStockId(17, 16);
-        assertEquals("CODE16", dao.getTransaction(501, AppConst.TRADINGTYPE.Buy).getStockCode());
-        assertEquals("CODE16", dao.getTransaction(502, AppConst.TRADINGTYPE.Buy).getStockCode());
+        assertEquals("CODE16", dao.getTransaction(501, Buy).getStockCode());
+        assertEquals("CODE16", dao.getTransaction(502, Buy).getStockCode());
     }
 
     public void testInsertGetICICITransaction() {
         String iciciCode = "ICICI1";
-        ICICITransaction transaction = new ICICITransaction(new PMDate(1, 1, 2006), iciciCode, AppConst.TRADINGTYPE.Buy, 100f, 224.24f, 123.23f, true, "123123123");
+        ICICITransaction transaction = new ICICITransaction(new PMDate(1, 1, 2006), iciciCode, Buy, 100f, 224.24f, 123.23f, true, "123123123");
         ITransactionDAO dao = DAOManager.getTransactionDAO();
         dao.updateOrInsertICICITransaction(transaction);
         List<ICICITransaction> transactions = dao.iciciTransactions();
@@ -671,7 +674,7 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
 
     public void testInsertICICITransactionShouldInsertICICICodeToMapping() {
         String iciciCode = "ICICI1";
-        ICICITransaction transaction = new ICICITransaction(new PMDate(1, 1, 2006), iciciCode, AppConst.TRADINGTYPE.Buy, 100f, 224.24f, 123.23f, true, "123123123");
+        ICICITransaction transaction = new ICICITransaction(new PMDate(1, 1, 2006), iciciCode, Buy, 100f, 224.24f, 123.23f, true, "123123123");
         ITransactionDAO dao = DAOManager.getTransactionDAO();
         dao.updateOrInsertICICITransaction(transaction);
         assertTrue(DAOManager.getStockDAO().iciciCodeMapping().containsKey("ICICI1"));
@@ -679,12 +682,12 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
 
     public void testUpdateOrInsertICICITransactionShouldUpdateICICITransaction() {
         String iciciCode = "ICICI1";
-        ICICITransaction transaction = new ICICITransaction(new PMDate(1, 1, 2006), iciciCode, AppConst.TRADINGTYPE.Buy, 100f, 224.24f, 0f, true, "123123123");
+        ICICITransaction transaction = new ICICITransaction(new PMDate(1, 1, 2006), iciciCode, Buy, 100f, 224.24f, 0f, true, "123123123");
         ITransactionDAO dao = DAOManager.getTransactionDAO();
         dao.updateOrInsertICICITransaction(transaction);
         assertEquals(1, dao.iciciTransactions().size());
         assertTrue(dao.iciciTransactions().contains(transaction));
-        transaction = new ICICITransaction(new PMDate(1, 1, 2006), iciciCode, AppConst.TRADINGTYPE.Buy, 100f, 224.24f, 123.23f, true, "123123123");
+        transaction = new ICICITransaction(new PMDate(1, 1, 2006), iciciCode, Buy, 100f, 224.24f, 123.23f, true, "123123123");
         transaction.setPortfolio("PortfolioName");
         dao.updateOrInsertICICITransaction(transaction);
         assertEquals(1, dao.iciciTransactions().size());
@@ -694,15 +697,15 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
     public void testInsertICICITransactionShouldInsertICICICodeToMappingOnlyIfMissing() {
         String iciciCode = "ICICI1";
         ITransactionDAO dao = DAOManager.getTransactionDAO();
-        dao.updateOrInsertICICITransaction(new ICICITransaction(new PMDate(1, 1, 2006), iciciCode, AppConst.TRADINGTYPE.Buy, 100f, 224.24f, 123.23f, true, "123123123"));
+        dao.updateOrInsertICICITransaction(new ICICITransaction(new PMDate(1, 1, 2006), iciciCode, Buy, 100f, 224.24f, 123.23f, true, "123123123"));
         int mappingSize = DAOManager.getStockDAO().iciciCodeMapping().size();
-        dao.updateOrInsertICICITransaction(new ICICITransaction(new PMDate(1, 2, 2006), iciciCode, AppConst.TRADINGTYPE.Buy, 100f, 224.24f, 123.23f, true, "123123123"));
+        dao.updateOrInsertICICITransaction(new ICICITransaction(new PMDate(1, 2, 2006), iciciCode, Buy, 100f, 224.24f, 123.23f, true, "123123123"));
         assertEquals(mappingSize, DAOManager.getStockDAO().iciciCodeMapping().size());
     }
 
     public void testGetICICITransactionLoadsMappedStockCode() {
         String iciciCode = "ICICI2";
-        ICICITransaction transaction = new ICICITransaction(new PMDate(1, 1, 2006), iciciCode, AppConst.TRADINGTYPE.Buy, 100f, 224.24f, 123.23f, true, "123123123");
+        ICICITransaction transaction = new ICICITransaction(new PMDate(1, 1, 2006), iciciCode, Buy, 100f, 224.24f, 123.23f, true, "123123123");
         ITransactionDAO dao = DAOManager.getTransactionDAO();
         dao.updateOrInsertICICITransaction(transaction);
         String stockCode = "CODE2";
@@ -712,5 +715,30 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
         assertEquals(1, transactions.size());
         transaction.setStockCode(stockCode);
         assertTrue(transactions.contains(transaction));
+    }
+
+    public void testSoldDuringFinYear() {
+        doTransaction(new PMDate(31, 1, 2008), new PMDate(31, 1, 2008), false);
+        doTransaction(new PMDate(31, 1, 2008), new PMDate(1, 4, 2008), false);
+        doTransaction(new PMDate(1, 4, 2008), new PMDate(1, 4, 2008), true);
+        doTransaction(new PMDate(31, 5, 2008), new PMDate(31, 7, 2008), false);
+        doTransaction(new PMDate(31, 5, 2008), new PMDate(31, 7, 2009), false);
+        doTransaction(new PMDate(31, 3, 2009), new PMDate(31, 3, 2009), true);
+        doTransaction(new PMDate(1, 4, 2009), new PMDate(31, 4, 2009), false);
+        TradingAccountVO tradingAccount = DAOManager.getAccountDAO().tradingAcc("TradingACCName");
+        PortfolioDetailsVO portfolio = DAOManager.getAccountDAO().portfolio("PortfolioName");
+        FinYear finYear = new FinYear(2008);
+        List<TradeVO> tradeVOs = DAOManager.getTransactionDAO().soldDuringFinYear(tradingAccount, portfolio, finYear);
+        assertEquals(4, tradeVOs.size());
+        for (TradeVO tradeVO : tradeVOs) {
+            assertFalse(tradeVO.getSaleDate().before(finYear.startDate()));
+            assertFalse(tradeVO.getSaleDate().after(finYear.endDate()));
+        }
+    }
+
+    private void doTransaction(PMDate buyDate, PMDate sellDate, boolean dayTrading) {
+        TradingBO bo = new TradingBO();
+        bo.doTrading(new TransactionVO(buyDate, "CODE4", Buy, 10f, 10f, 10f, "PortfolioName", "TradingACCName", dayTrading));
+        bo.doTrading(new TransactionVO(sellDate, "CODE4", Sell, 10f, 10f, 10f, "PortfolioName", "TradingACCName", dayTrading));
     }
 }

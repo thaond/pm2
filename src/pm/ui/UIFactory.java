@@ -7,6 +7,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Thiyagu
@@ -15,8 +16,7 @@ import java.util.ArrayList;
  */
 public class UIFactory {
 
-    public static Component createTopPanel(JComboBox tradeAcList, JComboBox portfolioList,
-                                           JComboBox reportTypeList, JLabel timeStamp,
+    public static Component createTopPanel(List<ComponentData> componentDatas, JLabel timeStamp,
                                            JCheckBox inclDayTrading, Component submitButton) {
         JPanel panel = createChildPanel();
         panel.setMinimumSize(new Dimension(UIHelper.WIDTH, 60));
@@ -28,26 +28,18 @@ public class UIFactory {
         gbc.gridx = 0;
         gbc.gridy = 0;
 
-        panel.add(createLabel("Trading Account"), gbc);
-        gbc.gridx++;
-        panel.add(buildTradingAccountList(tradeAcList, true), gbc);
-
-        gbc.gridx++;
-        panel.add(createLabel("Porfolio"), gbc);
-
-        gbc.gridx++;
-        panel.add(buildPortfolioList(portfolioList, true), gbc);
+        for (ComponentData componentData : componentDatas) {
+            gbc.gridx++;
+            if (componentData.getLabel() != null) {
+                panel.add(createLabel(componentData.getLabel()), gbc);
+                gbc.gridx++;
+            }
+            panel.add(componentData.getComponent(), gbc);
+        }
 
         if (inclDayTrading != null) {
             gbc.gridx++;
             panel.add(inclDayTrading, gbc);
-        }
-
-        if (reportTypeList != null) {
-            gbc.gridx++;
-            panel.add(createLabel("Report Type"), gbc);
-            gbc.gridx++;
-            panel.add(reportTypeList, gbc);
         }
 
         gbc.gridx++;
@@ -64,15 +56,32 @@ public class UIFactory {
     }
 
     public static Component createTopPanel(JComboBox tradeAcList, JComboBox portfolioList, JComboBox reportTypeList, JLabel timeStamp, Component submitButton) {
-        return createTopPanel(tradeAcList, portfolioList, reportTypeList, timeStamp, null, submitButton);
+        List<ComponentData> componentDatas = createTradingAccPortfolioDetails(tradeAcList, portfolioList);
+        componentDatas.add(new ComponentData("Report Type", reportTypeList));
+        return createTopPanel(componentDatas, timeStamp, null, submitButton);
+    }
+
+    public static Component createTopPanel(JComboBox tradeAcList, JComboBox portfolioList, JComboBox year, Component submitButton) {
+        List<ComponentData> componentDatas = createTradingAccPortfolioDetails(tradeAcList, portfolioList);
+        componentDatas.add(new ComponentData("Year", year));
+        return createTopPanel(componentDatas, null, null, submitButton);
+    }
+
+    private static List<ComponentData> createTradingAccPortfolioDetails(JComboBox tradeAcList, JComboBox portfolioList) {
+        List<ComponentData> componentDatas = new ArrayList<ComponentData>();
+        componentDatas.add(new ComponentData("Trading Account", buildTradingAccountList(tradeAcList, true)));
+        componentDatas.add(new ComponentData("Porfolio", buildPortfolioList(portfolioList, true)));
+        return componentDatas;
     }
 
     public static Component createTopPanel(JComboBox tradeAcList, JComboBox portfolioList, JCheckBox inclDayTrading, Component submitButton) {
-        return createTopPanel(tradeAcList, portfolioList, null, null, inclDayTrading, submitButton);
+        List<ComponentData> componentDatas = createTradingAccPortfolioDetails(tradeAcList, portfolioList);
+        return createTopPanel(componentDatas, null, inclDayTrading, submitButton);
     }
 
     public static Component createTopPanel(JComboBox tradeAcList, JComboBox portfolioList, Component submitButton) {
-        return createTopPanel(tradeAcList, portfolioList, null, null, null, submitButton);
+        List<ComponentData> componentDatas = createTradingAccPortfolioDetails(tradeAcList, portfolioList);
+        return createTopPanel(componentDatas, null, null, submitButton);
     }
 
     public static Component createTopPanelWithStockList(JComboBox stockField, JButton submitButton) {
@@ -115,4 +124,23 @@ public class UIFactory {
         table.setRowSorter(sorter);
         return table;
     }
+}
+
+class ComponentData {
+    String label = null;
+    JComponent component = null;
+
+    ComponentData(String label, JComponent component) {
+        this.label = label;
+        this.component = component;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public JComponent getComponent() {
+        return component;
+    }
+
 }
