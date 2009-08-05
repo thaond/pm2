@@ -246,7 +246,7 @@ public class Controller {
         return DAOManager.getStockDAO().iciciCodeMapping();
     }
 
-    public static List<TradeVO> getFiniancialYearTransaction(TradingAccountVO tradingAc, PortfolioDetailsVO portfolio, FinYear finYear) {
+    public static FYTransactionDetails getFiniancialYearTransaction(TradingAccountVO tradingAc, PortfolioDetailsVO portfolio, FinYear finYear) {
         return new PortfolioBO().getFiniancialYearTransaction(tradingAc, portfolio, finYear);
     }
 }
