@@ -318,8 +318,12 @@ public class PortfolioBO {
         return DAOManager.getPortfolioDAO();
     }
 
-    public List<TradeVO> getFiniancialYearTransaction(TradingAccountVO tradingAc, PortfolioDetailsVO portfolio, FinYear finYear) {
-        return DAOManager.getTransactionDAO().soldDuringFinYear(tradingAc, portfolio, finYear);
+    public FYTransactionDetails getFiniancialYearTransaction(TradingAccountVO tradingAc, PortfolioDetailsVO portfolio, FinYear finYear) {
+        ITransactionDAO transactionDAO = DAOManager.getTransactionDAO();
+        List<TradeVO> transactions = transactionDAO.soldDuringFinYear(tradingAc, portfolio, finYear);
+        float divident = transactionDAO.getDividentForFY(finYear);
+        FYTransactionDetails details = new FYTransactionDetails(transactions, divident);
+        return details;
     }
 }
 

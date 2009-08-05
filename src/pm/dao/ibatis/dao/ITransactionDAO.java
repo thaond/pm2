@@ -53,4 +53,5 @@ public interface ITransactionDAO {
 
     List<TradeVO> soldDuringFinYear(TradingAccountVO tradingAc, PortfolioDetailsVO portfolio, FinYear finYear);
 
+    float getDividentForFY(FinYear finYear);
 }

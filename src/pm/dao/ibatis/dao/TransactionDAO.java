@@ -223,5 +223,13 @@ public class TransactionDAO extends SqlMapDaoTemplate implements ITransactionDAO
         return super.queryForList("findFinancialYearTrade", params);
     }
 
+    public float getDividentForFY(FinYear finYear) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("startDate", finYear.startDate());
+        params.put("endDate", finYear.endDate());
+
+        return (Float) super.queryForObject("findFinancialYearDivident", params);
+    }
+
 
 }

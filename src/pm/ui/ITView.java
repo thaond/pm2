@@ -4,10 +4,7 @@ import pm.action.Controller;
 import pm.ui.table.*;
 import pm.util.DropDownWrapper;
 import pm.util.PMDate;
-import pm.vo.FinYear;
-import pm.vo.PortfolioDetailsVO;
-import pm.vo.TradeVO;
-import pm.vo.TradingAccountVO;
+import pm.vo.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +19,8 @@ public class ITView extends AbstractSplitPanel {
     protected JComboBox portfolioList = UIHelper.buildPortfolioList(new JComboBox(), true);
     protected JComboBox yearList;
     protected JButton submitButton = getSubmitButton();
+    private String LONGTERM = "LongTerm P/L";
+    private String SHORTTERM = "ShortTerm P/L";
 
     public ITView() {
         init();
@@ -41,9 +40,29 @@ public class ITView extends AbstractSplitPanel {
     }
 
     protected void doDisplay(Object retVal, String actionCommand) {
-        java.util.List<ITClassificationWrapper> tradeVOs = addWrapper((java.util.List<TradeVO>) retVal);
-
+        FYTransactionDetails fyTransactionDetails = (FYTransactionDetails) retVal;
+        List<ITClassificationWrapper> tradeVOs = addWrapper(fyTransactionDetails.getTransactions());
         Map<String, Object> totalRow = totalRow(tradeVOs);
+        JPanel bottomPanel = UIHelper.createChildPanel();
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.gridy = 0;
+        gbc.gridx = 0;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+
+        bottomPanel.setLayout(new GridBagLayout());
+        bottomPanel.add(UIHelper.createLabel("Divident : " + fyTransactionDetails.getDivident()), gbc);
+        gbc.gridy++;
+        bottomPanel.add(UIHelper.createLabel("ShotTerm P/L : " + totalRow.get(SHORTTERM)), gbc);
+        gbc.gridy++;
+        bottomPanel.add(UIHelper.createLabel("LongTerm P/L : " + totalRow.get(LONGTERM)), gbc);
+        gbc.gridy++;
+        bottomPanel.add(createTransactionListing(tradeVOs, totalRow), gbc);
+        splitPane.setBottomComponent(bottomPanel);
+    }
+
+    private JPanel createTransactionListing(List<ITClassificationWrapper> tradeVOs, Map<String, Object> totalRow) {
         ArrayList<TableDisplayInput> displayInputs = new ArrayList<TableDisplayInput>();
         displayInputs.add(new StockCodeDisplayInput());
         displayInputs.add(new DateDisplayInput("Purchase Date", "getPurchaseDate"));
@@ -52,10 +71,10 @@ public class ITView extends AbstractSplitPanel {
         displayInputs.add(new FloatDisplayInput("Sale Price", "getSalePrice"));
         displayInputs.add(new FloatDisplayInput("Qty", "getQty"));
         displayInputs.add(new FloatDisplayInput("Brokerage", "getBrokerage"));
-        displayInputs.add(new FloatWithColorDisplayInput("ShortTerm P/L", "getSTPL"));
-        displayInputs.add(new FloatWithColorDisplayInput("LongTerm P/L", "getLTPL"));
+        displayInputs.add(new FloatWithColorDisplayInput(SHORTTERM, "getSTPL"));
+        displayInputs.add(new FloatWithColorDisplayInput(LONGTERM, "getLTPL"));
         PMTableModel tableModel = new PMTableModel(tradeVOs, displayInputs, totalRow);
-        splitPane.setBottomComponent(UIFactory.createTablePanel(0, tableModel));
+        return UIFactory.createTablePanel(0, tableModel);
     }
 
     private List<ITClassificationWrapper> addWrapper(List<TradeVO> tradeVOs) {
@@ -74,8 +93,8 @@ public class ITView extends AbstractSplitPanel {
             totSTPL += reportVO.getSTPL();
         }
         Map<String, Object> totRow = new HashMap<String, Object>();
-        totRow.put("LongTerm P/L", totLTPL);
-        totRow.put("ShortTerm P/L", totSTPL);
+        totRow.put(LONGTERM, totLTPL);
+        totRow.put(SHORTTERM, totSTPL);
         return totRow;
     }
 
