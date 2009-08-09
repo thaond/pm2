@@ -1,20 +1,13 @@
 package pm.bo;
 
-import org.dbunit.DatabaseTestCase;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import pm.AppLoader;
-import pm.dao.derby.DBManager;
 import pm.dao.ibatis.dao.DAOManager;
+import pm.dao.ibatis.dao.PMDBTestCase;
 import pm.util.PMDate;
 import pm.util.enumlist.SERIESTYPE;
 import pm.vo.StockVO;
 import pm.vo.StopLossVO;
 import pm.vo.WatchlistVO;
 
-import java.io.FileInputStream;
 import java.util.*;
 
 /**
@@ -23,36 +16,12 @@ import java.util.*;
  * @version 1.0
  * @since <pre>07/23/2006</pre>
  */
-public class StockMasterBOTest extends DatabaseTestCase {
+public class StockMasterBOTest extends PMDBTestCase {
     private static final String CODE16 = "CODE16";
     private static final String CODE16_NEW = "CODE16NEW";
 
     public StockMasterBOTest(String name) {
-        super(name);
-        AppLoader.initConsoleLogger();
-    }
-
-    @Override
-    protected IDatabaseConnection getConnection() throws Exception {
-        return new DatabaseConnection(DBManager.getConnection());
-    }
-
-    @Override
-    protected IDataSet getDataSet() throws Exception {
-        return new FlatXmlDataSet(new FileInputStream("TestData.xml"));
-    }
-
-    @Override
-    protected void closeConnection(IDatabaseConnection arg0) throws Exception {
-//		super.closeConnection(arg0);
-    }
-
-    public void setUp() throws Exception {
-        super.setUp();
-    }
-
-    public void tearDown() throws Exception {
-        super.tearDown();
+        super(name, "TestData.xml");
     }
 
     public void testGetListedStockDetails() throws Exception {
@@ -78,6 +47,38 @@ public class StockMasterBOTest extends DatabaseTestCase {
         Vector<StockVO> stockList = new Vector<StockVO>();
         stockList.add(stockVO);
         assertTrue(bo.storeStockList(stockList));
+        assertEquals(stockVO, bo.getListedStockDetails(stockCode));
+    }
+
+    public void testStoreStockList_To_Update_AutoCreatedStock() throws Exception {
+        StockMasterBO bo = new StockMasterBO();
+        String stockCode = "QuoteCode";
+        bo.insertNewStock(stockCode);
+        StockVO stockVO = new StockVO(stockCode, "NEW CNAME", 2000f, SERIESTYPE.equity, 1000f, (short) 10, "ACTUALISIN", new PMDate(1, 1, 2001), true);
+        assertTrue(bo.storeStockList(Arrays.asList(stockVO)));
+        assertEquals(stockVO, bo.getListedStockDetails(stockCode));
+    }
+
+    public void testStoreStockList_To_HandleISINChange() throws Exception {
+        StockMasterBO bo = new StockMasterBO();
+        String stockCode = "STKCODE";
+        StockVO stockVO = new StockVO(stockCode, "CNAME", 2000f, SERIESTYPE.equity, 1000f, (short) 10, "ACTUALISIN", new PMDate(1, 1, 2001), true);
+        assertTrue(bo.storeStockList(Arrays.asList(stockVO)));
+        stockVO = new StockVO(stockCode, "CNAME", 1000f, SERIESTYPE.equity, 1000f, (short) 10, "NEWISIN", new PMDate(1, 1, 2001), true);
+        assertTrue(bo.storeStockList(Arrays.asList(stockVO)));
+        assertEquals(stockVO, bo.getListedStockDetails(stockCode));
+    }
+
+    public void testStoreStockList_Not_To_Update_Delisted_AutoCreatedStock() throws Exception {
+        StockMasterBO bo = new StockMasterBO() {
+            @Override
+            void updateStock(StockVO stockVO) {
+                throw new RuntimeException("Should not update delisted stock");
+            }
+        };
+        String stockCode = "DELISTED";
+        StockVO stockVO = new StockVO(stockCode, "NEW CNAME", 2000f, SERIESTYPE.equity, 1000f, (short) 10, "ACTUALISIN", new PMDate(1, 1, 2001), true);
+        assertTrue(bo.storeStockList(Arrays.asList(stockVO)));
         assertEquals(stockVO, bo.getListedStockDetails(stockCode));
     }
 

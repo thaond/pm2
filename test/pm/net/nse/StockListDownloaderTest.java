@@ -6,13 +6,6 @@ import pm.util.PMDate;
 import pm.util.enumlist.SERIESTYPE;
 import pm.vo.StockVO;
 
-/**
- * Created by IntelliJ IDEA.
- * User: tpalanis
- * Date: Apr 28, 2007
- * Time: 10:34:04 PM
- * To change this template use File | Settings | File Templates.
- */
 public class StockListDownloaderTest extends TestCase {
 
 
