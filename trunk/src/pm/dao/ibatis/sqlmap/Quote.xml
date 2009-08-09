@@ -24,11 +24,8 @@
 
     <select id="getLastQuote" parameterClass="java.lang.String"
             resultMap="quoteMapping">
-        SELECT * FROM QUOTE WHERE STOCKID = (SELECT ID FROM STOCKMASTER WHERE
-        STOCKCODE = #value# AND LISTED=1)
-        AND DATEID = (SELECT MAX(DATEID) FROM QUOTE WHERE STOCKID = (SELECT ID
-        FROM STOCKMASTER WHERE STOCKCODE =
-        #value#))
+        SELECT * FROM QUOTE WHERE STOCKID = (SELECT ID FROM STOCKMASTER WHERE STOCKCODE = #value# AND LISTED=1)
+        ORDER BY DATEID DESC FETCH FIRST ROW ONLY
     </select>
 
     <select id="getLastQuoteForID" parameterClass="java.lang.Integer"

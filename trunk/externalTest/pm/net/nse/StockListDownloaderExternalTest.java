@@ -8,13 +8,6 @@ import pm.vo.StockVO;
 import java.util.List;
 import java.util.Vector;
 
-/**
- * Created by IntelliJ IDEA.
- * User: tpalanis
- * Date: Apr 28, 2007
- * Time: 10:21:21 PM
- * To change this template use File | Settings | File Templates.
- */
 public class StockListDownloaderExternalTest extends TestCase {
     final List<StockVO> downloadedList = new Vector<StockVO>();
 

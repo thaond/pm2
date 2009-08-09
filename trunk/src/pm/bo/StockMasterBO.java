@@ -78,6 +78,9 @@ public class StockMasterBO {
         }
         for (StockVO newStockVO : newStockList) {
             StockVO stockVO = htStockListByISIN.remove(newStockVO.getIsin());
+            if (stockVO == null) {
+                stockVO = htStockListByStockCode.get(newStockVO.getStockCode());
+            }
             if (!newStockVO.equals(stockVO) && stockVO != null) {
                 newStockVO.setId(stockVO.getId());
                 identifyRemoveDuplicate(htStockListByStockCode, newStockVO, stockVO);
@@ -142,7 +145,11 @@ public class StockMasterBO {
     }
 
     public void insertNewStock(String stockCode, String companyName) {
-        getDAO().insertStock(new StockVO(stockCode, companyName, 10f, SERIESTYPE.equity, 10f, (short) 1, DUMMYISIN_PREFIX + stockCode, new PMDate(), true));
+        getDAO().insertStock(createPlaceHolderStock(stockCode, companyName));
+    }
+
+    StockVO createPlaceHolderStock(String stockCode, String companyName) {
+        return new StockVO(stockCode, companyName, 10f, SERIESTYPE.equity, 10f, (short) 1, DUMMYISIN_PREFIX + stockCode, new PMDate(), true);
     }
 
     public void doSymbolChange(String oldStockCode, String newStockCode) {
