@@ -63,7 +63,7 @@ public class UIFactory {
 
     public static Component createTopPanel(JComboBox tradeAcList, JComboBox portfolioList, JComboBox year, Component submitButton) {
         List<ComponentData> componentDatas = createTradingAccPortfolioDetails(tradeAcList, portfolioList);
-        componentDatas.add(new ComponentData("Year", year));
+        componentDatas.add(new ComponentData("Financial Year", year));
         return createTopPanel(componentDatas, null, null, submitButton);
     }
 

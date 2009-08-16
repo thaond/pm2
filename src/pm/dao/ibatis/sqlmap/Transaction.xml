@@ -307,29 +307,42 @@
         JOIN PORTFOLIO ON Buy.PORTFOLIOID = PORTFOLIO.ID
         JOIN TRADINGACC ON Buy.TRADINGACCID = TRADINGACC.ID
         WHERE <![CDATA[ SELL.TDATE >= #startDate# ]]> AND  <![CDATA[ SELL.TDATE <= #endDate# ]]>
-        <isNotNull prepend="AND" property="portfolioName">
+        <isNotNull prepend="AND" property="portfolioId">
             Buy.PORTFOLIOID = #portfolioId#
         </isNotNull>
-        <isNotNull prepend="AND" property="tradingACCName">
+        <isNotNull prepend="AND" property="tradingId">
             Buy.TRADINGACCID = #tradingId#
-        </isNotNull>
-        <isNotNull prepend="AND" property="stockCode">
-            STOCKMASTER.STOCKCODE = #stockCode#
         </isNotNull>
     </select>
 
-    <select id="findFinancialYearDivident" resultClass="java.lang.Float" parameterClass="java.util.Map">
+    <select id="findFinancialYearDividentForTraded" resultClass="java.lang.Float" parameterClass="java.util.Map">
         <![CDATA[
-        SELECT traded.total + holding.total from
-        (SELECT sum(CA_DIVIDENT.DIVIDENT / 100 * STOCKMASTER.FACEVALUE * trade.QTY) as total from TRADE
+        SELECT sum(CA_DIVIDENT.DIVIDENT / 100 * STOCKMASTER.FACEVALUE * trade.QTY) as total from TRADE
             join BUYTRANSACTION on TRADE.buyid = BUYTRANSACTION.id join SELLTRANSACTION on TRADE.SELLID = SELLTRANSACTION.id
             join STOCKMASTER on BUYTRANSACTION.STOCKID = STOCKMASTER.ID join CA_DIVIDENT on (STOCKMASTER.id = CA_DIVIDENT.STOCKID and CA_DIVIDENT.EXDATE > BUYTRANSACTION.TDATE and
-             CA_DIVIDENT.EXDATE <= SELLTRANSACTION.TDATE) where CA_DIVIDENT.EXDATE >= #startDate# and CA_DIVIDENT.EXDATE <= #endDate# ) as traded,
-        (SELECT sum (CA_DIVIDENT.DIVIDENT / 100 * STOCKMASTER.FACEVALUE * HOLDINGQTYOF( BUYTRANSACTION.id)) as total
+             CA_DIVIDENT.EXDATE <= SELLTRANSACTION.TDATE) where CA_DIVIDENT.EXDATE >= #startDate# and CA_DIVIDENT.EXDATE <= #endDate#
+        ]]>
+        <isNotNull prepend="AND" property="portfolioId">
+            BUYTRANSACTION.PORTFOLIOID = #portfolioId#
+        </isNotNull>
+        <isNotNull prepend="AND" property="tradingId">
+            BUYTRANSACTION.TRADINGACCID = #tradingId#
+        </isNotNull>
+    </select>
+
+    <select id="findFinancialYearDividentForHolding" resultClass="java.lang.Float" parameterClass="java.util.Map">
+        <![CDATA[
+        SELECT sum (CA_DIVIDENT.DIVIDENT / 100 * STOCKMASTER.FACEVALUE * HOLDINGQTYOF( BUYTRANSACTION.id)) as total
            from BUYTRANSACTION join STOCKMASTER on BUYTRANSACTION.STOCKID = STOCKMASTER.ID join CA_DIVIDENT on
            STOCKMASTER.id = CA_DIVIDENT.STOCKID where CA_DIVIDENT.EXDATE > BUYTRANSACTION.TDATE and CA_DIVIDENT.EXDATE >= #startDate# and CA_DIVIDENT.EXDATE <= #endDate#
-           and HOLDINGQTYOF(BUYTRANSACTION.id) > 0 ) as holding
+           and HOLDINGQTYOF(BUYTRANSACTION.id) > 0
         ]]>
+        <isNotNull prepend="AND" property="portfolioId">
+            BUYTRANSACTION.PORTFOLIOID = #portfolioId#
+        </isNotNull>
+        <isNotNull prepend="AND" property="tradingId">
+            BUYTRANSACTION.TRADINGACCID = #tradingId#
+        </isNotNull>
     </select>
 
 </sqlMap>
