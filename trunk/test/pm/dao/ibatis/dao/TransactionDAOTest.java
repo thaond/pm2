@@ -2,6 +2,7 @@ package pm.dao.ibatis.dao;
 
 import pm.bo.TradingBO;
 import pm.util.AppConst;
+import static pm.util.AppConst.COMPANY_ACTION_TYPE.Divident;
 import static pm.util.AppConst.TRADINGTYPE.Buy;
 import static pm.util.AppConst.TRADINGTYPE.Sell;
 import pm.util.PMDate;
@@ -718,15 +719,17 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
     }
 
     public void testSoldDuringFinYear() {
-        doTransaction(new PMDate(31, 1, 2008), new PMDate(31, 1, 2008), false);
-        doTransaction(new PMDate(31, 1, 2008), new PMDate(1, 4, 2008), false);
-        doTransaction(new PMDate(1, 4, 2008), new PMDate(1, 4, 2008), true);
-        doTransaction(new PMDate(31, 5, 2008), new PMDate(31, 7, 2008), false);
-        doTransaction(new PMDate(31, 5, 2008), new PMDate(31, 7, 2009), false);
-        doTransaction(new PMDate(31, 3, 2009), new PMDate(31, 3, 2009), true);
-        doTransaction(new PMDate(1, 4, 2009), new PMDate(31, 4, 2009), false);
-        TradingAccountVO tradingAccount = DAOManager.getAccountDAO().tradingAcc("TradingACCName");
-        PortfolioDetailsVO portfolio = DAOManager.getAccountDAO().portfolio("PortfolioName");
+        String portfolioName = "PortfolioName";
+        String tradingAcName = "TradingACCName";
+        doTransaction(new PMDate(31, 1, 2008), new PMDate(31, 3, 2008), false, portfolioName, tradingAcName);
+        doTransaction(new PMDate(31, 1, 2008), new PMDate(1, 4, 2008), false, portfolioName, tradingAcName);
+        doTransaction(new PMDate(1, 4, 2008), new PMDate(1, 4, 2008), true, portfolioName, tradingAcName);
+        doTransaction(new PMDate(31, 5, 2008), new PMDate(31, 7, 2008), false, portfolioName, tradingAcName);
+        doTransaction(new PMDate(31, 5, 2008), new PMDate(31, 7, 2009), false, portfolioName, tradingAcName);
+        doTransaction(new PMDate(31, 3, 2009), new PMDate(31, 3, 2009), true, portfolioName, tradingAcName);
+        doTransaction(new PMDate(1, 4, 2009), new PMDate(31, 4, 2009), false, portfolioName, tradingAcName);
+        TradingAccountVO tradingAccount = DAOManager.getAccountDAO().tradingAcc(tradingAcName);
+        PortfolioDetailsVO portfolio = DAOManager.getAccountDAO().portfolio(portfolioName);
         FinYear finYear = new FinYear(2008);
         List<TradeVO> tradeVOs = DAOManager.getTransactionDAO().soldDuringFinYear(tradingAccount, portfolio, finYear);
         assertEquals(4, tradeVOs.size());
@@ -736,9 +739,119 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
         }
     }
 
-    private void doTransaction(PMDate buyDate, PMDate sellDate, boolean dayTrading) {
+    public void testSoldDuringFinYearToFilterByTradingAcAndPortfolio() {
+        String portfolioName1 = "PortfolioName";
+        String portfolioName2 = "PortfolioName2";
+        String tradingAcName1 = "TradingACCName";
+        String tradingAcName2 = "TradingACCName2";
+
+        doTransaction(new PMDate(31, 5, 2008), new PMDate(31, 7, 2008), false, portfolioName1, tradingAcName1);
+        doTransaction(new PMDate(15, 5, 2008), new PMDate(18, 7, 2008), false, portfolioName1, tradingAcName2);
+        doTransaction(new PMDate(16, 5, 2008), new PMDate(20, 7, 2008), false, portfolioName2, tradingAcName1);
+        doTransaction(new PMDate(31, 4, 2008), new PMDate(31, 6, 2008), false, portfolioName2, tradingAcName2);
+
+        TradingAccountVO tradingAccount1 = DAOManager.getAccountDAO().tradingAcc(tradingAcName1);
+        TradingAccountVO tradingAccount2 = DAOManager.getAccountDAO().tradingAcc(tradingAcName2);
+        PortfolioDetailsVO portfolio1 = DAOManager.getAccountDAO().portfolio(portfolioName1);
+        PortfolioDetailsVO portfolio2 = DAOManager.getAccountDAO().portfolio(portfolioName2);
+        FinYear finYear = new FinYear(2008);
+        verifyTransactions(finYear, 4, TradingAccountVO.ALL, PortfolioDetailsVO.ALL);
+        verifyTransactions(finYear, 2, tradingAccount2, PortfolioDetailsVO.ALL);
+        verifyTransactions(finYear, 2, TradingAccountVO.ALL, portfolio1);
+        verifyTransactions(finYear, 1, tradingAccount1, portfolio2);
+        verifyTransactions(finYear, 1, tradingAccount1, portfolio1);
+    }
+
+    public void testGetDividentForFY() throws Exception {
+        String portfolioName1 = "PortfolioName";
+        String tradingAcName1 = "TradingACCName";
+
+        doTransaction(new PMDate(31, 5, 2006), new PMDate(31, 7, 2008), false, portfolioName1, tradingAcName1);
+        doTransaction(new PMDate(2, 4, 2008), new PMDate(31, 7, 2008), false, portfolioName1, tradingAcName1);
+        float dividentRate2007 = 10f;
+        ICompanyActionDAO companyActionDAO = DAOManager.getCompanyActionDAO();
+        companyActionDAO.insertCompanyAction(new CompanyActionVO(Divident, new PMDate(1, 4, 2008), "CODE4", dividentRate2007, 10f));
+        float dividentRate2008 = 30f;
+        companyActionDAO.insertCompanyAction(new CompanyActionVO(Divident, new PMDate(2, 4, 2008), "CODE4", dividentRate2008, 10f));
+        TradingAccountVO tradingAccount1 = DAOManager.getAccountDAO().tradingAcc(tradingAcName1);
+        PortfolioDetailsVO portfolio1 = DAOManager.getAccountDAO().portfolio(portfolioName1);
+        ITransactionDAO dao = DAOManager.getTransactionDAO();
+        float divident = 10f * dividentRate2007 / 100f * 10f;
+        assertEquals(divident, dao.getDividentForFY(tradingAccount1, portfolio1, new FinYear(2007)));
+        divident = 10f * dividentRate2008 / 100f * 10f;
+        assertEquals(divident, dao.getDividentForFY(tradingAccount1, portfolio1, new FinYear(2008)));
+
+    }
+
+    public void testGetDividentForFYFilterByPortfolioAndTradingAcc() throws Exception {
+        String portfolioName1 = "PortfolioName";
+        String portfolioName2 = "PortfolioName2";
+        String tradingAcName1 = "TradingACCName";
+        String tradingAcName2 = "TradingACCName2";
+
+        doTransaction(new PMDate(31, 5, 2006), new PMDate(31, 7, 2008), false, portfolioName1, tradingAcName1);
+        doTransaction(new PMDate(31, 5, 2006), new PMDate(31, 7, 2008), false, portfolioName2, tradingAcName1);
+        doTransaction(new PMDate(31, 5, 2006), new PMDate(31, 7, 2008), false, portfolioName1, tradingAcName2);
+        doTransaction(new PMDate(31, 5, 2006), new PMDate(31, 7, 2008), false, portfolioName2, tradingAcName2);
+
+        ICompanyActionDAO companyActionDAO = DAOManager.getCompanyActionDAO();
+        companyActionDAO.insertCompanyAction(new CompanyActionVO(Divident, new PMDate(31, 3, 2008), "CODE4", 10f, 10f));
+        TradingAccountVO tradingAccount1 = DAOManager.getAccountDAO().tradingAcc(tradingAcName1);
+        TradingAccountVO tradingAccount2 = DAOManager.getAccountDAO().tradingAcc(tradingAcName2);
+        PortfolioDetailsVO portfolio1 = DAOManager.getAccountDAO().portfolio(portfolioName1);
+        PortfolioDetailsVO portfolio2 = DAOManager.getAccountDAO().portfolio(portfolioName2);
+        ITransactionDAO dao = DAOManager.getTransactionDAO();
+
+        assertEquals(40f, dao.getDividentForFY(TradingAccountVO.ALL, PortfolioDetailsVO.ALL, new FinYear(2007)));
+        assertEquals(20f, dao.getDividentForFY(tradingAccount1, PortfolioDetailsVO.ALL, new FinYear(2007)));
+        assertEquals(20f, dao.getDividentForFY(TradingAccountVO.ALL, portfolio2, new FinYear(2007)));
+        assertEquals(10f, dao.getDividentForFY(tradingAccount2, portfolio1, new FinYear(2007)));
+    }
+
+    public void testGetDividentForFYFilterByPortfolioAndTradingAccForHolding() throws Exception {
+        String portfolioName1 = "PortfolioName";
+        String portfolioName2 = "PortfolioName2";
+        String tradingAcName1 = "TradingACCName";
+        String tradingAcName2 = "TradingACCName2";
+
         TradingBO bo = new TradingBO();
-        bo.doTrading(new TransactionVO(buyDate, "CODE4", Buy, 10f, 10f, 10f, "PortfolioName", "TradingACCName", dayTrading));
-        bo.doTrading(new TransactionVO(sellDate, "CODE4", Sell, 10f, 10f, 10f, "PortfolioName", "TradingACCName", dayTrading));
+        bo.doTrading(new TransactionVO(new PMDate(31, 5, 2006), "CODE4", Buy, 10f, 10f, 10f, portfolioName1, tradingAcName1, false));
+        bo.doTrading(new TransactionVO(new PMDate(31, 5, 2007), "CODE4", Buy, 10f, 10f, 10f, portfolioName1, tradingAcName2, false));
+        bo.doTrading(new TransactionVO(new PMDate(2, 4, 2008), "CODE4", Buy, 100f, 10f, 10f, portfolioName2, tradingAcName2, false));
+
+
+        ICompanyActionDAO companyActionDAO = DAOManager.getCompanyActionDAO();
+        companyActionDAO.insertCompanyAction(new CompanyActionVO(Divident, new PMDate(1, 4, 2008), "CODE4", 10f, 10f));
+        companyActionDAO.insertCompanyAction(new CompanyActionVO(Divident, new PMDate(2, 4, 2008), "CODE4", 10f, 10f));
+        TradingAccountVO tradingAccount1 = DAOManager.getAccountDAO().tradingAcc(tradingAcName1);
+        TradingAccountVO tradingAccount2 = DAOManager.getAccountDAO().tradingAcc(tradingAcName2);
+        PortfolioDetailsVO portfolio1 = DAOManager.getAccountDAO().portfolio(portfolioName1);
+        PortfolioDetailsVO portfolio2 = DAOManager.getAccountDAO().portfolio(portfolioName2);
+        ITransactionDAO dao = DAOManager.getTransactionDAO();
+
+        assertEquals(20f, dao.getDividentForFY(TradingAccountVO.ALL, PortfolioDetailsVO.ALL, new FinYear(2007)));
+        assertEquals(10f, dao.getDividentForFY(tradingAccount1, PortfolioDetailsVO.ALL, new FinYear(2007)));
+        assertEquals(0f, dao.getDividentForFY(TradingAccountVO.ALL, portfolio2, new FinYear(2007)));
+        assertEquals(0f, dao.getDividentForFY(tradingAccount2, portfolio2, new FinYear(2007)));
+        assertEquals(20f, dao.getDividentForFY(TradingAccountVO.ALL, portfolio1, new FinYear(2008)));
+    }
+
+    private void verifyTransactions(FinYear finYear, int count, TradingAccountVO tradingAc, PortfolioDetailsVO portfolio) {
+        List<TradeVO> tradeVOs = DAOManager.getTransactionDAO().soldDuringFinYear(tradingAc, portfolio, finYear);
+        assertEquals(count, tradeVOs.size());
+        for (TradeVO tradeVO : tradeVOs) {
+            if (!tradingAc.isAll()) {
+                assertEquals(tradingAc.getName(), tradeVO.getTradingAc());
+            }
+            if (!portfolio.isAll()) {
+                assertEquals(portfolio.getName(), tradeVO.getPortfolio());
+            }
+        }
+    }
+
+    private void doTransaction(PMDate buyDate, PMDate sellDate, boolean dayTrading, String portfolio, String tradingAc) {
+        TradingBO bo = new TradingBO();
+        bo.doTrading(new TransactionVO(buyDate, "CODE4", Buy, 10f, 10f, 10f, portfolio, tradingAc, dayTrading));
+        bo.doTrading(new TransactionVO(sellDate, "CODE4", Sell, 10f, 10f, 10f, portfolio, tradingAc, dayTrading));
     }
 }

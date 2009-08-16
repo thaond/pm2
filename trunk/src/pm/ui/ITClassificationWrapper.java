@@ -6,9 +6,12 @@ import pm.vo.TradeVO;
 public class ITClassificationWrapper {
 
     private TradeVO tradeVO;
+    private boolean shortTerm;
 
     public ITClassificationWrapper(TradeVO tradeVO) {
         this.tradeVO = tradeVO;
+        PMDate pDate = getPurchaseDate();
+        shortTerm = getSaleDate().before(new PMDate(pDate.getDate(), pDate.getMonth(), pDate.getYear() + 1));
     }
 
     public PMDate getPurchaseDate() {
@@ -31,20 +34,16 @@ public class ITClassificationWrapper {
         return tradeVO.getPortfolio();
     }
 
-    public String getTradingAc() {
-        return tradeVO.getTradingAc();
-    }
-
     public float getBrokerage() {
         return tradeVO.getBrokerage();
     }
 
-    public float getPurchasePrice() {
-        return tradeVO.getPurchasePrice();
+    public float getTotalCost() {
+        return tradeVO.getTotalCost();
     }
 
-    public float getSalePrice() {
-        return tradeVO.getSalePrice();
+    public float getSaleValue() {
+        return tradeVO.getSaleValue();
     }
 
     public float getSTPL() {
@@ -61,9 +60,12 @@ public class ITClassificationWrapper {
         return tradeVO.getProfitLoss();
     }
 
-    private boolean isShotTerm() {
-        PMDate pDate = getPurchaseDate();
-        return getSaleDate().before(new PMDate(pDate.getDate(), pDate.getMonth(), pDate.getYear() + 1));
+    public float getProfitLoss() {
+        return tradeVO.getProfitLoss();
+    }
+
+    public boolean isShotTerm() {
+        return shortTerm;
     }
 
 }

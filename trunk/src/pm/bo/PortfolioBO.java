@@ -321,7 +321,7 @@ public class PortfolioBO {
     public FYTransactionDetails getFiniancialYearTransaction(TradingAccountVO tradingAc, PortfolioDetailsVO portfolio, FinYear finYear) {
         ITransactionDAO transactionDAO = DAOManager.getTransactionDAO();
         List<TradeVO> transactions = transactionDAO.soldDuringFinYear(tradingAc, portfolio, finYear);
-        float divident = transactionDAO.getDividentForFY(finYear);
+        float divident = transactionDAO.getDividentForFY(tradingAc, portfolio, finYear);
         FYTransactionDetails details = new FYTransactionDetails(transactions, divident);
         return details;
     }
