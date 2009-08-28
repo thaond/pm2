@@ -190,6 +190,10 @@ public class PMDateFormatter {
     }
 
     public static String formatDD_MM_YYYY(PMDate date) {
+        return formatWithDelimter(date, '/');
+    }
+
+    public static String formatWithDelimter(PMDate date, char delimiter) {
         if (date == null) {
             return "";
         }
@@ -198,12 +202,12 @@ public class PMDateFormatter {
             sb.append('0');
         }
         sb.append(date.getDate());
-        sb.append('/');
+        sb.append(delimiter);
         if (date.getMonth() < 10) {
             sb.append('0');
         }
         sb.append(date.getMonth());
-        sb.append('/');
+        sb.append(delimiter);
         sb.append(date.getYear());
         return sb.toString();
     }

@@ -5,5 +5,5 @@ package pm.util.enumlist;
  * Time: 18:42:18
  */
 public enum SERIESTYPE {
-    equity, index
+    equity, index, nseindex
 }
