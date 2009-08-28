@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class StockDAOTest extends PMDBCompositeDataSetTestCase {
     public StockDAOTest(String name) {
-        super(name, "EmptyData.xml", "StockMasterData.xml");
+        super(name, "EmptyData.xml", "TestData.xml");
     }
 
     public void setUp() throws Exception {
@@ -43,15 +43,24 @@ public class StockDAOTest extends PMDBCompositeDataSetTestCase {
     public void testGetStockListForOrderByStockCode() {
         IStockDAO stockDAO = DAOManager.getStockDAO();
         List<StockVO> stockList = stockDAO.getStockList(false);
-        assertEquals(6, stockList.size());
+        assertEquals(17, stockList.size());
         assertEquals("CODE1", stockList.get(0).getStockCode());
-        assertEquals("CODE3", stockList.get(2).getStockCode());
+        assertEquals("CODE11", stockList.get(2).getStockCode());
 
         stockList = stockDAO.getStockList(true);
-        assertEquals(7, stockList.size());
+        assertEquals(18, stockList.size());
         assertEquals("CODE1", stockList.get(0).getStockCode());
-        assertEquals("^INDEX", stockList.get(6).getStockCode());
-        assertEquals(SERIESTYPE.index, stockList.get(6).getSeries());
+        assertEquals("^INDEX", stockList.get(17).getStockCode());
+        assertEquals(SERIESTYPE.index, stockList.get(17).getSeries());
+
+    }
+
+    public void testGetStockListToIncludeNseIndex() {
+        IStockDAO stockDAO = DAOManager.getStockDAO();
+        stockDAO.insertStock(new StockVO("^Nifty", "S&P CNX Nifty", 0f, SERIESTYPE.nseindex, 0f, (short) 0, "", new PMDate(), true));
+        List<StockVO> stockList = stockDAO.getStockList(true);
+        assertEquals("^Nifty", stockList.get(18).getStockCode());
+        assertEquals(SERIESTYPE.nseindex, stockList.get(18).getSeries());
 
     }
 
@@ -62,13 +71,21 @@ public class StockDAOTest extends PMDBCompositeDataSetTestCase {
         assertEquals("^INDEX", stockList.get(0).getStockCode());
     }
 
+    public void testGetIndexListToIncludeNSEIndexList() {
+        IStockDAO stockDAO = DAOManager.getStockDAO();
+        stockDAO.insertStock(new StockVO("^Nifty", "S&P CNX Nifty", 0f, SERIESTYPE.nseindex, 0f, (short) 0, "", new PMDate(), true));
+        List<StockVO> stockList = stockDAO.getIndexList();
+        assertEquals(2, stockList.size());
+        assertEquals("^Nifty", stockList.get(1).getStockCode());
+    }
+
     public void testInsertICICICode() {
         IStockDAO stockDAO = DAOManager.getStockDAO();
         StockVO stockVO = stockDAO.getStock("CODE2");
-        stockDAO.updateICICICode(stockVO, "ICODE2");
-        assertEquals("ICODE2", stockDAO.iciciCode("CODE2"));
+        stockDAO.updateICICICode(stockVO, "ICODE2X");
+        assertEquals("ICODE2X", stockDAO.iciciCode("CODE2"));
         stockDAO.updateICICICode(stockDAO.getStock("CODE1"), "ICODE1");
-        assertEquals("ICODE2", stockDAO.iciciCode("CODE2"));
+        assertEquals("ICODE2X", stockDAO.iciciCode("CODE2"));
         assertEquals("ICODE1", stockDAO.iciciCode("CODE1"));
         assertNull(stockDAO.iciciCode("DELISTED"));
     }
@@ -76,10 +93,10 @@ public class StockDAOTest extends PMDBCompositeDataSetTestCase {
     public void testICICICodeMapping() {
         IStockDAO stockDAO = DAOManager.getStockDAO();
         StockVO stockVO = stockDAO.getStock("CODE2");
-        stockDAO.updateICICICode(stockVO, "ICODE2");
+        stockDAO.updateICICICode(stockVO, "ICODE2NEW");
         Map<String, String> mapping = stockDAO.iciciCodeMapping();
-        assertEquals(2, mapping.size());
-        assertEquals("CODE2", mapping.get("ICODE2"));
+        assertEquals(3, mapping.size());
+        assertEquals("CODE2", mapping.get("ICODE2NEW"));
     }
 
     public void testYahooCode() {

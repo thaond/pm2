@@ -56,6 +56,10 @@ public class StockMasterBO {
     void addNewStocks(List<StockVO> incomingStockList, List<StockVO> stockList) {
         List<StockVO> newToPMList = new ArrayList<StockVO>();
         Set<StockVO> existingStockSet = new HashSet<StockVO>(stockList);
+        Hashtable<String, StockVO> htStockListByStockCode = new Hashtable<String, StockVO>();
+        for (StockVO stockVO : stockList) {
+            htStockListByStockCode.put(stockVO.getStockCode(), stockVO);
+        }
         for (StockVO stockVO : incomingStockList) {
             if (!existingStockSet.contains(stockVO)) {
                 newToPMList.add(stockVO);

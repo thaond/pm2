@@ -6,6 +6,10 @@ import pm.util.PMDate;
 import pm.util.enumlist.SERIESTYPE;
 import pm.vo.StockVO;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class StockListDownloaderTest extends TestCase {
 
 
@@ -13,5 +17,15 @@ public class StockListDownloaderTest extends TestCase {
         StockVO stockVO = new StockListDownloader().buildStockVO("3IINFOTECH,3i Infotech Limited,EQ,22-APR-2005,10,1,INE748C01020,10");
         StockVO expected = new StockVO("3IINFOTECH", "3i Infotech Limited", 10f, SERIESTYPE.equity, 10f, (short) 1, "INE748C01020", new PMDate(22, 4, 2005), true);
         assertEquals(expected, stockVO);
+    }
+
+    public void testSome() {
+        StockListDownloader downloader = new StockListDownloader() {
+            @Override
+            BufferedReader getReader() throws IOException {
+                return new BufferedReader(new FileReader("/projects/pm2/EQUITY_L.csv"));
+            }
+        };
+        downloader.run();
     }
 }

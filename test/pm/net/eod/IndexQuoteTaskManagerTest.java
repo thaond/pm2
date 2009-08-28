@@ -1,14 +1,20 @@
 package pm.net.eod;
 
-import org.jmock.cglib.MockObjectTestCase;
+import static junit.framework.Assert.assertSame;
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 import pm.net.AbstractDownloader;
+import pm.net.nse.downloader.NseIndexQuoteDownloader;
+import pm.util.PMDate;
+import pm.util.enumlist.SERIESTYPE;
 import pm.vo.StockVO;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class IndexQuoteTaskManagerTest extends MockObjectTestCase {
+public class IndexQuoteTaskManagerTest {
 
+    @Test
     public void testLoadsDownloaderForAllIndexCodes() {
 
         final AbstractDownloader indexDownloader = new AbstractDownloader() {
@@ -24,8 +30,8 @@ public class IndexQuoteTaskManagerTest extends MockObjectTestCase {
                 return indexList;
             }
 
-            AbstractDownloader getIndexQuoteDownloader(String indexCode, EODDownloadManager downloadManager) {
-                downloaderList.add(indexCode);
+            AbstractDownloader getIndexQuoteDownloader(StockVO stockVO, EODDownloadManager downloadManager) {
+                downloaderList.add(stockVO.getStockCode());
                 return indexDownloader;
             }
         };
@@ -40,4 +46,15 @@ public class IndexQuoteTaskManagerTest extends MockObjectTestCase {
         assertEquals(2, downloaderList.size());
         assertEquals(2, addedDownloaders.size());
     }
+
+    @Test
+    public void getIndexQuoteDownloader() {
+        StockVO nseStock = new StockVO("^NIFTY", "S&P CNX NIFTY", 0f, SERIESTYPE.nseindex, 0f, (short) 0, "", new PMDate(), true);
+        AbstractDownloader downloader = new IndexQuoteTaskManager().getIndexQuoteDownloader(nseStock, null);
+        assertSame(NseIndexQuoteDownloader.class, downloader.getClass());
+        StockVO nonNseStock = new StockVO("^NIFTY", "S&P CNX NIFTY", 0f, SERIESTYPE.index, 0f, (short) 0, "", new PMDate(), true);
+        downloader = new IndexQuoteTaskManager().getIndexQuoteDownloader(nonNseStock, null);
+        assertSame(YahooQuoteDownloadHandler.class, downloader.getClass());
+    }
+
 }
