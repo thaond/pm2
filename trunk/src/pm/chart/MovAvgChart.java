@@ -78,7 +78,7 @@ public class MovAvgChart {
         String X_axisTitle = isDispPrice ? "Closing Price" : "Gain/Loss %";
 
         JFreeChart jfreechart = forEodPage ? ChartFactory.createTimeSeriesChart("EOD Chart", "Date", X_axisTitle, dataset, true, true, false) :
-                ChartFactory.createTimeSeriesChart("", "", "", dataset, false, true, false);
+                ChartFactory.createTimeSeriesChart("", "", "", dataset, true, true, false);
         if (UIHelper.colorFlag) jfreechart.setBackgroundPaint(UIHelper.COLOR_BG_PANEL);
         XYPlot xyplot = jfreechart.getXYPlot();
         XYItemRenderer xyitemrenderer = xyplot.getRenderer();
