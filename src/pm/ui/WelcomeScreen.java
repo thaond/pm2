@@ -13,6 +13,7 @@ import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.util.Rotation;
 import pm.action.Controller;
+import pm.chart.IndexPerfChart;
 import pm.chart.MovAvgChart;
 import pm.util.AppConfig;
 import pm.util.Helper;
@@ -87,11 +88,16 @@ public class WelcomeScreen extends JPanel {
         if (stockCode == null) stockCode = "^NSEI";
         String[] stockCodes = {stockCode};
         int[] days = {1, 50};
-        Vector<Vector<MovAvgVO>> vectors = Controller.getMovAvg(stockCodes, days, yearBack, currDate);
-        JPanel chart = MovAvgChart.createChart(stockCodes, vectors, yearBack, currDate, days, true, false);
-        panel.add(chart);
-        panel.add(getFinancialAlertPanel());
+        panel.add(createMovingAverageChart(currDate, yearBack, stockCodes, days));
+
+//        panel.add(getFinancialAlertPanel());
+        panel.add(new IndexPerfChart().chart());
         return panel;
+    }
+
+    private JPanel createMovingAverageChart(PMDate enDate, PMDate stDate, String[] stockCodes, int[] days) {
+        Vector<Vector<MovAvgVO>> vectors = Controller.getMovAvg(stockCodes, days, stDate, enDate);
+        return MovAvgChart.createChart(stockCodes, vectors, stDate, enDate, days, true, false);
     }
 
     private Component getAlertPanel() {

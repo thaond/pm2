@@ -6,10 +6,6 @@ import pm.util.PMDate;
 import pm.util.enumlist.SERIESTYPE;
 import pm.vo.StockVO;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-
 public class StockListDownloaderTest extends TestCase {
 
 
@@ -19,13 +15,13 @@ public class StockListDownloaderTest extends TestCase {
         assertEquals(expected, stockVO);
     }
 
-    public void testSome() {
-        StockListDownloader downloader = new StockListDownloader() {
-            @Override
-            BufferedReader getReader() throws IOException {
-                return new BufferedReader(new FileReader("/projects/pm2/EQUITY_L.csv"));
-            }
-        };
-        downloader.run();
-    }
+//    public void testSome() {
+//        StockListDownloader downloader = new StockListDownloader() {
+//            @Override
+//            BufferedReader getReader() throws IOException {
+//                return new BufferedReader(new FileReader("/projects/pm2/EQUITY_L.csv"));
+//            }
+//        };
+//        downloader.run();
+//    }
 }
