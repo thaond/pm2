@@ -313,7 +313,7 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
         data.add(dataLine1);
         data.add(dataLine2);
         String sDate = "20051001";
-        String newLine = "\r\n";
+        String newLine = System.getProperty("line.separator");
         StringBuffer sb = new StringBuffer(BhavToPMConverter.META_INPUT_FILE_HEADER);
         sb.append(newLine);
         sb.append(sDate);
@@ -321,7 +321,7 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
         sb.append(sDate);
         sb.append(",11,12,13,14,15,17").append(newLine);
         converter.writeToMetaInputFile(data, sDate);
-        assertEquals(sb.toString(), stringWriter.getBuffer().toString());
+        assertEquals(sb.toString().trim(), stringWriter.getBuffer().toString().trim());
     }
 
     /*
@@ -695,8 +695,8 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
         String bhavFilePath = BhavCopyDownloader.getFilePath(date);
         String deliveryFilePath = DeliveryPositionDownloader.getFilePath(date);
         String backupFolder = Helper.backupFolder(new PMDate(date));
-        String newBhavFilePath = backupFolder + "/" + bhavFilePath.substring(bhavFilePath.lastIndexOf("/"));
-        String newDeliveryFilePath = backupFolder + "/" + deliveryFilePath.substring(deliveryFilePath.lastIndexOf("/"));
+        String newBhavFilePath = backupFolder + File.pathSeparator + bhavFilePath.substring(bhavFilePath.lastIndexOf(File.pathSeparator));
+        String newDeliveryFilePath = backupFolder + File.pathSeparator + deliveryFilePath.substring(deliveryFilePath.lastIndexOf(File.pathSeparator));
         deleteIfExists(newBhavFilePath);
         deleteIfExists(newDeliveryFilePath);
 

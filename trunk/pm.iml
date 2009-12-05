@@ -9,14 +9,13 @@
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_5" inherit-compiler-output="true">
-    <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/externalTest" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/JarSource" />
-      <excludeFolder url="file://$MODULE_DIR$/PMDBProd" />
       <excludeFolder url="file://$MODULE_DIR$/SampleData" />
+      <excludeFolder url="file://$MODULE_DIR$/reports" />
       <excludeFolder url="file://$MODULE_DIR$/testclasses" />
     </content>
     <orderEntry type="jdk" jdkName="1.6" jdkType="JavaSDK" />
@@ -34,10 +33,6 @@
   </component>
   <component name="RSpecModuleSettingsStorage">
     <RSPEC_MODULE_SETTINGS_STORAGE_ID NAME="RSPEC_SUPPORT_TYPE" VALUE="NONE" />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <option name="ACTIVE_VCS_NAME" value="CVS" />
-    <option name="USE_PROJECT_VCS" value="false" />
   </component>
 </module>
 

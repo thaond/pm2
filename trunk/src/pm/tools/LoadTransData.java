@@ -15,13 +15,14 @@ import pm.dao.ibatis.dao.DAOManager;
 import pm.net.NSESymbolChangeDownloader;
 import pm.net.nse.StockListDownloader;
 import pm.util.*;
-import static pm.util.AppConst.TRADINGTYPE.IPO;
 import pm.util.enumlist.BROKERAGETYPE;
 import pm.vo.*;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static pm.util.AppConst.TRADINGTYPE.IPO;
 
 /**
  * @author thiyagu
@@ -51,9 +52,13 @@ public class LoadTransData {
             onlyLog = str[2].equalsIgnoreCase("onlyLog");
         }
         AppLoader.initConsoleLogger();
-        new LoadTransData().loadData(appStartDate, quoteStartDate,
-                BusinessLogger.getTransLogFilePath(),
-                BusinessLogger.getCompActLogFilePath(), true, onlyLog);
+        try {
+            new LoadTransData().loadData(appStartDate, quoteStartDate,
+                    BusinessLogger.getTransLogFilePath(),
+                    BusinessLogger.getCompActLogFilePath(), true, onlyLog);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         DBManager.shutDown();
     }
 
@@ -67,7 +72,7 @@ public class LoadTransData {
     }
 
     void loadData(String appStartDate, int quoteStartDate, String transLogFilePath,
-                  String compActLogFilePath, boolean renameLogFiles, boolean onlyLog) {
+                  String compActLogFilePath, boolean renameLogFiles, boolean onlyLog) throws Exception {
         System.out.println("Loading DB");
         cleanupTables(onlyLog);
         if (!onlyLog) {
@@ -109,31 +114,25 @@ public class LoadTransData {
         else DBManager.initDB();
     }
 
-    public void loadLogData(String transLogFilePath, String compActLogFilePath, boolean renameLogFiles, boolean onlyLog) {
+    public void loadLogData(String transLogFilePath, String compActLogFilePath, boolean renameLogFiles, boolean onlyLog) throws Exception {
         Map<String, SymbolChange> symbolChangeMap = onlyLog ? new HashMap<String, SymbolChange>() : getSymbolChangeDetails();
         TreeMap logDetails = new TreeMap();
         Set<String> transactionStockCodes = new HashSet<String>();
         Set<String> portfolioList = new HashSet<String>();
         Set<String> tradingAccList = new HashSet<String>();
-        try {
-            loadTransactionData(logDetails, transactionStockCodes, tradingAccList, portfolioList, symbolChangeMap, transLogFilePath);
-            List<StockVO> listedStocks = DAOManager.getStockDAO().getStockList(false);
-            Set<String> listedOrtransactedStocks = mergeStockCodes(listedStocks, transactionStockCodes);
-            loadCompanyActionData(logDetails, listedOrtransactedStocks, symbolChangeMap, compActLogFilePath);  //change this to load complete action list
+        loadTransactionData(logDetails, transactionStockCodes, tradingAccList, portfolioList, symbolChangeMap, transLogFilePath);
+        List<StockVO> listedStocks = DAOManager.getStockDAO().getStockList(false);
+        Set<String> listedOrtransactedStocks = mergeStockCodes(listedStocks, transactionStockCodes);
+        loadCompanyActionData(logDetails, listedOrtransactedStocks, symbolChangeMap, compActLogFilePath);  //change this to load complete action list
 //            loadCompleteCompanyActionData(logDetails, transactionStockCodes);
-            if (renameLogFiles) {
-                renameLogFiles();
-            }
-            new StockMasterBO().insertMissingStockCodes(listedOrtransactedStocks);
-            insertMissingPortfolios(portfolioList);
-            insertMissingTradingAccounts(tradingAccList);
-            moveBuysToFirst(logDetails);
-            writeData(logDetails);
-        } catch (ApplicationException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (renameLogFiles) {
+            renameLogFiles();
         }
+        new StockMasterBO().insertMissingStockCodes(listedOrtransactedStocks);
+        insertMissingPortfolios(portfolioList);
+        insertMissingTradingAccounts(tradingAccList);
+        moveBuysToFirst(logDetails);
+        writeData(logDetails);
     }
 
     private Map<String, SymbolChange> getSymbolChangeDetails() {

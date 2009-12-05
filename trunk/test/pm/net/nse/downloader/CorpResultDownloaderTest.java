@@ -104,7 +104,7 @@ public class CorpResultDownloaderTest extends TestCase {
       */
     public void testParseData() {
         CorpResultDownloadManager manager = new CorpResultDownloadManager(null);
-        CorpResultVO resultVO = manager.buildResultVO("http://www.nseindia.com/marketinfo/companyinfo/eod/results.jsp?01-APR-200530-SEP-2005H1UNCNEONGC");
+        CorpResultVO resultVO = manager.buildResultVO("http://www.nseindia.com/marketinfo/companyinfo/eod/results.jsp?param=01-APR-200530-SEP-2005H1UNCNEONGC");
         CorpResultDownloader downloader = new CorpResultDownloader(null, null, resultVO);
         downloader.parseData(new StringReader(getNonBankingData()));
 
@@ -123,7 +123,7 @@ public class CorpResultDownloaderTest extends TestCase {
 
     public void testParseDataToSetBankingFlag() throws Exception {
         CorpResultDownloadManager manager = new CorpResultDownloadManager(null);
-        String url = "http://www.nseindia.com/marketinfo/companyinfo/eod/results.jsp?01-APR-200531-MAR-2006ANABCNOUNIONBANK";
+        String url = "http://www.nseindia.com/marketinfo/companyinfo/eod/results.jsp?param=01-APR-200531-MAR-2006ANABCNOUNIONBANK";
         CorpResultVO resultVO = manager.buildResultVO(url);
         System.out.println(resultVO.toWrite());
         CorpResultDownloader downloader = new CorpResultDownloader(manager, url, resultVO);

@@ -138,15 +138,8 @@ public class HTTPHelper {
 
     public StringReader getHTMLContentReaderUsingPost(String url, String content) throws ParserException {
         try {
-            BufferedReader br = new BufferedReader(getContentUsingPost(url, content, null));
-            StringBuffer sb = new StringBuffer();
-            String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-            br.close();
             Parser parser = new Parser();
-            parser.setInputHTML(sb.toString());
+            parser.setInputHTML(getContentUsingPost(url, content, null));
             StringBean stringBean = new StringBean();
             stringBean.setLinks(false);
             parser.visitAllNodesWith(stringBean);
@@ -159,8 +152,15 @@ public class HTTPHelper {
         return null;
     }
 
-    public InputStreamReader getContentUsingPost(String url, String content, Map<String, String> headers) throws IOException {
-        return new InputStreamReader(postData(url, content, headers).getInputStream());
+    public String getContentUsingPost(String url, String content, Map<String, String> headers) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(postData(url, content, headers).getInputStream()));
+        StringBuffer sb = new StringBuffer();
+        String line;
+        while ((line = br.readLine()) != null) {
+            sb.append(line);
+        }
+        br.close();
+        return sb.toString();
     }
 
     public HttpURLConnection postData(String url, String content, Map<String, String> headers) throws IOException {

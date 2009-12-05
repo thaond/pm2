@@ -1,5 +1,6 @@
 package pm.net.eod;
 
+import builder.StockBuilder;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import pm.dao.ibatis.dao.IQuoteDAO;
@@ -55,7 +56,7 @@ public class YahooQuoteDownloadHandlerTest extends MockObjectTestCase {
     public void testDownloadDateToDownloadLiveQuote() {
         final List<PMDate> callList = new ArrayList<PMDate>();
         final PMDate pmDate = new PMDate();
-        YahooQuoteDownloadHandler quoteDownloader = new YahooQuoteDownloadHandler(null, null) {
+        YahooQuoteDownloadHandler quoteDownloader = new YahooQuoteDownloadHandler(new StockBuilder().build(), null) {
             PMDate findStartDate(String indexCode) {
                 return pmDate;
             }
@@ -75,7 +76,7 @@ public class YahooQuoteDownloadHandlerTest extends MockObjectTestCase {
 
     public void testDownloadDateNotToDownloadLiveQuoteIfMarketOpen() {
         final PMDate pmDate = new PMDate();
-        YahooQuoteDownloadHandler quoteDownloader = new YahooQuoteDownloadHandler(null, null) {
+        YahooQuoteDownloadHandler quoteDownloader = new YahooQuoteDownloadHandler(new StockBuilder().build(), null) {
             PMDate findStartDate(String indexCode) {
                 return pmDate;
             }

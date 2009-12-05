@@ -27,8 +27,9 @@ public class IndexPerfChart {
         for (StockVO stockVO : indexList) {
             QuoteVO stQuote = QuoteManager.eodQuote(stockVO, stDate);
             QuoteVO enQuote = QuoteManager.eodQuote(stockVO);
+            if (stQuote == null || enQuote == null) continue;
             float perf = (enQuote.getClose() - stQuote.getClose()) / stQuote.getClose() * 100f;
-            dataset.addValue(perf, stockVO.getStockCode(), "");
+            dataset.addValue(perf, stockVO.getStockCode(), stockVO.getStockCode());
         }
 
         return PMChartFactory.createBarChart(dataset, "Index Performance", "Index", "30 Days perf%");

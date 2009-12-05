@@ -50,7 +50,7 @@ public class QuoteBO {
         }
         DateIterator dateIterator = getDateIterator();
         for (QuoteVO quoteVO : quoteVOs) {
-            updatePrevClose(quoteVO, existingQuotesMap, dateIterator);
+            updatePrevClose(quoteVO, dateIterator);
             if (insertIfNewDate(quoteVO.getDate()) || existingQuotesMap.get(quoteVO.getDate()) == null) {
                 getDAO().insertQuote(quoteVO);
             } else {
@@ -63,7 +63,7 @@ public class QuoteBO {
         return new DateIterator();
     }
 
-    void updatePrevClose(QuoteVO quoteVO, Map<PMDate, QuoteVO> existingQuotesMap, DateIterator dateIterator) {
+    void updatePrevClose(QuoteVO quoteVO, DateIterator dateIterator) {
         PMDate nextDate = null;
         PMDate prevDate;
         if (dateIterator.movePtrToDate(quoteVO.getDate())) {
@@ -77,14 +77,14 @@ public class QuoteBO {
         }
 
         if (quoteVO.getPrevClose() == 0.0f && prevDate != null) {
-            QuoteVO prevQuote = existingQuotesMap.get(prevDate);
+            QuoteVO prevQuote = getDAO().getQuote(quoteVO.getStockCode(), prevDate);
             if (prevQuote != null) {
                 quoteVO.setPrevClose(prevQuote.getClose());
             }
         }
 
         if (nextDate != null) {
-            QuoteVO nextQuote = existingQuotesMap.get(nextDate);
+            QuoteVO nextQuote = getDAO().getQuote(quoteVO.getStockCode(), nextDate);
             if (nextQuote != null && nextQuote.getPrevClose() != quoteVO.getClose()) {
                 nextQuote.setPrevClose(quoteVO.getClose());
                 getDAO().updateQuote(nextQuote);

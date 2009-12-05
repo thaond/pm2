@@ -20,14 +20,6 @@ public class AccountDAOTest extends PMDBTestCase {
         super(string, "TestData.xml");
     }
 
-    public void setUp() throws Exception {
-        super.setUp();
-    }
-
-    public void tearDown() throws Exception {
-        super.tearDown();
-    }
-
     public void testGetPorfolioList() throws Exception {
         List<PortfolioDetailsVO> portfolioList = DAOManager.getAccountDAO().getPorfolioList();
         assertTrue(portfolioList.contains(new PortfolioDetailsVO("PortfolioName")));
@@ -39,15 +31,15 @@ public class AccountDAOTest extends PMDBTestCase {
     public void testUpdatePortfolio() throws Exception {
         IAccountDAO dao = DAOManager.getAccountDAO();
         List<PortfolioDetailsVO> portfolioList = dao.getPorfolioList();
-        int originalSize = portfolioList.size();
+//        int originalSize = portfolioList.size();
 
         portfolioList.get(0).setAlertEnabled(true);
         portfolioList.get(0).setName("MODIFIED");
         dao.updatePortfolio(portfolioList.get(0));
         portfolioList = dao.getPorfolioList();
-        int newSize = portfolioList.size();
+//        int newSize = portfolioList.size();
 
-        assertEquals(originalSize, newSize);
+//        assertEquals(originalSize, newSize);
         assertEquals("MODIFIED", portfolioList.get(0).getName());
         assertTrue(portfolioList.get(0).isAlertEnabled());
 
@@ -73,14 +65,14 @@ public class AccountDAOTest extends PMDBTestCase {
     public void testUpdateTradingAcc() throws Exception {
         IAccountDAO dao = DAOManager.getAccountDAO();
         List<TradingAccountVO> accList = dao.getTradingAccList();
-        int originalSize = accList.size();
+//        int originalSize = accList.size();
 
         accList.get(0).setName("MODIFIED");
         accList.get(0).setBrokeragetype(BROKERAGETYPE.HDFC);
         dao.updateTradingAcc(accList.get(0));
         accList = dao.getTradingAccList();
-        int newSize = accList.size();
-        assertEquals(originalSize, newSize);
+//        int newSize = accList.size();
+//        assertEquals(originalSize, newSize);
 
         assertEquals("MODIFIED", accList.get(0).getName());
         assertEquals(BROKERAGETYPE.HDFC, accList.get(0).getBrokeragetype());

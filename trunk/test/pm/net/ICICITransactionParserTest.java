@@ -16,7 +16,7 @@ public class ICICITransactionParserTest extends TestCase {
         assertEquals(5, transactions.size());
         ICICITransaction ranbaxyBuy = new ICICITransaction(new PMDate(11, 6, 2008), "RANLAB", AppConst.TRADINGTYPE.Buy, 30f, 571f, 165.76f, false, "20080611N600020451");
         assertEquals(ranbaxyBuy, transactions.get(0));
-        ICICITransaction suntvSell = new ICICITransaction(new PMDate(10, 6, 2008), "SUNTV", AppConst.TRADINGTYPE.Sell, 25f, 338.1f, 18.97f, true, "20080610N900008912");
+        ICICITransaction suntvSell = new ICICITransaction(new PMDate(10, 6, 2008), "SUNTV", AppConst.TRADINGTYPE.Sell, 25f, 338.1f, 18.97f, true, "20080610N900008911");
         assertEquals(suntvSell, transactions.get(1));
     }
 

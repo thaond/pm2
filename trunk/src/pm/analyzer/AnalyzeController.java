@@ -1,8 +1,6 @@
 /*
  * Created on Dec 13, 2003
  *
- * To change the template for this generated file go to
- * Window>Preferences>Java>Code Generation>Code and Comments
  */
 package pm.analyzer;
 
@@ -17,9 +15,6 @@ import java.util.Vector;
 
 /**
  * @author thiyagu
- *         <p/>
- *         To change the template for this generated type comment go to
- *         Window>Preferences>Java>Code Generation>Code and Comments
  */
 public class AnalyzeController {
     public static Vector<QuoteIterator> getAnalyzedData(PMDate frmDate, PMDate toDate, ANALYZER_LIST[] analyzerList, STOCK_PICK_TYPE funMode, boolean positive, boolean negative) {
