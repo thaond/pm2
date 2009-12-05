@@ -44,7 +44,7 @@ public class AppLoader {
 
     static Logger logger = Logger.getLogger(AppLoader.class);
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws Exception {
         initLogger();
         if (args.length < 1) {
             String message = "Usage: pm.AppLoader ui | scheduler | download | alert | bhav2pm | checkSymbolChange | restorelog | downloadCompResult | downloadCompAction | execStmt | loadIciciTransaction";

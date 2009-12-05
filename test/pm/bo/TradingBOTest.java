@@ -7,6 +7,7 @@ import pm.util.AppConst;
 import pm.util.ApplicationException;
 import pm.util.Helper;
 import pm.util.PMDate;
+import pm.util.enumlist.SERIESTYPE;
 import pm.vo.*;
 
 import java.util.List;
@@ -529,7 +530,7 @@ public class TradingBOTest extends PMDBTestCase {
     public void testDoBuyAppliesDivident() throws Exception {
 
         String stockCode = "MyCode";
-        StockVO stockVO = new StockVO(stockCode);
+        StockVO stockVO = new StockVO(stockCode, stockCode, 10f, SERIESTYPE.equity, 10f, (short) 10, "", new PMDate(1, 1, 2006), true);
         DAOManager.getStockDAO().insertStock(stockVO);
         DAOManager.getCompanyActionDAO().insertCompanyAction(new CompanyActionVO(AppConst.COMPANY_ACTION_TYPE.Divident, new PMDate(5, 1, 2008), stockCode, 10f, 0f));
 

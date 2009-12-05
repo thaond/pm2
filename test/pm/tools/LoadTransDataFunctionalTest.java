@@ -25,15 +25,15 @@ import java.util.Vector;
  */
 public class LoadTransDataFunctionalTest extends TestCase {
 
-    public void testLoadData() {
+    public void testLoadData() throws Exception {
         AppLoader.initConsoleLogger();
         loadData();
         validateResult(AppConst.REPORT_TYPE.All.name(), AppConst.REPORT_TYPE.All.name(), 950424.25f, 1581853.75f, 631429.5f, 153132.84f, 36026.1f, 820588.31f);
         validateResult(AppConst.REPORT_TYPE.All.name(), "Thiyagu", 850579.25f, 1485465f, 634885.81f, 80711.84f, 34091.1f, 749688.75f);
     }
 
-    private void loadData() {
-        final String dataDir = "X:/Project/SampleData/";
+    private void loadData() throws Exception {
+        final String dataDir = "/Projects/pm2/SampleData/";
         LoadTransData loadTransData = new LoadTransData() {
             void loadStockList() {
                 BufferedReader bufferedReader = null;

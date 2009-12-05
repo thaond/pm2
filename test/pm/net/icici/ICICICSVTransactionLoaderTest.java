@@ -1,13 +1,14 @@
 package pm.net.icici;
 
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import static pm.util.AppConst.TRADINGTYPE.Buy;
 import pm.util.PMDate;
 import pm.vo.ICICITransaction;
 
 import java.io.StringReader;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static pm.util.AppConst.TRADINGTYPE.Buy;
 
 public class ICICICSVTransactionLoaderTest {
 
@@ -23,16 +24,16 @@ public class ICICICSVTransactionLoaderTest {
         assertEquals("20090622N400004027", transaction.getOrderRef());
         assertEquals(new PMDate(22, 6, 2009), transaction.getDate());
         assertEquals(Buy, transaction.getAction());
-        assertEquals(30, transaction.getQty());
-        assertEquals(2024.55f, transaction.getPrice());
-        assertEquals(37.16, transaction.getBrokerage());
+        assertEquals(30, transaction.getQty(), 0.001f);
+        assertEquals(2024.55f, transaction.getPrice(), 0.001f);
+        assertEquals(37.16, transaction.getBrokerage(), 0.001f);
     }
 
     @Test
     public void parseFloat() {
-        assertEquals(0f, new ICICICSVTransactionLoader().parseFloat("0"));
-        assertEquals(1220f, new ICICICSVTransactionLoader().parseFloat("\"1220\""));
-        assertEquals(2024.55f, new ICICICSVTransactionLoader().parseFloat("\"2,024.55\""));
+        assertEquals(0f, new ICICICSVTransactionLoader().parseFloat("0"), 0.001f);
+        assertEquals(1220f, new ICICICSVTransactionLoader().parseFloat("\"1220\""), 0.001f);
+        assertEquals(2024.55f, new ICICICSVTransactionLoader().parseFloat("\"2,024.55\""), 0.001f);
     }
 
 }

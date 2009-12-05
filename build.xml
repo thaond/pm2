@@ -98,6 +98,11 @@
         <fileset dir="${module.pm.basedir}/lib" includes="*.jar"/>
     </path>
 
+    <path id="pm.test.classpath">
+        <path refid="pm.module.classpath"/>
+        <pathelement location="${pm.output.dir}"/>
+    </path>
+
 
     <patternset id="excluded.from.module.pm">
         <patternset refid="ignored.files"/>
@@ -167,9 +172,12 @@
         </copy>
     </target>
 
+    <property name="pm.test.report.dir" value="reports"/>
+
     <target name="clean.module.pm" description="cleanup module">
         <delete dir="${pm.output.dir}"/>
         <delete dir="${pm.testoutput.dir}"/>
+        <delete dir="${pm.test.report.dir}"/>
     </target>
 
     <target name="init" description="Build initialization">
@@ -200,6 +208,28 @@
             <fileset file="cleanUpTransactions.sql"/>
             <fileset dir="${module.pm.basedir}/lib" includes="*.jar" excludes="jmock*.jar, junit*.jar, dbunit*.jar"/>
         </copy>
+    </target>
+    <!---->
+    <target name="test" depends="clean, compile.module.pm.tests">
+        <mkdir dir="${pm.test.report.dir}"/>
+        <junit jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java" fork="true" forkmode="once">
+            <jvmarg value="-Xmx2048MB"/>
+            <classpath refid="pm.test.classpath"/>
+            <classpath location="${pm.testoutput.dir}"/>
+            <classpath location="test/data"/>
+            <classpath location="pm.properties"/>
+            <classpath location="."/>
+            <batchtest todir="${pm.test.report.dir}">
+                <formatter type="xml"/>
+                <fileset dir="test" includes="**/*Test.*" excludes="**/*External*.*, **/LoadTransDataFunctionalTest.*"/>
+            </batchtest>
+        </junit>
+        <junitreport todir="${pm.test.report.dir}">
+            <fileset dir="${pm.test.report.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${pm.test.report.dir}/html"/>
+        </junitreport>
     </target>
 
     <target name="all" depends="init, clean, compile.module.pm" description="build all"/>

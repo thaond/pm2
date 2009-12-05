@@ -5,7 +5,6 @@ import pm.util.enumlist.SERIESTYPE;
 import pm.vo.StockVO;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * StockDAO Tester.
@@ -79,24 +78,14 @@ public class StockDAOTest extends PMDBCompositeDataSetTestCase {
         assertEquals("^Nifty", stockList.get(1).getStockCode());
     }
 
-    public void testInsertICICICode() {
+    public void testUpdateICICICode() {
         IStockDAO stockDAO = DAOManager.getStockDAO();
         StockVO stockVO = stockDAO.getStock("CODE2");
-        stockDAO.updateICICICode(stockVO, "ICODE2X");
-        assertEquals("ICODE2X", stockDAO.iciciCode("CODE2"));
-        stockDAO.updateICICICode(stockDAO.getStock("CODE1"), "ICODE1");
-        assertEquals("ICODE2X", stockDAO.iciciCode("CODE2"));
-        assertEquals("ICODE1", stockDAO.iciciCode("CODE1"));
-        assertNull(stockDAO.iciciCode("DELISTED"));
-    }
-
-    public void testICICICodeMapping() {
-        IStockDAO stockDAO = DAOManager.getStockDAO();
-        StockVO stockVO = stockDAO.getStock("CODE2");
-        stockDAO.updateICICICode(stockVO, "ICODE2NEW");
-        Map<String, String> mapping = stockDAO.iciciCodeMapping();
-        assertEquals(3, mapping.size());
-        assertEquals("CODE2", mapping.get("ICODE2NEW"));
+        assertNull(stockDAO.iciciCode("CODE2"));
+        int count = stockDAO.iciciCodeMapping().size();
+        stockDAO.updateICICICode(stockVO, "ICODE2");
+        assertEquals("ICODE2", stockDAO.iciciCode("CODE2"));
+        assertEquals(count, stockDAO.iciciCodeMapping().size());
     }
 
     public void testYahooCode() {

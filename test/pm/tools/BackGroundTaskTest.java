@@ -20,12 +20,13 @@ public class BackGroundTaskTest extends TestCase {
 
     public void testVerifyResiteredTasks() {
         List<ITaskDetail> iTaskNameList = new BackGroundTask().registeredTasks;
-        assertEquals(5, iTaskNameList.size());
+        assertEquals(6, iTaskNameList.size());
         assertTrue(iTaskNameList.contains(TASKNAME.CORPACTIONDOWNLOAD));
         assertTrue(iTaskNameList.contains(TASKNAME.CORPACTIONSYNC));
         assertTrue(iTaskNameList.contains(TASKNAME.EODDOWNLOAD));
         assertTrue(iTaskNameList.contains(TASKNAME.MARKETHOLIDAYDOWNLOAD));
         assertTrue(iTaskNameList.contains(TASKNAME.STOCKLISTDOWNLOAD));
+        assertTrue(iTaskNameList.contains(TASKNAME.CORPRESULTDOWNLOAD));
     }
 
     public void testRun() throws InterruptedException {

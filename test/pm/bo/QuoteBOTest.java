@@ -8,10 +8,7 @@ import pm.util.DateIterator;
 import pm.util.PMDate;
 import pm.vo.QuoteVO;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * QuoteBO Tester.
@@ -31,7 +28,6 @@ public class QuoteBOTest extends MockObjectTestCase {
         super.tearDown();
     }
 
-    //TODO ***MOCKOBJECT TESTCASE SHOULD NOT DEPEND ON DB***
     public void testSaveIndexQuotesToInsertNewDateAndInsertQuote() {
         PMDate date = new PMDate(2, 1, 2006);
         String indexCode = "INDEXCODE";
@@ -41,9 +37,6 @@ public class QuoteBOTest extends MockObjectTestCase {
         mockQuoteDAO.expects(once()).method("insertQuote").with(eq(quoteVO));
         final Mock mockDateDAO = new Mock(IDateDAO.class);
         mockDateDAO.expects(once()).method("insertIfNew").with(eq(date));
-
-        HashSet stockCodes = new HashSet();
-        stockCodes.add(indexCode);
 
         QuoteBO quoteBO = new QuoteBO() {
             IQuoteDAO getDAO() {
@@ -58,6 +51,10 @@ public class QuoteBOTest extends MockObjectTestCase {
                 return (IDateDAO) mockDateDAO.proxy();
             }
 
+            @Override
+            DateIterator getDateIterator() {
+                return iterator();
+            }
         };
         Vector<QuoteVO> quoteVOs = new Vector<QuoteVO>();
         quoteVOs.add(quoteVO);
@@ -84,7 +81,7 @@ public class QuoteBOTest extends MockObjectTestCase {
     }
 
     public void testSaveIndexQuotesToInsertQuoteForExistingDate() {
-        PMDate date = new PMDate(2, 1, 2006);
+        final PMDate date = new PMDate(2, 1, 2006);
         String indexCode = "INDEXCODE";
         QuoteVO quoteVO = new QuoteVO(indexCode, date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
 
@@ -92,9 +89,7 @@ public class QuoteBOTest extends MockObjectTestCase {
         mockQuoteDAO.expects(once()).method("insertQuote").with(eq(quoteVO));
         final Mock mockDateDAO = new Mock(IDateDAO.class);
         mockDateDAO.expects(once()).method("insertIfNew").with(eq(date));
-
-        HashSet stockCodes = new HashSet();
-        stockCodes.add(indexCode);
+        mockQuoteDAO.expects(once()).method("getQuote").with(eq(indexCode), eq(date.next())).will(returnValue(null));
 
         QuoteBO quoteBO = new QuoteBO() {
             IQuoteDAO getDAO() {
@@ -109,6 +104,10 @@ public class QuoteBOTest extends MockObjectTestCase {
                 return (IDateDAO) mockDateDAO.proxy();
             }
 
+            @Override
+            DateIterator getDateIterator() {
+                return iterator(date.previous(), date);
+            }
         };
         Vector<QuoteVO> quoteVOs = new Vector<QuoteVO>();
         quoteVOs.add(quoteVO);
@@ -118,18 +117,17 @@ public class QuoteBOTest extends MockObjectTestCase {
     }
 
     public void testSaveIndexQuotesToUpdateQuoteOnExistingQuote() {
-        PMDate date = new PMDate(2, 1, 2006);
+        final PMDate date = new PMDate(2, 1, 2006);
         String stockCode4 = "STOCKCODE4";
         QuoteVO quoteVO = new QuoteVO(stockCode4, date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
         mockQuoteDAO.expects(once()).method("updateQuote").with(eq(quoteVO));
         Vector existingQuotes = new Vector();
         existingQuotes.add(quoteVO);
         mockQuoteDAO.expects(once()).method("getQuotes").withAnyArguments().will(returnValue(existingQuotes));
+        mockQuoteDAO.expects(once()).method("getQuote").with(eq(stockCode4), eq(date.next())).will(returnValue(null));
+
         final Mock mockDateDAO = new Mock(IDateDAO.class);
         mockDateDAO.expects(once()).method("insertIfNew").with(eq(date));
-
-        HashSet stockCodes = new HashSet();
-        stockCodes.add(stockCode4);
 
         QuoteBO quoteBO = new QuoteBO() {
             IQuoteDAO getDAO() {
@@ -144,6 +142,10 @@ public class QuoteBOTest extends MockObjectTestCase {
                 return (IDateDAO) mockDateDAO.proxy();
             }
 
+            @Override
+            DateIterator getDateIterator() {
+                return iterator(date.previous(), date);
+            }
         };
         Vector<QuoteVO> quoteVOs = new Vector<QuoteVO>();
         quoteVOs.add(quoteVO);
@@ -151,6 +153,15 @@ public class QuoteBOTest extends MockObjectTestCase {
         mockQuoteDAO.verify();
         mockDateDAO.verify();
 
+    }
+
+    private DateIterator iterator(final PMDate... dates) {
+        return new DateIterator() {
+            @Override
+            protected List<PMDate> getDates(PMDate stDate, PMDate enDate) {
+                return Arrays.asList(dates);
+            }
+        };
     }
 
     public void testSaveIndexQuotesToInsertNewQuote() {
@@ -163,9 +174,6 @@ public class QuoteBOTest extends MockObjectTestCase {
         final Mock mockDateDAO = new Mock(IDateDAO.class);
         mockDateDAO.expects(once()).method("insertIfNew").with(eq(date));
 
-        HashSet stockCodes = new HashSet();
-        stockCodes.add(stockCode4);
-
         QuoteBO quoteBO = new QuoteBO() {
             IQuoteDAO getDAO() {
                 return (IQuoteDAO) mockQuoteDAO.proxy();
@@ -177,6 +185,11 @@ public class QuoteBOTest extends MockObjectTestCase {
 
             IDateDAO getDateDAO() {
                 return (IDateDAO) mockDateDAO.proxy();
+            }
+
+            @Override
+            DateIterator getDateIterator() {
+                return iterator();
             }
 
         };
@@ -190,6 +203,7 @@ public class QuoteBOTest extends MockObjectTestCase {
 
 
     public void testSaveQuoteToDoUpdateOnExistingDate() throws Exception {
+        final PMDate date = new PMDate(2, 1, 2006);
         mockQuoteDAO.expects(once()).method("updateQuotes").withAnyArguments();
         QuoteBO quoteBO = new QuoteBO() {
             IQuoteDAO getDAO() {
@@ -204,9 +218,17 @@ public class QuoteBOTest extends MockObjectTestCase {
                 return false;
             }
 
+            @Override
+            boolean insertIfNewDate(PMDate date) {
+                return false;
+            }
+
+            @Override
+            DateIterator getDateIterator() {
+                return iterator(date);
+            }
         };
         Vector<QuoteVO> quoteVOs = new Vector<QuoteVO>();
-        PMDate date = new PMDate(2, 1, 2006);
         quoteVOs.add(new QuoteVO("STOCKCODE1", date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
         quoteVOs.add(new QuoteVO("STOCKCODE2", date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
         quoteVOs.add(new QuoteVO("STOCKCODE3", date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
@@ -399,7 +421,10 @@ public class QuoteBOTest extends MockObjectTestCase {
         existingQuotesMap.put(nextDate, nextDateQuote);
         QuoteVO currQuote = new QuoteVO("STOCKCODE", currDate, 10f, 20f, 9f, 15f, 100f, 0f, 100f, 10f);
         mockQuoteDAO.expects(once()).method("updateQuote").with(eq(updatedNextDateQuote));
-        getQuoteBO().updatePrevClose(currQuote, existingQuotesMap, iterator);
+        mockQuoteDAO.expects(once()).method("getQuote").with(eq("STOCKCODE"), eq(prevDate)).will(returnValue(existingQuotesMap.get(prevDate)));
+        mockQuoteDAO.expects(once()).method("getQuote").with(eq("STOCKCODE"), eq(nextDate)).will(returnValue(existingQuotesMap.get(nextDate)));
+
+        getQuoteBO().updatePrevClose(currQuote, iterator);
         assertEquals(15.5f, currQuote.getPrevClose());
         assertEquals(updatedNextDateQuote, nextDateQuote);
         mockQuoteDAO.verify();
@@ -424,7 +449,8 @@ public class QuoteBOTest extends MockObjectTestCase {
         HashMap<PMDate, QuoteVO> existingQuotesMap = new HashMap<PMDate, QuoteVO>();
         existingQuotesMap.put(prevDate, new QuoteVO("STOCKCODE", prevDate, 10f, 20f, 9f, 15.5f, 100f, 6f, 100f, 10f));
         QuoteVO currQuote = new QuoteVO("STOCKCODE", currDate, 10f, 20f, 9f, 15f, 100f, 1000f, 100f, 10f);
-        getQuoteBO().updatePrevClose(currQuote, existingQuotesMap, iterator);
+        mockQuoteDAO.expects(once()).method("getQuote").with(eq("STOCKCODE"), eq(currDate.next())).will(returnValue(null));
+        getQuoteBO().updatePrevClose(currQuote, iterator);
         assertEquals(1000f, currQuote.getPrevClose());
     }
 
@@ -441,11 +467,10 @@ public class QuoteBOTest extends MockObjectTestCase {
             }
         };
 
-        HashMap<PMDate, QuoteVO> existingQuotesMap = new HashMap<PMDate, QuoteVO>();
-        existingQuotesMap.put(prevDate, new QuoteVO("STOCKCODE", prevDate, 10f, 20f, 9f, 15.5f, 100f, 6f, 100f, 10f));
         PMDate currDate = new PMDate(1, 1, 2006);
         QuoteVO currQuote = new QuoteVO("STOCKCODE", currDate, 10f, 20f, 9f, 15f, 100f, 0f, 100f, 10f);
-        getQuoteBO().updatePrevClose(currQuote, existingQuotesMap, iterator);
+        mockQuoteDAO.expects(once()).method("getQuote").with(eq("STOCKCODE"), eq(currDate.previous())).will(returnValue(new QuoteVO("STOCKCODE", prevDate, 10f, 20f, 9f, 15.5f, 100f, 6f, 100f, 10f)));
+        getQuoteBO().updatePrevClose(currQuote, iterator);
         assertEquals(15.5f, currQuote.getPrevClose());
     }
 
@@ -469,7 +494,7 @@ public class QuoteBOTest extends MockObjectTestCase {
 
         PMDate currDate = new PMDate(1, 1, 2006);
         QuoteVO currQuote = new QuoteVO("STOCKCODE", currDate, 10f, 20f, 9f, 15f, 100f, 0f, 100f, 10f);
-        getQuoteBO().updatePrevClose(currQuote, new HashMap<PMDate, QuoteVO>(), iterator);
+        getQuoteBO().updatePrevClose(currQuote, iterator);
         assertEquals(0, 0f, currQuote.getPrevClose());
     }
 

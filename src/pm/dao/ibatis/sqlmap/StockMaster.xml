@@ -25,6 +25,8 @@
     </cacheModel>
 
     <cacheModel id="icici-mapping-cache" type="LRU" readOnly="true">
+        <flushOnExecute statement="insertICICICodeIfMissing"/>
+        <flushOnExecute statement="updateICICICodeMapping"/>
         <flushInterval hours="24"/>
     </cacheModel>
 
@@ -44,7 +46,7 @@
     </select>
 
     <update id="updateICICICodeMapping" parameterClass="java.util.Map">
-        UPDATE ICICI_STOCKCODE_MAPPING SET ICICICODE = #iciciCode# WHERE STOCKID = #stockID#
+        UPDATE ICICI_STOCKCODE_MAPPING SET STOCKID = #stockID# WHERE ICICICODE = #iciciCode#
     </update>
 
     <insert id="insertICICICodeIfMissing" parameterClass="java.lang.String">
