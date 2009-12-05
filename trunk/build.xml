@@ -212,7 +212,7 @@
     <!---->
     <target name="test" depends="clean, compile.module.pm.tests">
         <mkdir dir="${pm.test.report.dir}"/>
-        <junit jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java" fork="true" forkmode="once">
+        <junit jvm="${java.home}/bin/java" fork="true" forkmode="once">
             <jvmarg value="-Xmx2048MB"/>
             <classpath refid="pm.test.classpath"/>
             <classpath location="${pm.testoutput.dir}"/>
