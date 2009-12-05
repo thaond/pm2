@@ -210,9 +210,13 @@
         </copy>
     </target>
     <!---->
+    <target name="check-failure" if="build.failed">
+        <fail message="Build failed"/>
+    </target>
     <target name="test" depends="clean, compile.module.pm.tests">
         <mkdir dir="${pm.test.report.dir}"/>
-        <junit jvm="${java.home}/bin/java" fork="true" forkmode="once">
+        <junit jvm="${java.home}/bin/java" fork="true" forkmode="once" failureproperty="build.failed"
+               errorproperty="build.failed">
             <classpath refid="pm.test.classpath"/>
             <classpath location="${pm.testoutput.dir}"/>
             <classpath location="test/data"/>
@@ -229,6 +233,7 @@
             </fileset>
             <report format="frames" todir="${pm.test.report.dir}/html"/>
         </junitreport>
+        <antcall target="check-failure"/>
     </target>
 
     <target name="all" depends="init, clean, compile.module.pm" description="build all"/>
