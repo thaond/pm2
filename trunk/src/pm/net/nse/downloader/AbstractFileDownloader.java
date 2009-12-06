@@ -23,7 +23,7 @@ public abstract class AbstractFileDownloader extends AbstractDownloader {
 
     public void run() {
         logger.info("Downloading " + getFileType() + " file : " + date);
-        Reader reader = getHTTPHelper().getData(getThisURL());
+        InputStream reader = getHTTPHelper().getDataStream(getThisURL());
         if (reader != null) {
             storeData(reader);
         }
@@ -34,7 +34,7 @@ public abstract class AbstractFileDownloader extends AbstractDownloader {
 
     abstract protected String getThisURL();
 
-    void storeData(Reader reader) {
+    void storeData(InputStream reader) {
         try {
             OutputStream bos = getOutputStream();
             int ch;
