@@ -22,6 +22,7 @@ public abstract class AbstractFileDownloader extends AbstractDownloader {
     }
 
     public void run() {
+        breaking build
         logger.info("Downloading " + getFileType() + " file : " + date);
         InputStream reader = getHTTPHelper().getDataStream(getThisURL());
         if (reader != null) {
