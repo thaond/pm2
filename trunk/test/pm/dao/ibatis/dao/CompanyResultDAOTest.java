@@ -25,6 +25,6 @@ public class CompanyResultDAOTest extends PMDBCompositeDataSetTestCase {
         dao.save(resultVO);
         List<CorpResultVO> actualVOs = dao.get(1);
         assertTrue(resultVO.equalsIncAll(actualVOs.get(0)));
-        assertTrue(actualVOs.get(0).getId() > 1000);
+        assertTrue(actualVOs.get(0).getId() >= 1000);
     }
 }
