@@ -15,6 +15,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Vector;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class BhavToPMConverterTest extends MockObjectTestCase {
 
@@ -22,9 +24,73 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
         AppLoader.initConsoleLogger();
     }
 
-    /*
-      * Test method for 'pm.tools.BhavToPMConverter.processData()'
-      */
+    public void testGetBhavCopyAsReaderForCSVFile() throws IOException {
+        BhavToPMConverter converter = new BhavToPMConverter();
+        Date date = new PMDate(10, 5, 2009).getJavaDate();
+        String filePath = BhavCopyDownloader.getFilePath(date);
+
+        File file = new File(filePath);
+        file.createNewFile();
+        String content = "some content";
+        storeContent(file, content);
+
+        Reader reader = converter.getBhavCopyAsReader(date);
+        String fileContent = getContent(reader);
+        assertEquals(content, fileContent);
+        file.delete();
+
+    }
+
+    public void testGetBhavCopyAsReaderForZipFile() throws IOException {
+        BhavToPMConverter converter = new BhavToPMConverter();
+        String content = "some content";
+        Date date = new PMDate(10, 12, 2009).getJavaDate();
+
+        String zipFilePath = BhavCopyDownloader.getFilePath(date);
+        File file = new File(zipFilePath.substring(0, zipFilePath.lastIndexOf('.')));
+        file.createNewFile();
+        storeContent(file, content);
+        compressFile(file, zipFilePath);
+        file.delete();
+
+        Reader reader = converter.getBhavCopyAsReader(date);
+        String fileContent = getContent(reader);
+
+        assertEquals(content, fileContent);
+        file.delete();
+        new File(zipFilePath).delete();
+
+    }
+
+    private void compressFile(File file, String zipFilePath) throws IOException {
+        FileOutputStream fout = new FileOutputStream(zipFilePath);
+        ZipOutputStream zout = new ZipOutputStream(fout);
+        ZipEntry ze = new ZipEntry(file.getName());
+        FileInputStream fin = new FileInputStream(file);
+        try {
+            zout.putNextEntry(ze);
+            for (int c = fin.read(); c != -1; c = fin.read()) {
+                zout.write(c);
+            }
+        } finally {
+            fin.close();
+        }
+        zout.close();
+    }
+
+    private String getContent(Reader reader) throws IOException {
+        BufferedReader br = new BufferedReader(reader);
+        String content = br.readLine();
+        br.close();
+        return content;
+    }
+
+    private void storeContent(File file, String content) throws FileNotFoundException {
+        PrintWriter pw = new PrintWriter(file);
+        pw.print(content);
+        pw.close();
+    }
+
     public void testProcessData() {
         final Vector<Integer> orderList = new Vector<Integer>();
         BhavToPMConverter converter = new BhavToPMConverter() {

@@ -1,6 +1,7 @@
 package pm.net.nse.downloader;
 
 import pm.net.eod.EODDownloadManager;
+import pm.util.PMDate;
 import pm.util.enumlist.AppConfigWrapper;
 
 import java.text.SimpleDateFormat;
@@ -29,7 +30,13 @@ public class BhavCopyDownloader extends AbstractFileDownloader {
         String sDD = (dd >= 10 ? "" + dd : "0" + dd);
         String fileName = "cm" + sDD + sMonth + yy + "bhav.csv";
         String sURL = baseURL + yy + "/" + sMonth + "/" + fileName;
+        if (isDateAfterZipFileIntro(date)) sURL += ".zip";
         return sURL;
+    }
+
+    private static boolean isDateAfterZipFileIntro(Date date) {
+        final PMDate zipFromDate = new PMDate(1, 12, 2009);
+        return !new PMDate(date).before(zipFromDate);
     }
 
     public String getThisFilePath() {
@@ -37,7 +44,7 @@ public class BhavCopyDownloader extends AbstractFileDownloader {
     }
 
     public static String getFilePath(Date date) {
-        StringBuffer sb = new StringBuffer(AppConfigWrapper.bhavInputFolder.Value);
+        StringBuilder sb = new StringBuilder(AppConfigWrapper.bhavInputFolder.Value);
         sb.append("/");
         String sMonth = dateFormatMMM.format(date);
         Calendar calendar = Calendar.getInstance();
@@ -50,6 +57,7 @@ public class BhavCopyDownloader extends AbstractFileDownloader {
         sb.append("cm");
         if (calendar.after(checkDate) && dd < 10) sb.append("0");
         sb.append(dd).append(sMonth).append(yy).append("bhav.csv");
+        if (isDateAfterZipFileIntro(date)) sb.append(".zip");
         return sb.toString();
     }
 

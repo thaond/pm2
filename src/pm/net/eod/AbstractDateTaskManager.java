@@ -12,10 +12,14 @@ public abstract class AbstractDateTaskManager {
         Calendar cal = Calendar.getInstance();
         cal.setTime(getLastCompletedDate().getJavaDate());
         cal.add(Calendar.DATE, 1); // start from next day of lastSuccessDate
-        Calendar curr = Calendar.getInstance();
+        Calendar curr = getTodaysDate();
         for (; !cal.after(curr); cal.add(Calendar.DATE, 1)) {
             manager.addTask(getDownloader(cal.getTime(), manager));
         }
+    }
+
+    Calendar getTodaysDate() {
+        return Calendar.getInstance();
     }
 
     protected abstract AbstractFileDownloader getDownloader(Date date, EODDownloadManager manager);

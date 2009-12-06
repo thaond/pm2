@@ -38,51 +38,22 @@
   </component>
   <component name="ChangeListManager" verified="true">
     <list id="bd76244f-a811-46bc-ab47-1ff1e23ed994" name="Dont" comment="" />
-    <list default="true" readonly="true" id="fe14866c-684b-4b86-bba6-a22534ee992b" name="Default" comment="Added NSEIndex Performance Chart">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pm/tools/LoadTransData.java" afterPath="$PROJECT_DIR$/src/pm/tools/LoadTransData.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pm.iws" afterPath="$PROJECT_DIR$/pm.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/pm/net/ICICITransactionParserTest.java" afterPath="$PROJECT_DIR$/test/pm/net/ICICITransactionParserTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/pm/analyzer/ScoreCardPopulator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/pm/tools/BhavToPMConverterTest.java" afterPath="$PROJECT_DIR$/test/pm/tools/BhavToPMConverterTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pm.properties" afterPath="$PROJECT_DIR$/pm.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/data/SomeTestData.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/pm/net/nse/downloader/CorpResultDownloaderTest.java" afterPath="$PROJECT_DIR$/test/pm/net/nse/downloader/CorpResultDownloaderTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/pm/bo/QuoteBOTest.java" afterPath="$PROJECT_DIR$/test/pm/bo/QuoteBOTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.xml" afterPath="$PROJECT_DIR$/build.xml" />
+    <list default="true" readonly="true" id="fe14866c-684b-4b86-bba6-a22534ee992b" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$" afterPath="$PROJECT_DIR$" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pm.ipr" afterPath="$PROJECT_DIR$/pm.ipr" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pm/net/icici/ICICICSVTransactionLoader.java" afterPath="$PROJECT_DIR$/src/pm/net/icici/ICICICSVTransactionLoader.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/createDB.sql" afterPath="$PROJECT_DIR$/createDB.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/pm/tools/EODDataAggregator.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/pm/analyzer/bo/DeliveryPositionBOTest.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/data/TestData.xml" afterPath="$PROJECT_DIR$/test/data/TestData.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/opencsv-1.8.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pm/dao/ibatis/sqlmap/StockMaster.xml" afterPath="$PROJECT_DIR$/src/pm/dao/ibatis/sqlmap/StockMaster.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pm.iml" afterPath="$PROJECT_DIR$/pm.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/derbyclient.jar" afterPath="$PROJECT_DIR$/lib/derbyclient.jar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SampleData/OldBhavCopy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/derby.jar" afterPath="$PROJECT_DIR$/lib/derby.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/pm/net/icici/ICICICSVTransactionLoaderTest.java" afterPath="$PROJECT_DIR$/test/pm/net/icici/ICICICSVTransactionLoaderTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/builder/StockBuilder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pm/bo/QuoteBO.java" afterPath="$PROJECT_DIR$/src/pm/bo/QuoteBO.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/pm/tools/BackGroundTaskTest.java" afterPath="$PROJECT_DIR$/test/pm/tools/BackGroundTaskTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pm/net/nse/downloader/NseIndexQuoteDownloader.java" afterPath="$PROJECT_DIR$/src/pm/net/nse/downloader/NseIndexQuoteDownloader.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pm/net/HTTPHelper.java" afterPath="$PROJECT_DIR$/src/pm/net/HTTPHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/pm/net/eod/YahooQuoteDownloadHandlerTest.java" afterPath="$PROJECT_DIR$/test/pm/net/eod/YahooQuoteDownloadHandlerTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/pm/dao/ibatis/dao/AccountDAOTest.java" afterPath="$PROJECT_DIR$/test/pm/dao/ibatis/dao/AccountDAOTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/pm/dao/ibatis/dao/StockDAOTest.java" afterPath="$PROJECT_DIR$/test/pm/dao/ibatis/dao/StockDAOTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/pm/net/nse/downloader/NseIndexQuoteDownloaderTest.java" afterPath="$PROJECT_DIR$/test/pm/net/nse/downloader/NseIndexQuoteDownloaderTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pm/chart/IndexPerfChart.java" afterPath="$PROJECT_DIR$/src/pm/chart/IndexPerfChart.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/pm/tools/BrokerageCalculatorTest.java" afterPath="$PROJECT_DIR$/test/pm/tools/BrokerageCalculatorTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/externalTest/pm/net/nse/downloader/NseIndexQuoteDownloaderExternalTest.java" afterPath="$PROJECT_DIR$/externalTest/pm/net/nse/downloader/NseIndexQuoteDownloaderExternalTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/asm-2.2.3.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pm/AppLoader.java" afterPath="$PROJECT_DIR$/src/pm/AppLoader.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/pm/bo/TradingBOTest.java" afterPath="$PROJECT_DIR$/test/pm/bo/TradingBOTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/junit-4.7.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/pm/tools/LoadTransDataFunctionalTest.java" afterPath="$PROJECT_DIR$/test/pm/tools/LoadTransDataFunctionalTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pm/analyzer/AnalyzeController.java" afterPath="$PROJECT_DIR$/src/pm/analyzer/AnalyzeController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pm.iws" afterPath="$PROJECT_DIR$/pm.iws" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/pm/net/nse/downloader/BhavCopyDownloaderTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pm.properties" afterPath="$PROJECT_DIR$/pm.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pm/dao/ibatis/dao/StockDAO.java" afterPath="$PROJECT_DIR$/src/pm/dao/ibatis/dao/StockDAO.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pm/net/eod/AbstractDateTaskManager.java" afterPath="$PROJECT_DIR$/src/pm/net/eod/AbstractDateTaskManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/pm/tools/BhavToPMConverterTest.java" afterPath="$PROJECT_DIR$/test/pm/tools/BhavToPMConverterTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pm/net/nse/downloader/BhavCopyDownloader.java" afterPath="$PROJECT_DIR$/src/pm/net/nse/downloader/BhavCopyDownloader.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/externalTest/pm/net/eod" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pm/tools/BhavToPMConverter.java" afterPath="$PROJECT_DIR$/src/pm/tools/BhavToPMConverter.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/externalTest/pm/net/eod/EODDownloadManagerExternalTest.java" />
     </list>
     <ignored path="pm.jar" />
+    <ignored path="derby.log" />
+    <ignored path="SampleData/OldBhavCopy/1901/" />
     <ignored path="pm-db.jar" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -203,6 +174,19 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/src/pm/dao/ibatis/dao/StockDAO.java" line="54" class="pm.dao.ibatis.dao.StockDAO" package="pm.dao.ibatis.dao">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
     </line_breakpoints>
     <breakpoint_any>
       <breakpoint>
@@ -298,55 +282,64 @@
   <component name="FileColors" enabled="false" enabledForTabs="false" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="BackGroundTaskTest.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/pm/tools/BackGroundTaskTest.java">
+      <file leaf-file-name="EODDownloadManager.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/pm/net/eod/EODDownloadManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="69" selection-start="1091" selection-end="1091" vertical-scroll-proportion="0.0">
+            <state line="61" column="0" selection-start="2275" selection-end="2275" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BhavToPMConverterTest.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/test/pm/tools/BhavToPMConverterTest.java">
+      <file leaf-file-name="EODDownloadManagerExternalTest.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/externalTest/pm/net/eod/EODDownloadManagerExternalTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="698" column="147" selection-start="26972" selection-end="26972" vertical-scroll-proportion="-0.37242797">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BrokerageCalculatorTest.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/pm/tools/BrokerageCalculatorTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="51" column="2" selection-start="6711" selection-end="6711" vertical-scroll-proportion="0.0">
+            <state line="16" column="13" selection-start="373" selection-end="373" vertical-scroll-proportion="0.249501">
               <folding>
-                <marker date="1260051854000" expanded="false" signature="26:51" placeholder="..." />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="build.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/build.xml">
+      <file leaf-file-name="AppLoader.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/pm/AppLoader.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="225" column="16" selection-start="8790" selection-end="8790" vertical-scroll-proportion="-13.884615">
+            <state line="67" column="62" selection-start="2330" selection-end="2330" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AccountDAOTest.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/pm/dao/ibatis/dao/AccountDAOTest.java">
+      <file leaf-file-name="TaskManager.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/pm/action/TaskManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="13" selection-start="298" selection-end="298" vertical-scroll-proportion="0.0">
+            <state line="56" column="37" selection-start="1999" selection-end="1999" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Log_pm.log" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/log/Log_pm.log">
+      <file leaf-file-name="StockDAO.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/pm/dao/ibatis/dao/StockDAO.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="59" column="40" selection-start="1648" selection-end="1648" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DAOMap.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/classes/pm/dao/ibatis/dao/DAOMap.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="4" column="65" selection-start="259" selection-end="259" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SQLMapConfiguration.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SQLMapConfiguration.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
@@ -354,19 +347,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pm.properties" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pm.properties">
+      <file leaf-file-name="StockMasterBO.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/pm/bo/StockMasterBO.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="28" selection-start="379" selection-end="379" vertical-scroll-proportion="0.0">
+            <state line="151" column="0" selection-start="5607" selection-end="5607" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BhavCopyDownloader.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/pm/net/nse/downloader/BhavCopyDownloader.java">
+      <file leaf-file-name="QuoteBO.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/pm/bo/QuoteBO.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="9" selection-start="1198" selection-end="1198" vertical-scroll-proportion="0.0">
+            <state line="99" column="0" selection-start="3216" selection-end="3216" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -375,16 +368,7 @@
       <file leaf-file-name="BhavToPMConverter.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/pm/tools/BhavToPMConverter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="105" column="9" selection-start="3372" selection-end="3372" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BackGroundTask.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/pm/tools/BackGroundTask.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="21" column="22" selection-start="452" selection-end="452" vertical-scroll-proportion="0.0">
+            <state line="85" column="0" selection-start="2812" selection-end="2812" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -405,22 +389,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/test/pm/net/eod/YahooQuoteDownloadHandlerTest.java" />
-        <option value="$PROJECT_DIR$/src/pm/net/nse/CorpResultDownloadManager.java" />
-        <option value="$PROJECT_DIR$/test/pm/net/nse/downloader/CorpResultDownloaderTest.java" />
-        <option value="$PROJECT_DIR$/test/pm/tools/LoadTransDataFunctionalTest.java" />
-        <option value="$PROJECT_DIR$/test/pm/dao/ibatis/dao/TransactionDAOTest.java" />
-        <option value="$PROJECT_DIR$/test/data/TestData.xml" />
-        <option value="$PROJECT_DIR$/src/pm/dao/ibatis/sqlmap/StockMaster.xml" />
-        <option value="$PROJECT_DIR$/test/pm/dao/ibatis/dao/StockDAOTest.java" />
-        <option value="$PROJECT_DIR$/createDB.sql" />
-        <option value="$PROJECT_DIR$/build.xml" />
         <option value="$PROJECT_DIR$/test/pm/net/ICICITransactionParserTest.java" />
         <option value="$PROJECT_DIR$/test/pm/tools/BackGroundTaskTest.java" />
-        <option value="$PROJECT_DIR$/pm.properties" />
         <option value="$PROJECT_DIR$/test/pm/tools/BrokerageCalculatorTest.java" />
         <option value="$PROJECT_DIR$/test/pm/dao/ibatis/dao/AccountDAOTest.java" />
+        <option value="$PROJECT_DIR$/derby.properties" />
+        <option value="$PROJECT_DIR$/pm.properties" />
+        <option value="$PROJECT_DIR$/build.xml" />
+        <option value="$PROJECT_DIR$/test/pm/dao/ibatis/dao/CompanyResultDAOTest.java" />
+        <option value="$PROJECT_DIR$/src/pm/AppLoader.java" />
+        <option value="$PROJECT_DIR$/test/pm/net/nse/downloader/BhavCopyDownloaderTest.java" />
+        <option value="$PROJECT_DIR$/src/pm/net/nse/downloader/BhavCopyDownloader.java" />
+        <option value="$PROJECT_DIR$/src/pm/tools/BhavToPMConverter.java" />
         <option value="$PROJECT_DIR$/test/pm/tools/BhavToPMConverterTest.java" />
+        <option value="$PROJECT_DIR$/src/pm/net/eod/AbstractDateTaskManager.java" />
+        <option value="$PROJECT_DIR$/src/pm/dao/ibatis/dao/StockDAO.java" />
+        <option value="$PROJECT_DIR$/externalTest/pm/net/eod/EODDownloadManagerExternalTest.java" />
       </list>
     </option>
   </component>
@@ -528,79 +512,13 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pm2" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pm2" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tools" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pm2" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pm2" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SampleData" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="Favorites" />
+      <pane id="PackagesPane">
+        <subPane />
+      </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -739,6 +657,7 @@
       <recent name="pm.dao.ibatis.dao" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="pm.tools" />
       <recent name="pm.net.nse.downloader" />
       <recent name="pm.vo" />
       <recent name="pm.net" />
@@ -756,11 +675,11 @@
     <RUBY_DOC NAME="DEFAULTS" VALUE="true" />
     <RUBY_DOC NAME="NUMBER" VALUE="0" />
   </component>
-  <component name="RunManager" selected="JUnit.BrokerageCalculatorTest">
-    <configuration default="false" name="BackGroundTaskTest.testVerifyResiteredTasks" type="JUnit" factoryName="JUnit" temporary="true">
+  <component name="RunManager" selected="JUnit.EODDownloadManagerExternalTest.run">
+    <configuration default="false" name="BhavCopyDownloaderTest.testGetFilePath" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="coverage" enabled="false" merge="false">
         <pattern>
-          <option name="PATTERN" value="pm.tools.*" />
+          <option name="PATTERN" value="pm.net.nse.downloader.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -768,9 +687,9 @@
       <module name="pm" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="pm.tools" />
-      <option name="MAIN_CLASS_NAME" value="pm.tools.BackGroundTaskTest" />
-      <option name="METHOD_NAME" value="testVerifyResiteredTasks" />
+      <option name="PACKAGE_NAME" value="pm.net.nse.downloader" />
+      <option name="MAIN_CLASS_NAME" value="pm.net.nse.downloader.BhavCopyDownloaderTest" />
+      <option name="METHOD_NAME" value="testGetFilePath" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" />
       <option name="PARAMETERS" />
@@ -782,6 +701,40 @@
       </option>
       <envs />
       <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="BhavToPMConverterTest.testGetBhavCopyAsReaderReturnsZipReaderForZipFile" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false">
+        <pattern>
+          <option name="PATTERN" value="pm.tools.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <extension name="snapshooter" />
+      <module name="pm" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="pm.tools" />
+      <option name="MAIN_CLASS_NAME" value="pm.tools.BhavToPMConverterTest" />
+      <option name="METHOD_NAME" value="testGetBhavCopyAsReaderReturnsZipReaderForZipFile" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <envs />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="50096" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
@@ -813,10 +766,10 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <configuration default="false" name="BhavToPMConverterTest.testWriteToMetaInputFile" type="JUnit" factoryName="JUnit" temporary="true">
+    <configuration default="false" name="BhavCopyDownloaderTest" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="coverage" enabled="false" merge="false">
         <pattern>
-          <option name="PATTERN" value="pm.tools.*" />
+          <option name="PATTERN" value="pm.net.nse.downloader.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -824,76 +777,8 @@
       <module name="pm" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="pm.tools" />
-      <option name="MAIN_CLASS_NAME" value="pm.tools.BhavToPMConverterTest" />
-      <option name="METHOD_NAME" value="testWriteToMetaInputFile" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="wholeProject" />
-      </option>
-      <envs />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="51556" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="BhavToPMConverterTest.testMoveFileToBackupToMoveBhav_Delivery" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="coverage" enabled="false" merge="false">
-        <pattern>
-          <option name="PATTERN" value="pm.tools.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <extension name="snapshooter" />
-      <module name="pm" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="pm.tools" />
-      <option name="MAIN_CLASS_NAME" value="pm.tools.BhavToPMConverterTest" />
-      <option name="METHOD_NAME" value="testMoveFileToBackupToMoveBhav_Delivery" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="wholeProject" />
-      </option>
-      <envs />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="51694" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="BrokerageCalculatorTest" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="coverage" enabled="false" merge="false">
-        <pattern>
-          <option name="PATTERN" value="pm.tools.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <extension name="snapshooter" />
-      <module name="pm" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="pm.tools" />
-      <option name="MAIN_CLASS_NAME" value="pm.tools.BrokerageCalculatorTest" />
+      <option name="PACKAGE_NAME" value="pm.net.nse.downloader" />
+      <option name="MAIN_CLASS_NAME" value="pm.net.nse.downloader.BhavCopyDownloaderTest" />
       <option name="METHOD_NAME" />
       <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" />
@@ -906,6 +791,40 @@
       </option>
       <envs />
       <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="EODDownloadManagerExternalTest.run" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false">
+        <pattern>
+          <option name="PATTERN" value="pm.net.eod.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <extension name="snapshooter" />
+      <module name="pm" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="pm.net.eod" />
+      <option name="MAIN_CLASS_NAME" value="pm.net.eod.EODDownloadManagerExternalTest" />
+      <option name="METHOD_NAME" value="run" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <envs />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="50731" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
@@ -1100,11 +1019,11 @@
     <list size="7">
       <item index="0" class="java.lang.String" itemvalue="Application.AppLoader" />
       <item index="1" class="java.lang.String" itemvalue="Application.DBManager" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.BackGroundTaskTest.testVerifyResiteredTasks" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.BhavToPMConverterTest" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.BhavToPMConverterTest.testWriteToMetaInputFile" />
-      <item index="5" class="java.lang.String" itemvalue="JUnit.BhavToPMConverterTest.testMoveFileToBackupToMoveBhav_Delivery" />
-      <item index="6" class="java.lang.String" itemvalue="JUnit.BrokerageCalculatorTest" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.BhavCopyDownloaderTest.testGetFilePath" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.BhavToPMConverterTest.testGetBhavCopyAsReaderReturnsZipReaderForZipFile" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.BhavToPMConverterTest" />
+      <item index="5" class="java.lang.String" itemvalue="JUnit.BhavCopyDownloaderTest" />
+      <item index="6" class="java.lang.String" itemvalue="JUnit.EODDownloadManagerExternalTest.run" />
     </list>
   </component>
   <component name="SQLPlugin.ProjectConfiguration">
@@ -1244,7 +1163,8 @@
     <layout>
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22950819" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22747748" sideWeight="0.72295517" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22672673" sideWeight="0.72295517" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41952506" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" x="22" y="312" width="1395" height="497" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24981949" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26781002" sideWeight="0.5" order="23" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="25" side_tool="false" content_ui="tabs" />
@@ -1254,7 +1174,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32849604" sideWeight="0.0" order="2" side_tool="false" content_ui="tabs" x="22" y="314" width="1396" height="502" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42084432" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39983714" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5610119" sideWeight="0.5" order="27" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.560686" sideWeight="0.5" order="27" side_tool="false" content_ui="tabs" />
       <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32907802" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1285,7 +1205,6 @@
       <window_info id="Slice" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="CVS" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32786885" sideWeight="0.5" order="28" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41986755" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" x="22" y="312" width="1395" height="497" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39911798" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="EJB" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="WebServices" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295583" sideWeight="0.5" order="26" side_tool="false" content_ui="tabs" />
@@ -1312,7 +1231,7 @@
     <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="false" />
     <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="first green build" />
+    <option name="LAST_COMMIT_MESSAGE" value="Download BhavCopy in zip format" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1325,9 +1244,6 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="Fixed CorpResult download issue" />
-    <MESSAGE value="Nice looking tables, Data migrator" />
-    <MESSAGE value="Parameterized Analyzer" />
     <MESSAGE value="UI Changes, Added EODQuote" />
     <MESSAGE value="Removed eclipse config" />
     <MESSAGE value="Setting Project Config" />
@@ -1350,6 +1266,9 @@
     <MESSAGE value="Added NSEIndex Fetch" />
     <MESSAGE value="Added NSEIndex Performance Chart" />
     <MESSAGE value="first green build" />
+    <MESSAGE value="Green build" />
+    <MESSAGE value="fixing build issue" />
+    <MESSAGE value="Download BhavCopy in zip format" />
   </component>
   <component name="VssConfiguration">
     <option name="CLIENT_PATH" value="" />
@@ -1442,113 +1361,117 @@
     <option name="multicastPort" value="3274" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/pm/dao/ibatis/dao/TransactionDAO.java">
+    <entry file="file://$PROJECT_DIR$/src/pm/util/enumlist/TASKNAME.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="199" column="34" selection-start="8370" selection-end="8370" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pm/dao/ibatis/sqlmap/StockMaster.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="59" selection-start="1301" selection-end="1301" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/pm/bo/TradingBOTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="527" column="93" selection-start="26207" selection-end="26207" vertical-scroll-proportion="0.0">
+        <state line="33" column="35" selection-start="1328" selection-end="1328" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/pm/net/nse/downloader/CorpResultDownloaderTest.java">
+    <entry file="file://$PROJECT_DIR$/test/pm/net/eod/EODDownloadManagerTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="13" selection-start="191" selection-end="191" vertical-scroll-proportion="0.0">
+        <state line="5" column="26" selection-start="138" selection-end="138" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/pm/dao/ibatis/dao/CompanyResultDAOTest.java">
+    <entry file="file://$PROJECT_DIR$/src/pm/net/eod/AbstractDateTaskManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="13" selection-start="274" selection-end="274" vertical-scroll-proportion="0.0">
+        <state line="20" column="13" selection-start="644" selection-end="644" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/pm/net/ICICITransactionParserTest.java">
+    <entry file="file://$PROJECT_DIR$/src/pm/vo/QuoteVO.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="165" selection-start="818" selection-end="818" vertical-scroll-proportion="0.0">
+        <state line="124" column="17" selection-start="2347" selection-end="2347" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pm/tools/BackGroundTask.java">
+    <entry file="jar://$PROJECT_DIR$/lib/ibatis-dao-2.jar!/com/ibatis/dao/engine/impl/DaoProxy.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="22" selection-start="452" selection-end="452" vertical-scroll-proportion="0.0">
+        <state line="11" column="28" selection-start="464" selection-end="464" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/pm/tools/BackGroundTaskTest.java">
+    <entry file="file://$PROJECT_DIR$/src/pm/ui/PortfolioManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="69" selection-start="1091" selection-end="1091" vertical-scroll-proportion="0.0">
+        <state line="50" column="32" selection-start="1535" selection-end="1535" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pm/action/TaskManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="56" column="37" selection-start="1999" selection-end="1999" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pm/AppLoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="67" column="62" selection-start="2330" selection-end="2330" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pm/bo/QuoteBO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="99" column="0" selection-start="3216" selection-end="3216" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pm/bo/StockMasterBO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="151" column="0" selection-start="5607" selection-end="5607" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pm/net/eod/EODDownloadManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="61" column="0" selection-start="2275" selection-end="2275" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/pm/tools/BhavToPMConverter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="105" column="9" selection-start="3372" selection-end="3372" vertical-scroll-proportion="0.0">
+        <state line="85" column="0" selection-start="2812" selection-end="2812" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pm.properties">
+    <entry file="file://$PROJECT_DIR$/src/pm/dao/ibatis/dao/StockDAO.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="28" selection-start="379" selection-end="379" vertical-scroll-proportion="0.0">
+        <state line="59" column="40" selection-start="1648" selection-end="1648" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pm/net/nse/downloader/BhavCopyDownloader.java">
+    <entry file="file://$PROJECT_DIR$/classes/pm/dao/ibatis/dao/DAOMap.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="9" selection-start="1198" selection-end="1198" vertical-scroll-proportion="0.0">
+        <state line="4" column="65" selection-start="259" selection-end="259" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/pm/tools/BrokerageCalculatorTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="2" selection-start="6711" selection-end="6711" vertical-scroll-proportion="0.0">
-          <folding>
-            <marker date="1260051854000" expanded="false" signature="26:51" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="225" column="16" selection-start="8790" selection-end="8790" vertical-scroll-proportion="-13.884615">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/pm/dao/ibatis/dao/AccountDAOTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="13" selection-start="298" selection-end="298" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/log/Log_pm.log">
+    <entry file="file://$PROJECT_DIR$/SQLMapConfiguration.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/pm/tools/BhavToPMConverterTest.java">
+    <entry file="file://$PROJECT_DIR$/externalTest/pm/net/eod/EODDownloadManagerExternalTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="698" column="147" selection-start="26972" selection-end="26972" vertical-scroll-proportion="-0.37242797">
-          <folding />
+        <state line="16" column="13" selection-start="373" selection-end="373" vertical-scroll-proportion="0.249501">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
