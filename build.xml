@@ -213,9 +213,16 @@
     <target name="check-failure" if="build.failed">
         <fail message="Build failed"/>
     </target>
-    <target name="test" depends="clean, compile.module.pm.tests">
+
+    <target name="create-db" depends="compile.module.pm.production">
+        <java classname="pm.dao.derby.DBManager" jvm="${jdk.home.1.6}/bin/java" fork="true">
+            <classpath refid="pm.test.classpath"/>
+            <classpath location="pm.properties"/>
+        </java>
+    </target>
+    <target name="test" depends="clean, compile.module.pm.tests, create-db">
         <mkdir dir="${pm.test.report.dir}"/>
-        <junit jvm="${java.home}/bin/java" fork="true" forkmode="once" failureproperty="build.failed"
+        <junit jvm="${jdk.home.1.6}/bin/java" fork="true" forkmode="once" failureproperty="build.failed"
                errorproperty="build.failed">
             <classpath refid="pm.test.classpath"/>
             <classpath location="${pm.testoutput.dir}"/>
