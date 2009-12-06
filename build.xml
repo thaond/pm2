@@ -227,12 +227,12 @@
                 <fileset dir="test" includes="**/*Test.*" excludes="**/*External*.*, **/LoadTransDataFunctionalTest.*"/>
             </batchtest>
         </junit>
-        <junitreport todir="${pm.test.report.dir}">
-            <fileset dir="${pm.test.report.dir}">
-                <include name="TEST-*.xml"/>
-            </fileset>
-            <report format="frames" todir="${pm.test.report.dir}/html"/>
-        </junitreport>
+        <!--<junitreport todir="${pm.test.report.dir}">-->
+        <!--<fileset dir="${pm.test.report.dir}">-->
+        <!--<include name="TEST-*.xml"/>-->
+        <!--</fileset>-->
+        <!--<report format="frames" todir="${pm.test.report.dir}/html"/>-->
+        <!--</junitreport>-->
         <antcall target="check-failure"/>
     </target>
 
