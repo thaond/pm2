@@ -117,7 +117,7 @@ public class AppLoader {
         Logger rootLogger = Logger.getRootLogger();
         rootLogger.addAppender(appender);
         rootLogger.setLevel(Level.toLevel("Info"));
-        rootLogger.info("Logger Init...");
+//        rootLogger.info("Logger Init...");
     }
 
 }
