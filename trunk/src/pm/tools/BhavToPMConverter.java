@@ -13,6 +13,8 @@ import pm.vo.QuoteVO;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class BhavToPMConverter {
 
@@ -122,8 +124,30 @@ public class BhavToPMConverter {
 
     }
 
-    Reader getBhavCopyAsReader(Date date) throws FileNotFoundException {
-        return new FileReader(BhavCopyDownloader.getFilePath(date));
+    Reader getBhavCopyAsReader(Date date) throws IOException {
+        String filePath = BhavCopyDownloader.getFilePath(date);
+        if (filePath.endsWith(".zip")) {
+            unzip(filePath);
+            filePath = filePath.substring(0, filePath.lastIndexOf("."));
+        }
+        return new FileReader(filePath);
+    }
+
+    private void unzip(String filePath) throws IOException {
+        File zipFile = new File(filePath);
+        FileInputStream fin = new FileInputStream(zipFile);
+        ZipInputStream zin = new ZipInputStream(fin);
+        ZipEntry ze = null;
+        while ((ze = zin.getNextEntry()) != null) {
+            FileOutputStream fout = new FileOutputStream(new File(zipFile.getParentFile(), ze.getName()));
+            for (int c = zin.read(); c != -1; c = zin.read()) {
+                fout.write(c);
+            }
+            zin.closeEntry();
+            fout.close();
+        }
+        zin.close();
+
     }
 
     void storeData(Vector<String[]> data, String sDate) throws ApplicationException {

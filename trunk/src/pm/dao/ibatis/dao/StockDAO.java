@@ -52,7 +52,7 @@ public class StockDAO extends SqlMapDaoTemplate implements IStockDAO {
     }
 
     public void insertStock(StockVO stockVO) {
-        super.update("insertStock", stockVO);
+        super.insert("insertStock", stockVO);
     }
 
     public String iciciCode(String stockCode) {
