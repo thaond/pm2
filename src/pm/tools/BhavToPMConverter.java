@@ -67,7 +67,6 @@ public class BhavToPMConverter {
         return false;
     }
 
-    //TODO on error should not update date
     void processDayData(Date date, boolean flagWriteToEOD) {
         String sDate = formatyyyyMMdd.format(date);
         Reader reader = null;
@@ -109,9 +108,13 @@ public class BhavToPMConverter {
         String backupFolder = Helper.backupFolder(new PMDate(date));
 
         if (moveBhavFile) {
-            File bhavSourceFile = new File(BhavCopyDownloader.getFilePath(date));
+            String downloadedFilePath = BhavCopyDownloader.getFilePath(date);
+            File bhavSourceFile = new File(downloadedFilePath);
             File bhavDestFile = new File(backupFolder + "/" + bhavSourceFile.getName());
             bhavSourceFile.renameTo(bhavDestFile);
+            if (downloadedFilePath.endsWith(".zip")) {
+                new File(downloadedFilePath.substring(0, downloadedFilePath.lastIndexOf("."))).delete();
+            }
         }
 
         if (moveDelivFile) {
