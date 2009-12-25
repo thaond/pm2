@@ -140,4 +140,25 @@
         UPDATE $table$ SET STOCKID=#to# WHERE STOCKID=#from#
     </update>
 
+    <insert id="insertMerger" parameterClass="pm.vo.CompanyActionVO">
+        INSERT INTO CA_MERGER (EXDATE, BASERATIO, STOCKID, PARENTID, PARENTRATIO) VALUES (#exDateVal#,#base#,
+        (SELECT ID FROM STOCKMASTER WHERE STOCKCODE=#stockCode# AND LISTED = 1),
+        (SELECT ID FROM STOCKMASTER WHERE STOCKCODE=#parentEntity# AND LISTED = 1), #dsbValue#)
+        <selectKey keyProperty="id" resultClass="int">
+            values IDENTITY_VAL_LOCAL()
+        </selectKey>
+    </insert>
+
+    <select id="getMerger" resultClass="pm.vo.CompanyActionVO">
+        SELECT CA_MERGER.ID as id, EXDATE as exDate, 'Merger' as actionVal, PARENTRATIO as dsbValue, BASERATIO as base,
+        0 as ISPERCENTAGE,
+        SM.STOCKCODE as STOCKCODE, SM2.STOCKCODE as PARENTENTITY
+        FROM CA_MERGER, STOCKMASTER as SM, STOCKMASTER as SM2
+        WHERE STOCKID = SM.ID and PARENTID = SM2.ID
+        <isParameterPresent prepend="AND">
+            SM.STOCKCODE = #value#
+        </isParameterPresent>
+    </select>
+
+
 </sqlMap>

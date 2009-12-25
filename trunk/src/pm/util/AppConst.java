@@ -21,7 +21,7 @@ public interface AppConst {
     }
 
     public static enum COMPANY_ACTION_TYPE {
-        Divident, Split, Bonus, Demerger
+        Divident, Split, Bonus, Demerger, Merger
     }
 
     enum TIMEPERIOD {

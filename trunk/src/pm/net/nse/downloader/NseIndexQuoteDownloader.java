@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,17 +52,20 @@ public class NseIndexQuoteDownloader extends IndexQuoteDownloader {
     Reader getData(String postData) throws ParserException, IOException {
         String csvURL = findCsvURL(postData);
         if (csvURL != null) {
-            waitForServerToCreateFile();
+            waitForServerToCreateFile(csvURL);
             return downloadCSV(csvURL);
         }
         return null;
     }
 
-    private void waitForServerToCreateFile() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-
+    private void waitForServerToCreateFile(String csvURL) {
+        int count = 0;
+        while (!HTTPHelper.isExists(csvURL) && count < 120) {
+            count ++;
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {}
+            System.out.println("waiting for url " + csvURL);
         }
     }
 
@@ -101,14 +105,24 @@ public class NseIndexQuoteDownloader extends IndexQuoteDownloader {
         List<String[]> list = csvReader.readAll();
         for (String[] values : list) {
             PMDate date = PMDateFormatter.parseDD_Mmm_YYYY(values[0]);
-            float open = Float.parseFloat(values[1]);
-            float high = Float.parseFloat(values[2]);
-            float low = Float.parseFloat(values[3]);
-            float close = Float.parseFloat(values[4]);
-            float volume = values.length >= 6 ? Float.parseFloat(values[5]) : 0f;
+            float open = parseFloatWithErrorMasking(values[1]);
+            float high = parseFloatWithErrorMasking(values[2]);
+            float low = parseFloatWithErrorMasking(values[3]);
+            float close = parseFloatWithErrorMasking(values[4]);
+            float volume = values.length >= 6 ? parseFloatWithErrorMasking(values[5]) : 0f;
             quoteVOs.add(new QuoteVO(stockVO.getStockCode(), date, open, high, low, close, volume, 0f, 0f, 0f));
         }
         return quoteVOs;
+    }
+
+    private float parseFloatWithErrorMasking(String value) {
+        float floatValue = 0;
+        try {
+            floatValue = Float.parseFloat(value);
+        } catch (NumberFormatException e) {
+            
+        }
+        return floatValue;
     }
 
     String postData(PMDate stDate, PMDate enDate, String companyName) {

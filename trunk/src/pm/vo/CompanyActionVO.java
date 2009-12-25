@@ -1,12 +1,11 @@
 package pm.vo;
 
 import org.apache.log4j.Logger;
+import pm.util.*;
 import pm.util.AppConst.COMPANY_ACTION_TYPE;
+
+import static pm.util.AppConst.COMPANY_ACTION_TYPE.Merger;
 import static pm.util.AppConst.DELIMITER_COMMA;
-import pm.util.ApplicationException;
-import pm.util.Helper;
-import pm.util.PMDate;
-import pm.util.PMDateFormatter;
 
 import java.io.Serializable;
 import java.text.NumberFormat;
@@ -35,6 +34,8 @@ public class CompanyActionVO implements Serializable, Cloneable {
     private boolean percentageValue;
 
     private transient float valueAtCurrentPrice = 0f;
+
+    private String parentEntity;
 
     private int id;
 
@@ -74,9 +75,12 @@ public class CompanyActionVO implements Serializable, Cloneable {
         if (stk.hasMoreTokens()) {
             percentageValue = Boolean.parseBoolean(stk.nextToken());
         }
-
-        while (stk.hasMoreTokens()) {
-            demergerData.add(new DemergerVO(stk.nextToken()));
+        if (action == Merger) {
+            parentEntity = stk.nextToken();
+        } else {
+            while (stk.hasMoreTokens()) {
+                demergerData.add(new DemergerVO(stk.nextToken()));
+            }
         }
     }
 
@@ -86,6 +90,16 @@ public class CompanyActionVO implements Serializable, Cloneable {
         this.exDate = date;
         this.stockCode = stockCode;
         demergerData = data;
+    }
+
+    public CompanyActionVO(COMPANY_ACTION_TYPE action, PMDate exDate, String stockCode, float dsbValue, float base, String parentEntity) {
+
+        this.action = action;
+        this.exDate = exDate;
+        this.stockCode = stockCode;
+        this.dsbValue = dsbValue;
+        this.base = base;
+        this.parentEntity = parentEntity;
     }
 
     public COMPANY_ACTION_TYPE getAction() {
@@ -152,8 +166,12 @@ public class CompanyActionVO implements Serializable, Cloneable {
         sb.append(base).append(DELIMITER_COMMA);
         sb.append(action).append(DELIMITER_COMMA);
         sb.append(percentageValue).append(DELIMITER_COMMA);
-        for (DemergerVO demergerVO : demergerData) {
-            sb.append(demergerVO.toWrite()).append(DELIMITER_COMMA);
+        if (action == Merger) {
+            sb.append(parentEntity).append(DELIMITER_COMMA);
+        } else {
+            for (DemergerVO demergerVO : demergerData) {
+                sb.append(demergerVO.toWrite()).append(DELIMITER_COMMA);
+            }
         }
         return sb.toString();
     }
@@ -180,6 +198,7 @@ public class CompanyActionVO implements Serializable, Cloneable {
         result = PRIME * result + Float.floatToIntBits(base);
         result = PRIME * result
                 + ((demergerData == null) ? 0 : demergerData.hashCode());
+        result = PRIME * result + ((parentEntity == null) ? 0 : parentEntity.hashCode());
         return result;
     }
 
@@ -227,6 +246,9 @@ public class CompanyActionVO implements Serializable, Cloneable {
             return false;
         }
         if (percentageValue != other.percentageValue) {
+            return false;
+        }
+        if ((parentEntity == null && other.parentEntity != null) || (parentEntity != null && !parentEntity.equals(other.parentEntity))) {
             return false;
         }
         if (demergerData == null) {
@@ -357,5 +379,13 @@ public class CompanyActionVO implements Serializable, Cloneable {
             return true;
         }
         return false;
+    }
+
+    public String getParentEntity() {
+        return parentEntity;
+    }
+
+    public void setParentEntity(String parentEntity) {
+        this.parentEntity = parentEntity;
     }
 }

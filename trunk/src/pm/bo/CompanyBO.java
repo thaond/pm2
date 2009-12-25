@@ -19,7 +19,10 @@ import pm.util.PMDate;
 import pm.vo.*;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.*;
+
+import static java.lang.Math.*;
 
 public class CompanyBO {
 
@@ -64,8 +67,112 @@ public class CompanyBO {
                 break;
             case Split:
                 retVal = doSplit(actionVO);
+                break;
+            case Merger:
+                retVal = doMerger(actionVO);
+
         }
         return retVal;
+    }
+
+    private boolean doMerger(CompanyActionVO actionVO) {
+        /**
+         * Save company action
+         * Identify all partial holdings
+         * Detach partial holdings and partial sale; make all of them full holdings
+         * For all full holdings, Identify the ratio, adjust purchase quantity, update stock code to parent entity
+         */
+        new StockMasterBO().insertMissingStockCodes(new HashSet<String>(Arrays.asList(actionVO.getParentEntity())));
+
+        actionVO.setId(getDAO().insertCompanyAction(actionVO));
+        float newStockPerExistingShare = actionVO.getDsbValue() / actionVO.getBase();
+
+        PMDate previousToExDate = actionVO.getExDate().previous();
+
+        ITransactionDAO transactionDAO = DAOManager.getTransactionDAO();
+        ConsolidatedTransactionDetails ctd = new ConsolidatedTransactionDetails(actionVO, previousToExDate, transactionDAO).invoke();
+        NewQtyHelper newQtyHelper = new NewQtyHelper(newStockPerExistingShare, ctd.getBuyTransactions(), ctd.getBuyIDHoldingQtyOnRecordDate());
+
+        for (TransactionVO buyTransaction : ctd.getBuyTransactions()) {
+            Float holdingQty = ctd.getBuyIDHoldingQtyOnRecordDate().get(buyTransaction.getId());
+            if (holdingQty == null) {
+                continue;
+            }
+
+            Float newQtyForTransaction = newQtyHelper.findNewQty(buyTransaction.getTradingAc(), holdingQty);
+
+            if (holdingQty != buyTransaction.getQty()) {
+                TransactionVO holdingTransaction = createSeparateBuyTransactionForHoldingAndUpdateOrginalToRepresentSoldQty(buyTransaction, holdingQty);
+                performMerger(actionVO, newQtyForTransaction, holdingTransaction);
+                persistNewTransactionWithCompanyActionAndSoldOutTransaction(actionVO, previousToExDate, transactionDAO, ctd, buyTransaction, holdingTransaction);
+            } else {
+                performMerger(actionVO, newQtyForTransaction, buyTransaction);
+                persistTransactionWithCompanyAction(actionVO, transactionDAO, buyTransaction);
+            }
+        }
+        return true;
+    }
+
+    private void persistNewTransactionWithCompanyActionAndSoldOutTransaction(CompanyActionVO actionVO, PMDate previousToExDate,
+                                                                             ITransactionDAO transactionDAO,
+                                                                             ConsolidatedTransactionDetails ctd,
+                                                                             TransactionVO buyTransaction, TransactionVO holdingTransaction) {
+
+        try {
+            DAOManager.getDaoManager().startTransaction();
+            int newBuyId = transactionDAO.insertTransaction(holdingTransaction);
+            updateWithNewBuyIDsForTransactionDoneAfterRecordDate(previousToExDate, transactionDAO, ctd, buyTransaction.getId(), newBuyId);
+            transactionDAO.updateTransaction(buyTransaction);
+            DAOManager.getCompanyActionDAO().insertActionMapping(actionVO.getAction(), new ActionMapping(actionVO.getId(), newBuyId));
+            DAOManager.getDaoManager().commitTransaction();
+        } finally {
+            DAOManager.getDaoManager().endTransaction();
+        }
+    }
+
+    private void persistTransactionWithCompanyAction(CompanyActionVO actionVO, ITransactionDAO transactionDAO, TransactionVO buyTransaction) {
+        try {
+            DAOManager.getDaoManager().startTransaction();
+            transactionDAO.updateTransaction(buyTransaction);
+            DAOManager.getCompanyActionDAO().insertActionMapping(actionVO.getAction(), new ActionMapping(actionVO.getId(), buyTransaction.getId()));
+            DAOManager.getDaoManager().commitTransaction();
+        } finally {
+            DAOManager.getDaoManager().endTransaction();
+        }
+    }
+
+    private void performMerger(CompanyActionVO actionVO, float newQtyForTransaction, TransactionVO transactionVO) {
+        transactionVO.setQty(newQtyForTransaction);
+        transactionVO.setStockCode(actionVO.getParentEntity());
+    }
+
+    private void updateWithNewBuyIDsForTransactionDoneAfterRecordDate(PMDate previousToExDate, ITransactionDAO transactionDAO,
+                                                                      ConsolidatedTransactionDetails ctd,
+                                                                      Integer oldBuyId, int newBuyId) {
+        Map<Integer, TradeVO> tradeMapOnID = ctd.getTradeMapOnID();
+        Map<Integer, TransactionMapping> mapTransactionMapping = ctd.getMapTransactionMapping();
+        List<Integer> tradeIDs = ctd.getBuyIDTradeList().get(oldBuyId);
+        if (tradeIDs != null) {
+            for (Integer tradeID : tradeIDs) {
+                TransactionMapping mapping = mapTransactionMapping.get(tradeID);
+                TradeVO tradeVO = tradeMapOnID.get(mapping.getId());
+                if (tradeVO.isHolding(previousToExDate)) {
+                    mapping.setBuyId(newBuyId);
+                    transactionDAO.updateTrade(mapping);
+                }
+            }
+        }
+    }
+
+    private TransactionVO createSeparateBuyTransactionForHoldingAndUpdateOrginalToRepresentSoldQty(TransactionVO buyTransaction, Float holdingQty) {
+        TransactionVO holdingTransaction = (TransactionVO) buyTransaction.clone();
+        float actualQty = buyTransaction.getQty();
+        float soldQty = buyTransaction.getQty() - holdingQty;
+        buyTransaction.setQty(soldQty);
+        buyTransaction.setBrokerage(buyTransaction.getBrokerage() / actualQty * soldQty);
+        holdingTransaction.setQty(holdingQty);
+        holdingTransaction.setBrokerage(holdingTransaction.getBrokerage() / actualQty * holdingQty);
+        return holdingTransaction;
     }
 
     boolean isFutureAction(CompanyActionVO actionVO) {
@@ -127,56 +234,28 @@ public class CompanyBO {
         PMDate previousToExDate = actionVO.getExDate().previous();
 
         ITransactionDAO transactionDAO = DAOManager.getTransactionDAO();
-        List<TransactionVO> buyTransactions = transactionDAO.getTransactionList(null, null, actionVO.getStockCode(), AppConst.TRADINGTYPE.Buy);
-        List<TradeVO> tradeDetails = transactionDAO.getTradeDetails(null, null, actionVO.getStockCode(), false);
-        Map<Integer, TradeVO> tradeMapOnID = getTradeMapOnID(tradeDetails);
-        Map<Integer, TransactionMapping> mapTransactionMapping = transactionDAO.getTransactionMapping();
-        Map<Integer, Float> buyIDHoldingQtyOnRecordDate = new HashMap<Integer, Float>();
-        Map<Integer, List<Integer>> buyIDTradeList = new HashMap<Integer, List<Integer>>();
-        groupByBuyID(tradeDetails, previousToExDate, buyIDHoldingQtyOnRecordDate, buyIDTradeList);
+        ConsolidatedTransactionDetails ctd = new ConsolidatedTransactionDetails(actionVO, previousToExDate, transactionDAO).invoke();
 
-        for (TransactionVO buyTransaction : buyTransactions) {
-            Float holdingQty = buyIDHoldingQtyOnRecordDate.get(buyTransaction.getId());
+        for (TransactionVO buyTransaction : ctd.getBuyTransactions()) {
+            Float holdingQty = ctd.getBuyIDHoldingQtyOnRecordDate().get(buyTransaction.getId());
             if (holdingQty != null) {
                 if (holdingQty != buyTransaction.getQty()) {
-                    TransactionVO holdingTransaction = (TransactionVO) buyTransaction.clone();
-                    float actualQty = buyTransaction.getQty();
-                    float soldQty = buyTransaction.getQty() - holdingQty;
-                    buyTransaction.setQty(soldQty);
-                    buyTransaction.setBrokerage(buyTransaction.getBrokerage() / actualQty * soldQty);
-                    holdingTransaction.setQty(holdingQty);
-                    holdingTransaction.setBrokerage(holdingTransaction.getBrokerage() / actualQty * holdingQty);
+                    TransactionVO holdingTransaction = createSeparateBuyTransactionForHoldingAndUpdateOrginalToRepresentSoldQty(buyTransaction, holdingQty);
                     performSplit(holdingTransaction, splitPerShare);
                     try {
                         DAOManager.getDaoManager().startTransaction();
                         int newBuyId = transactionDAO.insertTransaction(holdingTransaction);
-                        List<Integer> tradeIDs = buyIDTradeList.get(buyTransaction.getId());
-                        if (tradeIDs != null) {
-                            for (Integer tradeID : tradeIDs) {
-                                TransactionMapping mapping = mapTransactionMapping.get(tradeID);
-                                TradeVO tradeVO = tradeMapOnID.get(mapping.getId());
-                                if (tradeVO.isHolding(previousToExDate)) {
-                                    mapping.setBuyId(newBuyId);
-                                    transactionDAO.updateTrade(mapping);
-                                }
-                            }
-                        }
+                        updateWithNewBuyIDsForTransactionDoneAfterRecordDate(previousToExDate, transactionDAO, ctd, buyTransaction.getId(), newBuyId);
+
                         transactionDAO.updateTransaction(buyTransaction);
-                        DAOManager.getCompanyActionDAO().insertActionMapping(COMPANY_ACTION_TYPE.Split, new ActionMapping(actionVO.getId(), newBuyId));
+                        DAOManager.getCompanyActionDAO().insertActionMapping(actionVO.getAction(), new ActionMapping(actionVO.getId(), newBuyId));
                         DAOManager.getDaoManager().commitTransaction();
                     } finally {
                         DAOManager.getDaoManager().endTransaction();
                     }
                 } else {
                     performSplit(buyTransaction, splitPerShare);
-                    try {
-                        DAOManager.getDaoManager().startTransaction();
-                        transactionDAO.updateTransaction(buyTransaction);
-                        DAOManager.getCompanyActionDAO().insertActionMapping(COMPANY_ACTION_TYPE.Split, new ActionMapping(actionVO.getId(), buyTransaction.getId()));
-                        DAOManager.getDaoManager().commitTransaction();
-                    } finally {
-                        DAOManager.getDaoManager().endTransaction();
-                    }
+                    persistTransactionWithCompanyAction(actionVO, transactionDAO, buyTransaction);
                 }
             }
         }
@@ -186,13 +265,6 @@ public class CompanyBO {
 
     }
 
-    private Map<Integer, TradeVO> getTradeMapOnID(List<TradeVO> tradeDetails) {
-        HashMap<Integer, TradeVO> tradeMap = new HashMap<Integer, TradeVO>();
-        for (TradeVO tradeDetail : tradeDetails) {
-            tradeMap.put(tradeDetail.getId(), tradeDetail);
-        }
-        return tradeMap;
-    }
 
     private void updateStockMaster(CompanyActionVO actionVO) {
         IStockDAO stockDAO = DAOManager.getStockDAO();
@@ -228,13 +300,7 @@ public class CompanyBO {
             Float holdingQty = buyIDHoldingQtyOnRecordDate.get(buyTransaction.getId());
             if (holdingQty != null) {
                 if (holdingQty != buyTransaction.getQty()) {
-                    TransactionVO holdingTransaction = (TransactionVO) buyTransaction.clone();
-                    float actualQty = buyTransaction.getQty();
-                    float soldQty = buyTransaction.getQty() - holdingQty;
-                    buyTransaction.setQty(soldQty);
-                    buyTransaction.setBrokerage(buyTransaction.getBrokerage() / actualQty * soldQty);
-                    holdingTransaction.setQty(holdingQty);
-                    holdingTransaction.setBrokerage(holdingTransaction.getBrokerage() / actualQty * holdingQty);
+                    TransactionVO holdingTransaction = createSeparateBuyTransactionForHoldingAndUpdateOrginalToRepresentSoldQty(buyTransaction, holdingQty);
                     List<TransactionVO> childEntity = creareBuyTransactionForNewEntity(holdingTransaction, actionVO);
                     adjustBookValueOfBaseCompany(holdingTransaction, actionVO);
                     try {
@@ -447,7 +513,7 @@ public class CompanyBO {
             }
 
             actionApplied = true;
-            float bonusForTradingAc = (float) Math.floor(actionVO.getDsbValue()
+            float bonusForTradingAc = (float) floor(actionVO.getDsbValue()
                     / actionVO.getBase() * totalQtyInTradingAc);
             float bonusPerShare = bonusForTradingAc / totalQtyInTradingAc;
 
@@ -458,12 +524,12 @@ public class CompanyBO {
 
                 float bonusNotRounded = holdingQty * bonusPerShare;
                 float bonusQty = 0f;
-                if (Math.abs(Math.IEEEremainder(bonusNotRounded, 1)) == 0.5) {
+                if (abs(IEEEremainder(bonusNotRounded, 1)) == 0.5) {
                     // If both r equal & bonus is not even then First will get
                     // extra
-                    bonusQty = Math.round(bonusNotRounded);
+                    bonusQty = round(bonusNotRounded);
                 } else {
-                    bonusQty = Math.round(bonusNotRounded
+                    bonusQty = round(bonusNotRounded
                             / actionVO.getDsbValue())
                             * actionVO.getDsbValue();
                 }
@@ -831,5 +897,120 @@ public class CompanyBO {
             retVal.put(stockCode, getFinData(stockCode));
         }
         return retVal;
+    }
+
+    class ConsolidatedTransactionDetails {
+        private CompanyActionVO actionVO;
+        private PMDate previousToExDate;
+        private ITransactionDAO transactionDAO;
+        private List<TransactionVO> buyTransactions;
+        private Map<Integer, TradeVO> tradeMapOnID;
+        private Map<Integer, TransactionMapping> mapTransactionMapping;
+        private Map<Integer, Float> buyIDHoldingQtyOnRecordDate;
+        private Map<Integer, List<Integer>> buyIDTradeList;
+
+        public ConsolidatedTransactionDetails(CompanyActionVO actionVO, PMDate previousToExDate, ITransactionDAO transactionDAO) {
+            this.actionVO = actionVO;
+            this.previousToExDate = previousToExDate;
+            this.transactionDAO = transactionDAO;
+        }
+
+        public List<TransactionVO> getBuyTransactions() {
+            return buyTransactions;
+        }
+
+        public Map<Integer, TradeVO> getTradeMapOnID() {
+            return tradeMapOnID;
+        }
+
+        public Map<Integer, TransactionMapping> getMapTransactionMapping() {
+            return mapTransactionMapping;
+        }
+
+        public Map<Integer, Float> getBuyIDHoldingQtyOnRecordDate() {
+            return buyIDHoldingQtyOnRecordDate;
+        }
+
+        public Map<Integer, List<Integer>> getBuyIDTradeList() {
+            return buyIDTradeList;
+        }
+
+        public ConsolidatedTransactionDetails invoke() {
+            buyTransactions = transactionDAO.getTransactionList(null, null, actionVO.getStockCode(), AppConst.TRADINGTYPE.Buy);
+            List<TradeVO> tradeDetails = transactionDAO.getTradeDetails(null, null, actionVO.getStockCode(), false);
+            tradeMapOnID = getTradeMapOnID(tradeDetails);
+            mapTransactionMapping = transactionDAO.getTransactionMapping();
+            buyIDHoldingQtyOnRecordDate = new HashMap<Integer, Float>();
+            buyIDTradeList = new HashMap<Integer, List<Integer>>();
+            groupByBuyID(tradeDetails, previousToExDate, buyIDHoldingQtyOnRecordDate, buyIDTradeList);
+            return this;
+        }
+
+        private Map<Integer, TradeVO> getTradeMapOnID(List<TradeVO> tradeDetails) {
+            HashMap<Integer, TradeVO> tradeMap = new HashMap<Integer, TradeVO>();
+            for (TradeVO tradeDetail : tradeDetails) {
+                tradeMap.put(tradeDetail.getId(), tradeDetail);
+            }
+            return tradeMap;
+        }
+
+    }
+}
+
+class NewQtyHelper {
+
+    HashMap<String, NewQtyVO> qtyByTradingAccount = new HashMap<String, NewQtyVO>();
+    private float newStockPerExistingShare;
+
+    public NewQtyHelper(float newStockPerExistingShare, List<TransactionVO> buyTransactions, Map<Integer, Float> buyIDHoldingQtyOnRecordDate) {
+        this.newStockPerExistingShare = newStockPerExistingShare;
+        init(newStockPerExistingShare, buyTransactions, buyIDHoldingQtyOnRecordDate);
+    }
+
+    public Float findNewQty(String tradingAc, Float holdingQty) {
+        return qtyByTradingAccount.get(tradingAc).allocateNewQty(holdingQty);
+    }
+
+    private void init(float newStockPerExistingShare, List<TransactionVO> buyTransactions,
+                      Map<Integer, Float> buyIDHoldingQtyOnRecordDate) {
+
+        for (TransactionVO buyTransaction : buyTransactions) {
+            Float holdingQty = buyIDHoldingQtyOnRecordDate.get(buyTransaction.getId());
+            if (holdingQty != null && holdingQty > 0) {
+                NewQtyVO newQtyVO = qtyByTradingAccount.get(buyTransaction.getTradingAc());
+                if (newQtyVO == null) {
+                    newQtyVO = new NewQtyVO();
+                }
+                newQtyVO.addHolding(holdingQty);
+                qtyByTradingAccount.put(buyTransaction.getTradingAc(), newQtyVO);
+            }
+        }
+
+        for (NewQtyVO newQtyVO : qtyByTradingAccount.values()) {
+            newQtyVO.computeNewQty(newStockPerExistingShare);
+        }
+    }
+
+    private class NewQtyVO {
+        Float totalHoldingQty = 0f;
+        Float totalNewQty = 0f;
+
+        public void addHolding(Float holdingQty) {
+            totalHoldingQty += holdingQty;
+        }
+
+        public void computeNewQty(float newStockPerExistingShare) {
+            totalNewQty = (float) floor(totalHoldingQty * newStockPerExistingShare);
+        }
+
+        public Float allocateNewQty(Float holdingQty) {
+            totalHoldingQty -= holdingQty;
+            Float newQtyForTransaction = new BigDecimal(newStockPerExistingShare * holdingQty).round(MathContext.DECIMAL32).floatValue();
+            if (newQtyForTransaction > totalNewQty || totalHoldingQty == 0) {
+                newQtyForTransaction = totalNewQty;
+            }
+            totalNewQty -= newQtyForTransaction;
+            return newQtyForTransaction;
+        }
     }
 }
