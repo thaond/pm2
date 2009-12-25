@@ -33,6 +33,7 @@ public class CompanyActionDAO extends SqlMapDaoTemplate implements ICompanyActio
         actionList.addAll(super.queryForList("getSplit", stockCode));
         actionList.addAll(super.queryForList("getBonus", stockCode));
         actionList.addAll(super.queryForList("getDemerger", stockCode));
+        actionList.addAll(super.queryForList("getMerger", stockCode));
         return actionList;
     }
 
@@ -51,6 +52,8 @@ public class CompanyActionDAO extends SqlMapDaoTemplate implements ICompanyActio
                 return (Integer) super.insert("insertDivident", actionVO);
             case Split:
                 return (Integer) super.insert("insertSplit", actionVO);
+            case Merger:
+                return (Integer) super.insert("insertMerger", actionVO);
         }
         return -1;
     }

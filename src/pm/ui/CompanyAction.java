@@ -5,7 +5,11 @@
 package pm.ui;
 
 import pm.action.Controller;
+
 import static pm.ui.UIHelper.*;
+import static pm.util.AppConst.COMPANY_ACTION_TYPE.*;
+import static pm.util.AppConst.COMPANY_ACTION_TYPE.Merger;
+
 import pm.ui.table.TableCellDisplay;
 import pm.util.AppConst.COMPANY_ACTION_TYPE;
 import pm.vo.CompanyActionVO;
@@ -32,12 +36,9 @@ public class CompanyAction extends AbstractPMPanel {
     private PMDatePicker dateField = PMDatePicker.instanceWithLastQuoteDate();
 
     private JComboBox stockField;
+    private JFormattedTextField bonusField = new JFormattedTextField(0f);
 
-    private JFormattedTextField bonusField = new JFormattedTextField(new Float(
-            0f));
-
-    private JFormattedTextField baseField = new JFormattedTextField(new Float(
-            1f));
+    private JFormattedTextField baseField = new JFormattedTextField(1f);
 
     private ButtonGroup bg = new ButtonGroup();
 
@@ -45,9 +46,12 @@ public class CompanyAction extends AbstractPMPanel {
 
     private JTable demergerTable = UIHelper.createTable(tableModel);
 
-    private JLabel labelDSB = createLabel("D/S/B Value");
+    private JLabel labelDSB = createLabel("D/S/B/M Value");
 
     private JLabel labelDemerger = createLabel("New Entity Details");
+
+    private JLabel labelParentEntity = createLabel("Parent Entity");
+    private JComboBox parentStockField = UIHelper.createStockVOlistJCB();
 
     private JPanel dsbPanel = buildChildPanel(new JPanel());
 
@@ -74,21 +78,12 @@ public class CompanyAction extends AbstractPMPanel {
             public void actionPerformed(ActionEvent arg0) {
                 COMPANY_ACTION_TYPE action = COMPANY_ACTION_TYPE.valueOf(arg0
                         .getActionCommand());
-                switch (action) {
-                    case Divident:
-                    case Split:
-                    case Bonus:
-                        toggleDisplayDSBFields(true);
-                        break;
-                    case Demerger:
-                        toggleDisplayDSBFields(false);
-                        break;
-                }
+                toggleDisplayDSBFields(action);
             }
         };
 
         add(createOptionPanel("Company Action", COMPANY_ACTION_TYPE.values(),
-                COMPANY_ACTION_TYPE.Divident, bg, actionListener), gbc);
+                Divident, bg, actionListener), gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -99,7 +94,7 @@ public class CompanyAction extends AbstractPMPanel {
         gbc.gridx = 1;
         add(dateField, gbc);
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy++;
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.EAST;
         add(createLabel("Stock"), gbc);
@@ -110,37 +105,49 @@ public class CompanyAction extends AbstractPMPanel {
         add(stockField, gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy++;
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.EAST;
         add(labelDSB, gbc);
         add(labelDemerger, gbc);
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridx = 1;
-        gbc.gridy = 3;
-        gbc.gridwidth = 1;
         add(getDSBFields(), gbc);
         add(getDemergerTableDisplay(), gbc);
         gbc.gridx = 2;
         gbc.gridwidth = 1;
         add(cbPercentage, gbc);
 
+        gbc.gridy++;
+        gbc.gridx = 0;
+        add(labelParentEntity, gbc);
+        gbc.gridx = 1;
+        add(parentStockField, gbc);
 
-        gbc.gridy = 4;
+
+        gbc.gridy++;
         gbc.gridx = 1;
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.CENTER;
         add(getSubmitButton(), gbc);
-        toggleDisplayDSBFields(true);
+        toggleDisplayDSBFields(Bonus);
 
     }
 
-    private void toggleDisplayDSBFields(boolean display) {
-        labelDSB.setVisible(display);
-        dsbPanel.setVisible(display);
-        cbPercentage.setVisible(display);
-        labelDemerger.setVisible(!display);
-        demergerPanel.setVisible(!display);
+    private void toggleDisplayDSBFields(COMPANY_ACTION_TYPE action) {
+        boolean showDSB = (action == Bonus || action == Divident || action == Split);
+        boolean showDemerger = (action == Demerger);
+        boolean showMerger = (action == Merger);
+
+        labelDSB.setVisible(showDSB || showMerger);
+        dsbPanel.setVisible(showDSB || showMerger);
+        cbPercentage.setVisible(showDSB);
+
+        labelDemerger.setVisible(showDemerger);
+        demergerPanel.setVisible(showDemerger);
+
+        labelParentEntity.setVisible(showMerger);
+        parentStockField.setVisible(showMerger);
     }
 
     private JScrollPane getDemergerTableDisplay() {
@@ -155,7 +162,7 @@ public class CompanyAction extends AbstractPMPanel {
                 if (textField.getText().equals(ENTER)) {
                     if (e.getSource() instanceof JFormattedTextField) {
                         ((JFormattedTextField) e.getSource())
-                                .setValue(new Float(0));
+                                .setValue((float) 0);
                     } else {
                         textField.setText("");
                     }
@@ -168,8 +175,7 @@ public class CompanyAction extends AbstractPMPanel {
         cellEditor.setClickCountToStart(1);
         demergerTable.getColumnModel().getColumn(0).setCellEditor(cellEditor);
 
-        JFormattedTextField formattedTextField = new JFormattedTextField(
-                new Float(0f));
+        JFormattedTextField formattedTextField = new JFormattedTextField(0f);
         formattedTextField.addFocusListener(focusListener);
 
         formattedTextField.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -184,8 +190,7 @@ public class CompanyAction extends AbstractPMPanel {
     }
 
     private Component getDSBFields() {
-        dsbPanel.add(buildFloatField(bonusField, 0, 4,
-                "Divident/Split/Bonus Amount"));
+        dsbPanel.add(buildFloatField(bonusField, 0, 4, "Divident/Split/Bonus/Merger Share/Amount"));
         dsbPanel.add(createLabel("/"));
         dsbPanel.add(buildFloatField(baseField, 1, 4, "Per no. of Share"));
         return dsbPanel;
@@ -194,7 +199,7 @@ public class CompanyAction extends AbstractPMPanel {
     private boolean validateForm() {
         if (((Number) bonusField.getValue()).floatValue() == 0f) {
             UIHelper.displayInformation(null,
-                    "Enter Divident/Split/Bonus Amount", "Error",
+                    "Enter Divident/Split/Bonus/Merger Amount", "Error",
                     JOptionPane.ERROR_MESSAGE);
             return false;
         }
@@ -211,6 +216,7 @@ public class CompanyAction extends AbstractPMPanel {
       *
       * @see pm.ui.AbstractPMPanel#doDisplay(java.lang.Object)
       */
+
     protected void doDisplay(Object retVal, String actionCommand) {
         if ((Boolean) retVal) {
             COMPANY_ACTION_TYPE action = COMPANY_ACTION_TYPE.valueOf(bg
@@ -219,8 +225,9 @@ public class CompanyAction extends AbstractPMPanel {
                 case Bonus:
                 case Divident:
                 case Split:
-                    bonusField.setValue(new Float(0f));
-                    baseField.setValue(new Float(1f));
+                case Merger:
+                    bonusField.setValue(0f);
+                    baseField.setValue(1f);
                     break;
                 case Demerger:
                     tableModel = new CompanyActionTableModel();
@@ -236,6 +243,7 @@ public class CompanyAction extends AbstractPMPanel {
       *
       * @see pm.ui.AbstractPMPanel#getData()
       */
+
     protected Object getData(String actionCommand) {
         COMPANY_ACTION_TYPE action = COMPANY_ACTION_TYPE.valueOf(bg
                 .getSelection().getActionCommand());
@@ -262,9 +270,24 @@ public class CompanyAction extends AbstractPMPanel {
                                 JOptionPane.WARNING_MESSAGE);
                         return false;
                     }
-                    actionVO = actionVO = new CompanyActionVO(action, dateField.pmDate(),
+                    actionVO = new CompanyActionVO(action, dateField.pmDate(),
                             stockField.getSelectedItem().toString(), demergerData);
                     break;
+                case Merger:
+                    if (validateForm()) {
+                        UIHelper.displayInformation(null, "Divident calculation will go wrong if there is a holding of " +
+                                "tobe-Merged entity and divident has been issued during this period by either tobe-Merged or Parent entity", "Warning",
+                                JOptionPane.WARNING_MESSAGE);
+
+                        float bonus = ((Number) bonusField.getValue()).floatValue();
+                        float base = ((Number) baseField.getValue()).floatValue();
+                        actionVO = new CompanyActionVO(action, dateField.pmDate(),
+                                stockField.getSelectedItem().toString(), bonus,
+                                base, parentStockField.getSelectedItem().toString());
+
+                    }
+                    break;
+
             }
             if (actionVO != null)
                 return Controller.doCompanyAction(actionVO);

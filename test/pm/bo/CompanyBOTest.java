@@ -4,6 +4,8 @@
  */
 package pm.bo;
 
+import builder.TransactionBuilder;
+import pm.dao.derby.DBManager;
 import pm.dao.ibatis.dao.*;
 import pm.util.AppConst;
 import pm.util.Helper;
@@ -12,6 +14,8 @@ import pm.util.enumlist.SERIESTYPE;
 import pm.vo.*;
 
 import java.util.*;
+
+import static pm.util.AppConst.REPORT_TYPE.All;
 
 /**
  * @author thiyagu1
@@ -26,6 +30,287 @@ public class CompanyBOTest extends PMDBTestCase {
 
     public CompanyBOTest(String string) {
         super(string, "CompanyActionTestData.xml");
+    }
+
+    public void testDoActionForMergerForNoHoldingQty() {
+        String tobeMergedStockCode = "CODE3";
+        String parentEntity = "CODE2";
+        CompanyActionVO actionVO = new CompanyActionVO(AppConst.COMPANY_ACTION_TYPE.Merger, new PMDate(), tobeMergedStockCode, 1, 13, parentEntity);
+        ICompanyActionDAO actionDAO = DAOManager.getCompanyActionDAO();
+        int parentEntityActionCount = actionDAO.getCompanyAction(parentEntity).size();
+
+        new CompanyBO().doAction(actionVO);
+        List<CompanyActionVO> companyActions = actionDAO.getCompanyAction(tobeMergedStockCode);
+        assertTrue(companyActions.contains(actionVO));
+        assertEquals(parentEntityActionCount, actionDAO.getCompanyAction(parentEntity).size());
+
+    }
+
+    public void testDoActionForMergerForFullHolding() {
+        PMDate exDate = new PMDate();
+        int baseRatio = 13;
+        int parentCompanyRatio = 2;
+        int times = 3;
+
+        String tobeMergedStockCode = "CODE3";
+        new TradingBO().doBuy(new TransactionBuilder().withDate(exDate.previous()).withStockCode(tobeMergedStockCode).withQty( baseRatio * times).build());
+        String parentEntity = "CODE2";
+        List<TradeVO> parentEntityTransactions = new PortfolioBO().getTransactionDetails(parentEntity, All.toString(), All.toString(), false);
+        CompanyActionVO actionVO = new CompanyActionVO(AppConst.COMPANY_ACTION_TYPE.Merger, exDate, tobeMergedStockCode, parentCompanyRatio, baseRatio, parentEntity);
+        new CompanyBO().doAction(actionVO);
+
+        List<TradeVO> tobeMergedStockTransactions = new PortfolioBO().getTransactionDetails(tobeMergedStockCode, All.toString(), All.toString(), false);
+        assertTrue(tobeMergedStockTransactions.isEmpty());
+
+        List<TradeVO> mergedStockTransactions = new PortfolioBO().getTransactionDetails(parentEntity, All.toString(), All.toString(), false);
+        assertEquals(parentEntityTransactions.size() + 1, mergedStockTransactions.size());
+
+        mergedStockTransactions.removeAll(parentEntityTransactions);
+
+        TradeVO mergedTransaction = mergedStockTransactions.get(0);
+        
+        assertEquals(parentCompanyRatio * times, ((Float)mergedTransaction.getQty()).intValue());
+    }
+
+    public void testDoActionForMergerToHandleAcrossPortfolio() {
+        PMDate exDate = new PMDate();
+        PMDate recordDate = exDate.previous();
+        int baseRatio = 13;
+        int parentCompanyRatio = 2;
+        int times = 4;
+
+        String tobeMergedStockCode = "CODE3";
+        String parentEntity = "CODE2";
+
+        PortfolioDetailsVO portfolio1 = DAOManager.getAccountDAO().getPorfolioList().get(0);
+        PortfolioDetailsVO portfolio2 = DAOManager.getAccountDAO().getPorfolioList().get(1);
+
+        TradingBO tradingBO = new TradingBO();
+        tradingBO.doBuy(new TransactionBuilder().withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio1.getName()).withQty(baseRatio * (times - 2) - 5).build());
+        tradingBO.doBuy(new TransactionBuilder().withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio2.getName()).withQty(baseRatio * 2 + 5).build());
+
+        List<TradeVO> parentEntityTransactions = new PortfolioBO().getTransactionDetails(parentEntity, All.toString(), All.toString(), false);
+        CompanyActionVO actionVO = new CompanyActionVO(AppConst.COMPANY_ACTION_TYPE.Merger, exDate, tobeMergedStockCode, parentCompanyRatio, baseRatio, parentEntity);
+        new CompanyBO().doAction(actionVO);
+
+        List<TradeVO> mergedStockTransactions = new PortfolioBO().getTransactionDetails(parentEntity, All.toString(), All.toString(), false);
+        assertEquals(parentEntityTransactions.size() + 2, mergedStockTransactions.size());
+
+        mergedStockTransactions.removeAll(parentEntityTransactions);
+        Float totalNewStocks = 0f;
+        for (TradeVO mergedStockTransaction : mergedStockTransactions) {
+            totalNewStocks += mergedStockTransaction.getQty();
+        }
+        assertEquals(times * parentCompanyRatio, totalNewStocks.intValue());
+
+    }
+
+    public void testDoActionForMergerToHandleAcross3Portfolios() {
+        PMDate exDate = new PMDate();
+        PMDate recordDate = exDate.previous();
+        int baseRatio = 9;
+        int parentCompanyRatio = 1;
+
+        String tobeMergedStockCode = "CODE3";
+        String parentEntity = "CODE2";
+
+        PortfolioDetailsVO portfolio1 = DAOManager.getAccountDAO().getPorfolioList().get(0);
+        PortfolioDetailsVO portfolio2 = DAOManager.getAccountDAO().getPorfolioList().get(1);
+        PortfolioDetailsVO portfolio3 = DAOManager.getAccountDAO().getPorfolioList().get(2);
+
+        TradingBO tradingBO = new TradingBO();
+        tradingBO.doBuy(new TransactionBuilder().withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio1.getName()).withQty(3).build());
+        tradingBO.doBuy(new TransactionBuilder().withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio2.getName()).withQty(3).build());
+        tradingBO.doBuy(new TransactionBuilder().withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio3.getName()).withQty(3).build());
+
+        List<TradeVO> parentEntityTransactions = new PortfolioBO().getTransactionDetails(parentEntity, All.toString(), All.toString(), false);
+        CompanyActionVO actionVO = new CompanyActionVO(AppConst.COMPANY_ACTION_TYPE.Merger, exDate, tobeMergedStockCode, parentCompanyRatio, baseRatio, parentEntity);
+        new CompanyBO().doAction(actionVO);
+
+        List<TradeVO> mergedStockTransactions = new PortfolioBO().getTransactionDetails(parentEntity, All.toString(), All.toString(), false);
+
+        mergedStockTransactions.removeAll(parentEntityTransactions);
+        Float totalNewStocks = 0f;
+        for (TradeVO mergedStockTransaction : mergedStockTransactions) {
+            totalNewStocks += mergedStockTransaction.getQty();
+        }
+        assertEquals(parentCompanyRatio, totalNewStocks.intValue());
+
+    }
+
+    public void testDoActionForMergerForPartialHolding() {
+        PMDate exDate = new PMDate();
+        PMDate recordDate = exDate.previous();
+        int baseRatio = 1;
+        int parentCompanyRatio = 1;
+
+        String tobeMergedStockCode = "CODE3";
+        String parentEntity = "CODE2";
+
+        PortfolioDetailsVO portfolio1 = DAOManager.getAccountDAO().getPorfolioList().get(0);
+
+        TradingBO tradingBO = new TradingBO();
+        tradingBO.doBuy(new TransactionBuilder().withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio1.getName()).withQty(3).build());
+        tradingBO.doSell(new TransactionBuilder().withAction(AppConst.TRADINGTYPE.Sell).withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio1.getName()).withQty(1).build());
+
+        List<TradeVO> parentEntityTransactions = new PortfolioBO().getTransactionDetails(parentEntity, All.toString(), All.toString(), false);
+        CompanyActionVO actionVO = new CompanyActionVO(AppConst.COMPANY_ACTION_TYPE.Merger, exDate, tobeMergedStockCode, parentCompanyRatio, baseRatio, parentEntity);
+        new CompanyBO().doAction(actionVO);
+
+        List<TradeVO> mergedStockTransactions = new PortfolioBO().getTransactionDetails(parentEntity, All.toString(), All.toString(), false);
+
+        mergedStockTransactions.removeAll(parentEntityTransactions);
+        assertEquals(2f, mergedStockTransactions.get(0).getQty());
+
+    }
+
+    public void testDoActionForMergerToHandlingNewParentEntity() {
+        PMDate exDate = new PMDate();
+        PMDate recordDate = exDate.previous();
+        int baseRatio = 1;
+        int parentCompanyRatio = 1;
+
+        String tobeMergedStockCode = "CODE3";
+        String parentEntity = "CODENEW";
+
+        PortfolioDetailsVO portfolio1 = DAOManager.getAccountDAO().getPorfolioList().get(0);
+
+        TradingBO tradingBO = new TradingBO();
+        tradingBO.doBuy(new TransactionBuilder().withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio1.getName()).withQty(3).build());
+        tradingBO.doSell(new TransactionBuilder().withAction(AppConst.TRADINGTYPE.Sell).withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio1.getName()).withQty(1).build());
+
+        List<TradeVO> parentEntityTransactions = new PortfolioBO().getTransactionDetails(parentEntity, All.toString(), All.toString(), false);
+        CompanyActionVO actionVO = new CompanyActionVO(AppConst.COMPANY_ACTION_TYPE.Merger, exDate, tobeMergedStockCode, parentCompanyRatio, baseRatio, parentEntity);
+        new CompanyBO().doAction(actionVO);
+
+        List<TradeVO> mergedStockTransactions = new PortfolioBO().getTransactionDetails(parentEntity, All.toString(), All.toString(), false);
+
+        mergedStockTransactions.removeAll(parentEntityTransactions);
+        assertEquals(2f, mergedStockTransactions.get(0).getQty());
+
+    }
+
+    public void testDoActionForMergerForHoldingOnBothTobeMergedAndParentEntity() {
+        PMDate exDate = new PMDate();
+        PMDate recordDate = exDate.previous();
+        int baseRatio = 1;
+        int parentCompanyRatio = 1;
+
+        String tobeMergedStockCode = "CODE3";
+        String parentEntity = "CODE2";
+
+        PortfolioDetailsVO portfolio1 = DAOManager.getAccountDAO().getPorfolioList().get(0);
+
+        TradingBO tradingBO = new TradingBO();
+        tradingBO.doBuy(new TransactionBuilder().withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio1.getName()).withQty(3).build());
+        tradingBO.doBuy(new TransactionBuilder().withDate(recordDate).withStockCode(parentEntity).withPortfolio(portfolio1.getName()).withQty(3).build());
+        tradingBO.doSell(new TransactionBuilder().withAction(AppConst.TRADINGTYPE.Sell).withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio1.getName()).withQty(1).build());
+
+        List<TradeVO> parentEntityTransactions = new PortfolioBO().getTransactionDetails(parentEntity, All.toString(), All.toString(), false);
+        CompanyActionVO actionVO = new CompanyActionVO(AppConst.COMPANY_ACTION_TYPE.Merger, exDate, tobeMergedStockCode, parentCompanyRatio, baseRatio, parentEntity);
+        new CompanyBO().doAction(actionVO);
+
+        List<TradeVO> mergedStockTransactions = new PortfolioBO().getTransactionDetails(parentEntity, All.toString(), All.toString(), false);
+
+        mergedStockTransactions.removeAll(parentEntityTransactions);
+        assertEquals(2f, mergedStockTransactions.get(0).getQty());
+
+    }
+
+    public void testDoActionForMergerForPartialAndFullHolding() {
+        PMDate exDate = new PMDate();
+        PMDate recordDate = exDate.previous();
+        int baseRatio = 1;
+        int parentCompanyRatio = 1;
+
+        String tobeMergedStockCode = "CODE3";
+        String parentEntity = "CODE2";
+
+        PortfolioDetailsVO portfolio1 = DAOManager.getAccountDAO().getPorfolioList().get(0);
+
+        TradingBO tradingBO = new TradingBO();
+        tradingBO.doBuy(new TransactionBuilder().withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio1.getName()).withQty(3).build());
+        tradingBO.doBuy(new TransactionBuilder().withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio1.getName()).withQty(3).build());
+        tradingBO.doSell(new TransactionBuilder().withAction(AppConst.TRADINGTYPE.Sell).withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio1.getName()).withQty(1).build());
+
+        List<TradeVO> parentEntityTransactions = new PortfolioBO().getTransactionDetails(parentEntity, All.toString(), All.toString(), false);
+        CompanyActionVO actionVO = new CompanyActionVO(AppConst.COMPANY_ACTION_TYPE.Merger, exDate, tobeMergedStockCode, parentCompanyRatio, baseRatio, parentEntity);
+        new CompanyBO().doAction(actionVO);
+
+        List<TradeVO> mergedStockTransactions = new PortfolioBO().getTransactionDetails(parentEntity, All.toString(), All.toString(), false);
+
+        mergedStockTransactions.removeAll(parentEntityTransactions);
+        Float totalNewStocks = 0f;
+        for (TradeVO mergedStockTransaction : mergedStockTransactions) {
+            totalNewStocks += mergedStockTransaction.getQty();
+        }
+        assertEquals(5, totalNewStocks.intValue());
+
+    }
+
+    public void testDoActionForMergerWithoutAnyTransaction() {
+        PMDate exDate = new PMDate();
+
+        int baseRatio = 1;
+        int parentCompanyRatio = 1;
+
+        String tobeMergedStockCode = "CODE3";
+        String parentEntity = "CODE2";
+
+        CompanyActionVO actionVO = new CompanyActionVO(AppConst.COMPANY_ACTION_TYPE.Merger, exDate, tobeMergedStockCode, parentCompanyRatio, baseRatio, parentEntity);
+        new CompanyBO().doAction(actionVO);
+
+        new PortfolioBO().getTransactionDetails(parentEntity, All.toString(), All.toString(), false);
+
+    }
+
+    public void testDoActionForMergerWithoutAnyHoldingQty() {
+        PMDate exDate = new PMDate();
+        PMDate recordDate = exDate.previous();
+
+        int baseRatio = 1;
+        int parentCompanyRatio = 1;
+
+        String tobeMergedStockCode = "CODE3";
+        String parentEntity = "CODE2";
+
+        PortfolioDetailsVO portfolio1 = DAOManager.getAccountDAO().getPorfolioList().get(0);
+
+        TradingBO tradingBO = new TradingBO();
+        tradingBO.doBuy(new TransactionBuilder().withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio1.getName()).withQty(3).build());
+        tradingBO.doSell(new TransactionBuilder().withAction(AppConst.TRADINGTYPE.Sell).withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio1.getName()).withQty(3).build());
+
+        CompanyActionVO actionVO = new CompanyActionVO(AppConst.COMPANY_ACTION_TYPE.Merger, exDate, tobeMergedStockCode, parentCompanyRatio, baseRatio, parentEntity);
+        new CompanyBO().doAction(actionVO);
+
+        new PortfolioBO().getTransactionDetails(parentEntity, All.toString(), All.toString(), false);
+
+    }
+
+    public void testNewQtyGroupByTradingAccountName() {
+        HashMap<Integer, Float> buyIDHoldingQtyOnRecordDate = new HashMap<Integer, Float>();
+        ArrayList<TransactionVO> buyTransactions = new ArrayList<TransactionVO>();
+        buyTransactions.add(new TransactionBuilder().withPortfolio("Portfolio1").withTradingAc("TradingAc1").withQty(10).withId(1).build());
+        buyTransactions.add(new TransactionBuilder().withPortfolio("Portfolio2").withTradingAc("TradingAc1").withQty(5).withId(2).build());
+        buyTransactions.add(new TransactionBuilder().withPortfolio("Portfolio1").withTradingAc("TradingAc1").withQty(2).withId(3).build());
+        buyTransactions.add(new TransactionBuilder().withPortfolio("Portfolio1").withTradingAc("TradingAc2").withQty(21).withId(4).build());
+
+        for (TransactionVO buyTransaction : buyTransactions) {
+            buyIDHoldingQtyOnRecordDate.put(buyTransaction.getId(), buyTransaction.getQty());
+        }
+
+        buyIDHoldingQtyOnRecordDate.put(4, buyTransactions.get(3).getQty() - 1);
+
+        NewQtyHelper qtyHelper = new NewQtyHelper(1f, buyTransactions, buyIDHoldingQtyOnRecordDate);
+        float tradingAc1TotalQty = buyTransactions.get(0).getQty() + buyTransactions.get(1).getQty() + buyTransactions.get(2).getQty();
+        float tradingAc2TotalQty = buyTransactions.get(3).getQty() - 1 ;
+        assertEquals(tradingAc1TotalQty, qtyHelper.findNewQty("TradingAc1", 17f));
+        assertEquals(tradingAc2TotalQty, qtyHelper.findNewQty("TradingAc2", 21f));
+
+        qtyHelper = new NewQtyHelper(1/5f, buyTransactions, buyIDHoldingQtyOnRecordDate);
+
+        assertEquals(3f, qtyHelper.findNewQty("TradingAc1", 17f));
+        assertEquals(4f, qtyHelper.findNewQty("TradingAc2", 21f));
     }
 
     public void testDoActionForDivident() {

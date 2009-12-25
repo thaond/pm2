@@ -19,6 +19,14 @@ public class CompanyActionVOTest extends TestCase {
         assertEquals(actionVO, newActionVO);
     }
 
+    public void testToWriteAndConsturctForMergerValues() throws Exception {
+        CompanyActionVO actionVO = new CompanyActionVO(
+                COMPANY_ACTION_TYPE.Merger, new PMDate(1, 1, 2004), "STOCKCODE", 2, 5, "PARENTSTK");
+        CompanyActionVO newActionVO = new CompanyActionVO(actionVO.toWrite());
+        assertEquals("PARENTSTK", newActionVO.getParentEntity());
+        assertEquals(actionVO, newActionVO);
+    }
+
     public void testToWriteAndConsturctForDemergerValues() throws Exception {
         Vector<DemergerVO> demergerData = new Vector<DemergerVO>();
         demergerData.add(new DemergerVO("STK1", 12.23f));

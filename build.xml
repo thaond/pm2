@@ -203,7 +203,7 @@
     <target name="deploy" depends="jar" description="deploys">
         <copy overwrite="true" failonerror="yes" todir="${production.location}">
             <fileset file="${ant.project.name}.jar"/>
-            <fileset file="SQLMapConfiguration.xml"/>
+            <fileset file="resources/SQLMapConfiguration.xml"/>
             <fileset file="createDB.sql"/>
             <fileset file="cleanUpTransactions.sql"/>
             <fileset dir="${module.pm.basedir}/lib" includes="*.jar" excludes="jmock*.jar, junit*.jar, dbunit*.jar"/>
