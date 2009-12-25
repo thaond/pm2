@@ -231,7 +231,7 @@
             <classpath location="."/>
             <batchtest todir="${pm.test.report.dir}">
                 <formatter type="xml"/>
-                <fileset dir="test" includes="**/*Test.*" excludes="**/*External*.*, **/LoadTransDataFunctionalTest.*"/>
+                <fileset dir="test" includes="**/*Test.*" excludes="**/*External*.*"/>
             </batchtest>
         </junit>
         <!--<junitreport todir="${pm.test.report.dir}">-->

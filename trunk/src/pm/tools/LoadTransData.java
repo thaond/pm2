@@ -106,7 +106,11 @@ public class LoadTransData {
     private void loadQuotesFromFiles(int quoteStartDate) {
         Helper.saveLastBhavCopyDate(new PMDate(quoteStartDate));
         Helper.saveLastDeliveryPosDate(new PMDate(quoteStartDate));
-        new BhavToPMConverter().processData();
+        bhavToPMConverter().processData();
+    }
+
+    BhavToPMConverter bhavToPMConverter() {
+        return new BhavToPMConverter();
     }
 
     private void cleanupTables(boolean onlyLog) {
