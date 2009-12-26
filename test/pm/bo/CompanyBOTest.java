@@ -66,7 +66,9 @@ public class CompanyBOTest extends PMDBTestCase {
         int times = 3;
 
         String tobeMergedStockCode = "CODE3";
-        new TradingBO().doBuy(new TransactionBuilder().withDate(exDate.previous()).withStockCode(tobeMergedStockCode).withQty(baseRatio * times).build());
+        TransactionVO buy = new TransactionBuilder().withDate(exDate.previous()).withStockCode(tobeMergedStockCode).withQty(baseRatio * times).build();
+        new TradingBO().doBuy(buy);
+
         String parentEntity = "CODE2";
         List<TradeVO> parentEntityTransactions = new PortfolioBO().getTransactionDetails(parentEntity, All.toString(), All.toString(), false);
         CompanyActionVO actionVO = new CompanyActionVO(AppConst.COMPANY_ACTION_TYPE.Merger, exDate, tobeMergedStockCode, parentCompanyRatio, baseRatio, parentEntity);
@@ -82,7 +84,14 @@ public class CompanyBOTest extends PMDBTestCase {
 
         TradeVO mergedTransaction = mergedStockTransactions.get(0);
 
-        assertEquals(parentCompanyRatio * times, ((Float) mergedTransaction.getQty()).intValue());
+        int newQty = parentCompanyRatio * times;
+        assertEquals(newQty, ((Float) mergedTransaction.getQty()).intValue());
+
+        float modifiedPurchasePrice = buy.getPrice() * buy.getQty() / newQty;
+        assertEquals(modifiedPurchasePrice, mergedTransaction.getPurchasePrice());
+
+        assertEquals(buy.getDate(), mergedTransaction.getPurchaseDate());
+        assertEquals(buy.getBrokerage(), mergedTransaction.getBrokerage());
     }
 
     public void testDoActionForMergerToHandleAcrossPortfolio() {
@@ -99,8 +108,10 @@ public class CompanyBOTest extends PMDBTestCase {
         PortfolioDetailsVO portfolio2 = DAOManager.getAccountDAO().getPorfolioList().get(1);
 
         TradingBO tradingBO = new TradingBO();
-        tradingBO.doBuy(new TransactionBuilder().withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio1.getName()).withQty(baseRatio * (times - 2) - 5).build());
-        tradingBO.doBuy(new TransactionBuilder().withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio2.getName()).withQty(baseRatio * 2 + 5).build());
+        TransactionVO buyTransaction1 = new TransactionBuilder().withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio1.getName()).withQty(baseRatio * (times - 2) - 5).build();
+        tradingBO.doBuy(buyTransaction1);
+        TransactionVO buyTransaction2 = new TransactionBuilder().withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio2.getName()).withQty(baseRatio * 2 + 5).build();
+        tradingBO.doBuy(buyTransaction2);
 
         List<TradeVO> parentEntityTransactions = new PortfolioBO().getTransactionDetails(parentEntity, All.toString(), All.toString(), false);
         CompanyActionVO actionVO = new CompanyActionVO(AppConst.COMPANY_ACTION_TYPE.Merger, exDate, tobeMergedStockCode, parentCompanyRatio, baseRatio, parentEntity);
@@ -110,12 +121,26 @@ public class CompanyBOTest extends PMDBTestCase {
         assertEquals(parentEntityTransactions.size() + 2, mergedStockTransactions.size());
 
         mergedStockTransactions.removeAll(parentEntityTransactions);
+        int newQty = times * parentCompanyRatio;
+        float expectedCost = buyTransaction1.getQty() * buyTransaction1.getPrice() + buyTransaction2.getQty() * buyTransaction2.getPrice();
+        float expectedBrokerage = buyTransaction1.getBrokerage() + buyTransaction2.getBrokerage();
+
+        verify(mergedStockTransactions, newQty, expectedCost, expectedBrokerage);
+
+    }
+
+    private void verify(List<TradeVO> mergedStockTransactions, int expectedNewQty, float expectedCost, Float expectedBrokerage) {
         Float totalNewStocks = 0f;
+        Float totalCost = 0f;
+        Float totalBrokerage = 0f;
         for (TradeVO mergedStockTransaction : mergedStockTransactions) {
             totalNewStocks += mergedStockTransaction.getQty();
+            totalCost += mergedStockTransaction.getTotalCost();
+            totalBrokerage += mergedStockTransaction.getBrokerage();
         }
-        assertEquals(times * parentCompanyRatio, totalNewStocks.intValue());
-
+        assertEquals(expectedNewQty, totalNewStocks.intValue());
+        assertEquals(expectedCost, totalCost);
+        assertEquals(expectedBrokerage, totalBrokerage);
     }
 
     public void testDoActionForMergerToHandleAcross3Portfolios() {
@@ -132,9 +157,9 @@ public class CompanyBOTest extends PMDBTestCase {
         PortfolioDetailsVO portfolio3 = DAOManager.getAccountDAO().getPorfolioList().get(2);
 
         TradingBO tradingBO = new TradingBO();
-        tradingBO.doBuy(new TransactionBuilder().withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio1.getName()).withQty(3).build());
-        tradingBO.doBuy(new TransactionBuilder().withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio2.getName()).withQty(3).build());
-        tradingBO.doBuy(new TransactionBuilder().withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio3.getName()).withQty(3).build());
+        TransactionVO buyTransaction1 = doBuy(recordDate, tobeMergedStockCode, portfolio1, tradingBO);
+        TransactionVO buyTransaction2 = doBuy(recordDate, tobeMergedStockCode, portfolio2, tradingBO);
+        TransactionVO buyTransaction3 = doBuy(recordDate, tobeMergedStockCode, portfolio3, tradingBO);
 
         List<TradeVO> parentEntityTransactions = new PortfolioBO().getTransactionDetails(parentEntity, All.toString(), All.toString(), false);
         CompanyActionVO actionVO = new CompanyActionVO(AppConst.COMPANY_ACTION_TYPE.Merger, exDate, tobeMergedStockCode, parentCompanyRatio, baseRatio, parentEntity);
@@ -143,12 +168,15 @@ public class CompanyBOTest extends PMDBTestCase {
         List<TradeVO> mergedStockTransactions = new PortfolioBO().getTransactionDetails(parentEntity, All.toString(), All.toString(), false);
 
         mergedStockTransactions.removeAll(parentEntityTransactions);
-        Float totalNewStocks = 0f;
-        for (TradeVO mergedStockTransaction : mergedStockTransactions) {
-            totalNewStocks += mergedStockTransaction.getQty();
-        }
-        assertEquals(parentCompanyRatio, totalNewStocks.intValue());
+        Float expectedCost = buyTransaction1.getQty() * buyTransaction1.getPrice() + buyTransaction2.getQty() * buyTransaction2.getPrice() + buyTransaction3.getQty() * buyTransaction3.getPrice();
+        Float expectedBrokerage = buyTransaction1.getBrokerage() + buyTransaction2.getBrokerage() + buyTransaction3.getBrokerage();
+        verify(mergedStockTransactions, 1, expectedCost, expectedBrokerage);
+    }
 
+    private TransactionVO doBuy(PMDate recordDate, String tobeMergedStockCode, PortfolioDetailsVO portfolio1, TradingBO tradingBO) {
+        TransactionVO buyTransaction1 = new TransactionBuilder().withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio1.getName()).withQty(3).build();
+        tradingBO.doBuy(buyTransaction1);
+        return buyTransaction1;
     }
 
     public void testDoActionForMergerForPartialHolding() {
@@ -163,8 +191,10 @@ public class CompanyBOTest extends PMDBTestCase {
         PortfolioDetailsVO portfolio1 = DAOManager.getAccountDAO().getPorfolioList().get(0);
 
         TradingBO tradingBO = new TradingBO();
-        tradingBO.doBuy(new TransactionBuilder().withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio1.getName()).withQty(3).build());
-        tradingBO.doSell(new TransactionBuilder().withAction(AppConst.TRADINGTYPE.Sell).withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio1.getName()).withQty(1).build());
+        TransactionVO buy = new TransactionBuilder().withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio1.getName()).withQty(3).build();
+        tradingBO.doBuy(buy);
+        TransactionVO sell = new TransactionBuilder().withAction(AppConst.TRADINGTYPE.Sell).withDate(recordDate).withStockCode(tobeMergedStockCode).withPortfolio(portfolio1.getName()).withQty(1).build();
+        tradingBO.doSell(sell);
 
         List<TradeVO> parentEntityTransactions = new PortfolioBO().getTransactionDetails(parentEntity, All.toString(), All.toString(), false);
         CompanyActionVO actionVO = new CompanyActionVO(AppConst.COMPANY_ACTION_TYPE.Merger, exDate, tobeMergedStockCode, parentCompanyRatio, baseRatio, parentEntity);
@@ -175,6 +205,10 @@ public class CompanyBOTest extends PMDBTestCase {
         mergedStockTransactions.removeAll(parentEntityTransactions);
         assertEquals(2f, mergedStockTransactions.get(0).getQty());
 
+        Float expectedCost = (buy.getQty() - sell.getQty()) * buy.getPrice();
+        Float expectedBrokerage = (buy.getQty() - sell.getQty()) * buy.getBrokerage() / buy.getQty();
+
+        verify(mergedStockTransactions, 2, expectedCost, expectedBrokerage);
     }
 
     public void testDoActionForMergerToHandlingNewParentEntity() {

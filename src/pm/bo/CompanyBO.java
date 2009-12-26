@@ -142,6 +142,7 @@ public class CompanyBO {
     }
 
     private void performMerger(CompanyActionVO actionVO, float newQtyForTransaction, TransactionVO transactionVO) {
+        transactionVO.setPrice(transactionVO.getPrice() * transactionVO.getQty() / newQtyForTransaction);
         transactionVO.setQty(newQtyForTransaction);
         transactionVO.setStockCode(actionVO.getParentEntity());
     }
