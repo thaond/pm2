@@ -243,7 +243,11 @@
         <antcall target="check-failure"/>
     </target>
 
+    <target name="copy.properties">
+        <copyfile src="resources/pm.properties.hudson" dest="pm.properties" forceoverwrite="true"/>
+    </target>
+    
     <target name="all" depends="init, clean, compile.module.pm" description="build all"/>
-    <target name="hudson" depends="create-db, compile.module.pm, test" description="hudson"/>
+    <target name="hudson" depends="create-db, copy.properties, compile.module.pm, test" description="hudson"/>
 
 </project>
