@@ -98,7 +98,7 @@ public class MovAvgChart {
         if (forEodPage) {
             chartpanel.setMouseZoomable(true, false);
         } else {
-            chartpanel.setPreferredSize(new Dimension(400, 300));
+            chartpanel.setPreferredSize(new Dimension(700, 400));
         }
         return chartpanel;
     }

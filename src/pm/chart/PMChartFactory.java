@@ -15,11 +15,12 @@ import javax.swing.*;
 
 public class PMChartFactory {
 
-    public static JPanel createBarChart(CategoryDataset dataset, String title, String xAxisLabel, String yAxisLabel) {
+    public static JPanel createBarChart(CategoryDataset dataset, String title, String xAxisLabel, String yAxisLabel, boolean showXAxisValues) {
         JFreeChart jfreechart = ChartFactory.createBarChart3D(title, xAxisLabel, yAxisLabel, dataset, PlotOrientation.VERTICAL, true, true, false);
         CategoryPlot categoryplot = jfreechart.getCategoryPlot();
         categoryplot.setDomainGridlinesVisible(true);
         CategoryAxis categoryaxis = categoryplot.getDomainAxis();
+        categoryaxis.setVisible(showXAxisValues);
         categoryaxis.setCategoryLabelPositions(CategoryLabelPositions.createUpRotationLabelPositions(0.39269908169872414D));
         BarRenderer3D barrenderer3d = (BarRenderer3D) categoryplot.getRenderer();
         barrenderer3d.setDrawBarOutline(false);

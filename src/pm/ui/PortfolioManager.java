@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import pm.AppLoader;
 import pm.action.TaskManager;
 import pm.dao.derby.DBManager;
-import static pm.ui.UIHelper.*;
 import pm.util.AppConfig;
 import pm.util.enumlist.TASKNAME;
 
@@ -20,6 +19,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Hashtable;
 import java.util.Stack;
+
+import static pm.ui.UIHelper.*;
 
 public class PortfolioManager extends JFrame implements ActionListener {
     private static final long serialVersionUID = 1L;
@@ -78,7 +79,7 @@ public class PortfolioManager extends JFrame implements ActionListener {
             logger.error(e, e);
         }
 //        RefineryUtilities.centerFrameOnScreen(this);
-        pack();
+//        pack();
 
     }
 

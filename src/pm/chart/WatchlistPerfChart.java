@@ -18,7 +18,7 @@ public class WatchlistPerfChart {
 
     public static JPanel createChart(Vector data) {
         CategoryDataset dataset = createDataset(data);
-        return PMChartFactory.createBarChart(dataset, "Watchlist Performance", "Category", "Value");
+        return PMChartFactory.createBarChart(dataset, "Watchlist Performance", "Category", "Value", true);
     }
 
     private static CategoryDataset createDataset(Vector data) {

@@ -21,6 +21,7 @@ import pm.util.PMDate;
 import pm.vo.MovAvgVO;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.Vector;
 
@@ -81,17 +82,38 @@ public class WelcomeScreen extends JPanel {
 
     private Component getIndexChart() {
         JPanel panel = new JPanel();
-        new BoxLayout(panel, BoxLayout.PAGE_AXIS);
+        panel.setLayout(new GridBagLayout());
         PMDate currDate = new PMDate();
         PMDate yearBack = currDate.getDateAddingDays(-365);
         String stockCode = AppConfig.HP_CHART_STOCKCODE.Value;
         if (stockCode == null) stockCode = "^NSEI";
         String[] stockCodes = {stockCode};
         int[] days = {1, 50};
-        panel.add(createMovingAverageChart(currDate, yearBack, stockCodes, days));
-
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.gridy = 0;
+        gbc.gridx = 0;
+        gbc.gridwidth = 2;
+        panel.add(createMovingAverageChart(currDate, yearBack, stockCodes, days), gbc);
+        gbc.gridwidth = 1;
+        gbc.gridy++;
 //        panel.add(getFinancialAlertPanel());
-        panel.add(new IndexPerfChart().chart());
+        panel.add(indexPerformanceChart(), gbc);
+        gbc.gridx++;
+        gbc.anchor = GridBagConstraints.SOUTHEAST;
+        panel.add(getIndexQuotesPanel(), gbc);
+        return panel;
+    }
+
+    private JPanel getIndexQuotesPanel() {
+        JPanel panel = Alert.getIndexQuotesPanel();
+        panel.setBorder(new LineBorder(UIHelper.COLOR_BORDER, 1));
+        return panel;
+    }
+
+    private Component indexPerformanceChart() {
+        JPanel panel = new IndexPerfChart().chart();
+        panel.setPreferredSize(new Dimension(400, 400));
         return panel;
     }
 
@@ -107,11 +129,10 @@ public class WelcomeScreen extends JPanel {
         alertPaneContainer.add(alert.getWatchlistAlert());
         alertPaneContainer.add(alert.getCompanyActionAlert());
         alertPaneContainer.add(Alert.getActionAlert());
-        alertPaneContainer.add(Alert.getIndexQuotes());
         JPanel panel = new JPanel();
         panel.setBackground(Color.WHITE);
         panel.add(alertPaneContainer);
-        panel.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.LIGHT_GRAY));
+        panel.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, UIHelper.COLOR_BORDER));
         return panel;
     }
 }
