@@ -867,7 +867,7 @@ public class CompanyBO {
             return;
         }
         for (CompanyActionVO actionVO : actionList) {
-            float faceValue = getFaceValueAlteredToSplits(stockVO, actionList, actionVO.getExDate());
+            float faceValue = getFaceValueAlteredToSplits(stockVO, actionList, actionVO.getExDate().previous());
             if (actionVO.normalize(faceValue)) {
                 dao.updateCompanyAction(actionVO);
             }
