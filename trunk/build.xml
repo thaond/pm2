@@ -248,6 +248,6 @@
     </target>
     
     <target name="all" depends="init, clean, compile.module.pm" description="build all"/>
-    <target name="hudson" depends="copy.properties, create-db, compile.module.pm, test" description="hudson"/>
+    <target name="hudson" depends="copy.properties, test" description="hudson"/>
 
 </project>
