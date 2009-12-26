@@ -246,6 +246,7 @@
 
     <target name="copy.properties">
         <copyfile src="resources/pm.properties.hudson" dest="pm.properties" forceoverwrite="true"/>
+        <copyfile src="resources/SQLMapConfiguration.xml" dest="SQLMapConfiguration.xml" forceoverwrite="true"/>
     </target>
     
     <target name="all" depends="init, clean, compile.module.pm" description="build all"/>
