@@ -131,8 +131,7 @@
 
     <select id="getIndexList" resultMap="stockMapping"
             cacheModel="stock-list-cache">
-        select * from STOCKMASTER where LISTED=1 and SERIES in (1, 2) order by
-        STOCKCODE
+        select * from STOCKMASTER where LISTED=1 and SERIES in (1, 2) order by ID
     </select>
 
     <delete id="deleteStock" parameterClass="java.lang.Integer">
