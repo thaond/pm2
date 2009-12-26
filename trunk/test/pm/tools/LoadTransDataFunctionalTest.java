@@ -34,7 +34,7 @@ public class LoadTransDataFunctionalTest extends TestCase {
     }
 
     private void loadData() throws Exception {
-        final String dataDir = "/Projects/pm2/SampleData/";
+        final String dataDir = "SampleData/";
         LoadTransData loadTransData = new LoadTransData() {
             void loadStockList() {
                 BufferedReader bufferedReader = null;
