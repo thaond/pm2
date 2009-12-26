@@ -296,6 +296,14 @@ public class Alert extends JPanel {
     }
 
     public static Component getIndexQuotes() {
+        JPanel panel = getIndexQuotesPanel();
+
+        JXTaskPane pane = UIHelper.createTaskPane("Market Update");
+        addScrollPaneIfNeeded(panel, pane);
+        return pane;
+    }
+
+    public static JPanel getIndexQuotesPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(1, 1, 1, 1);
@@ -309,6 +317,7 @@ public class Alert extends JPanel {
         QuoteVO[] quotes = QuoteManager.getLiveQuote(stockCodes);
         for (int i = 0; i < quotes.length; i++) {
             QuoteVO quoteVO = quotes[i];
+            if (quoteVO.getLastPrice() == 0f) continue;
             try {
                 gbc.gridx = 0;
                 panel.add(UIHelper.createLabel(quoteVO.getStockVO().getCompanyName()), gbc);
@@ -320,10 +329,7 @@ public class Alert extends JPanel {
                 e.printStackTrace();
             }
         }
-
-        JXTaskPane pane = UIHelper.createTaskPane("Market Update");
-        addScrollPaneIfNeeded(panel, pane);
-        return pane;
+        return panel;
     }
 
     private static void addScrollPaneIfNeeded(JPanel panel, JXTaskPane pane) {

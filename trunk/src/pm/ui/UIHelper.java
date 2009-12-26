@@ -80,9 +80,11 @@ public class UIHelper {
     public static final Color COLOR_BG_TABEL = new java.awt.Color(169, 218, 232);
 
     public static final Color COLOR_BG_PROGRESSBAR = java.awt.Color.white;
+    public static final Color COLOR_BORDER = java.awt.Color.LIGHT_GRAY;
 
     public static final Color COLOR_BG_COMBOBOX = new java.awt.Color(238, 238,
             238);// java.awt.Color.white;
+
 
     public static final Color COLOR_FG_SPECIAL_LABEL = java.awt.Color.blue;
 

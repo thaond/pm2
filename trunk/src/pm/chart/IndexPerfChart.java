@@ -11,7 +11,7 @@ import pm.util.PMDate;
 import pm.vo.QuoteVO;
 import pm.vo.StockVO;
 
-import java.awt.*;
+import javax.swing.*;
 import java.util.List;
 
 /**
@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class IndexPerfChart {
 
-    public Component chart() {
+    public JPanel chart() {
         List<StockVO> indexList = Controller.getIndexCodes();
         PMDate enDate = new PMDate();
         PMDate stDate = enDate.getDateAddingDays(-30);
@@ -32,6 +32,6 @@ public class IndexPerfChart {
             dataset.addValue(perf, stockVO.getStockCode(), stockVO.getStockCode());
         }
 
-        return PMChartFactory.createBarChart(dataset, "Index Performance", "Index", "30 Days perf%");
+        return PMChartFactory.createBarChart(dataset, "Index Performance", "Index", "30 Days perf%", false);
     }
 }
