@@ -5,7 +5,6 @@
 package pm.bo;
 
 import builder.TransactionBuilder;
-import pm.dao.derby.DBManager;
 import pm.dao.ibatis.dao.*;
 import pm.util.AppConst;
 import pm.util.Helper;
@@ -32,6 +31,20 @@ public class CompanyBOTest extends PMDBTestCase {
         super(string, "CompanyActionTestData.xml");
     }
 
+    public void testIsDuplicateToHandleDividentAndSplitOnSameDay() {
+
+        CompanyBO companyBO = new CompanyBO();
+        String stockCode = "CODE2";
+        CompanyActionVO dividentAction = new CompanyActionVO(AppConst.COMPANY_ACTION_TYPE.Divident, new PMDate(24, 7, 2009), stockCode, 2.0f, 1.0f);
+        CompanyActionVO splitAction = new CompanyActionVO(AppConst.COMPANY_ACTION_TYPE.Split, new PMDate(24, 7, 2009), stockCode, 5f, 10f);
+        companyBO.doAction(dividentAction);
+        companyBO.doAction(splitAction);
+        new CompanyBO().normalizeDividents();
+        boolean isDuplicate = companyBO.isDuplicateAction(new CompanyActionVO(AppConst.COMPANY_ACTION_TYPE.Divident, new PMDate(24, 7, 2009), stockCode, 2.0f, 1.0f));
+        assertTrue(isDuplicate);
+
+    }
+
     public void testDoActionForMergerForNoHoldingQty() {
         String tobeMergedStockCode = "CODE3";
         String parentEntity = "CODE2";
@@ -53,7 +66,7 @@ public class CompanyBOTest extends PMDBTestCase {
         int times = 3;
 
         String tobeMergedStockCode = "CODE3";
-        new TradingBO().doBuy(new TransactionBuilder().withDate(exDate.previous()).withStockCode(tobeMergedStockCode).withQty( baseRatio * times).build());
+        new TradingBO().doBuy(new TransactionBuilder().withDate(exDate.previous()).withStockCode(tobeMergedStockCode).withQty(baseRatio * times).build());
         String parentEntity = "CODE2";
         List<TradeVO> parentEntityTransactions = new PortfolioBO().getTransactionDetails(parentEntity, All.toString(), All.toString(), false);
         CompanyActionVO actionVO = new CompanyActionVO(AppConst.COMPANY_ACTION_TYPE.Merger, exDate, tobeMergedStockCode, parentCompanyRatio, baseRatio, parentEntity);
@@ -68,8 +81,8 @@ public class CompanyBOTest extends PMDBTestCase {
         mergedStockTransactions.removeAll(parentEntityTransactions);
 
         TradeVO mergedTransaction = mergedStockTransactions.get(0);
-        
-        assertEquals(parentCompanyRatio * times, ((Float)mergedTransaction.getQty()).intValue());
+
+        assertEquals(parentCompanyRatio * times, ((Float) mergedTransaction.getQty()).intValue());
     }
 
     public void testDoActionForMergerToHandleAcrossPortfolio() {
@@ -303,11 +316,11 @@ public class CompanyBOTest extends PMDBTestCase {
 
         NewQtyHelper qtyHelper = new NewQtyHelper(1f, buyTransactions, buyIDHoldingQtyOnRecordDate);
         float tradingAc1TotalQty = buyTransactions.get(0).getQty() + buyTransactions.get(1).getQty() + buyTransactions.get(2).getQty();
-        float tradingAc2TotalQty = buyTransactions.get(3).getQty() - 1 ;
+        float tradingAc2TotalQty = buyTransactions.get(3).getQty() - 1;
         assertEquals(tradingAc1TotalQty, qtyHelper.findNewQty("TradingAc1", 17f));
         assertEquals(tradingAc2TotalQty, qtyHelper.findNewQty("TradingAc2", 21f));
 
-        qtyHelper = new NewQtyHelper(1/5f, buyTransactions, buyIDHoldingQtyOnRecordDate);
+        qtyHelper = new NewQtyHelper(1 / 5f, buyTransactions, buyIDHoldingQtyOnRecordDate);
 
         assertEquals(3f, qtyHelper.findNewQty("TradingAc1", 17f));
         assertEquals(4f, qtyHelper.findNewQty("TradingAc2", 21f));
