@@ -110,7 +110,7 @@ public class CompanyActionDAO extends SqlMapDaoTemplate implements ICompanyActio
 
     public void updateStockId(int fromStockId, int toStockId) {
         super.startBatch();
-        String[] actionTables = {"CA_DIVIDENT", "CA_SPLIT", "CA_BONUS", "CA_DEMERGERBASE", "CA_DEMERGERLIST"};
+        String[] actionTables = {"CA_DIVIDENT", "CA_SPLIT", "CA_BONUS", "CA_DEMERGERBASE", "CA_DEMERGERLIST", "CA_MERGER"};
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("from", fromStockId);
         params.put("to", toStockId);
@@ -118,6 +118,7 @@ public class CompanyActionDAO extends SqlMapDaoTemplate implements ICompanyActio
             params.put("table", tableName);
             super.update("updateStockID", params);
         }
+        super.update("updateParentStockID", params);
         super.executeBatch();
     }
 }

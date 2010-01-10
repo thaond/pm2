@@ -140,6 +140,10 @@
         UPDATE $table$ SET STOCKID=#to# WHERE STOCKID=#from#
     </update>
 
+    <update id="updateParentStockID" parameterClass="java.util.Map">
+        UPDATE CA_MERGER SET PARENTID=#to# WHERE PARENTID=#from#
+    </update>
+
     <insert id="insertMerger" parameterClass="pm.vo.CompanyActionVO">
         INSERT INTO CA_MERGER (EXDATE, BASERATIO, STOCKID, PARENTID, PARENTRATIO) VALUES (#exDateVal#,#base#,
         (SELECT ID FROM STOCKMASTER WHERE STOCKCODE=#stockCode# AND LISTED = 1),

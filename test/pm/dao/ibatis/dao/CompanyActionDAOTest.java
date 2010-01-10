@@ -110,8 +110,20 @@ public class CompanyActionDAOTest extends PMDBTestCase {
         }
 
         verifyDemergerList(companyActionVOs, code16);
+        verifyMergerParentIds(companyActionVOs, code16);
         assertEquals(0, actionDAO.getCompanyAction(code16New).size());
         assertEquals(originalCASize + duplicateCASize, DAOManager.getCompanyActionDAO().getCompanyAction(code16).size());
+    }
+
+    private void verifyMergerParentIds(List<CompanyActionVO> companyActionVOs, String stockCode) {
+        boolean verified = false;
+        for (CompanyActionVO companyActionVO : companyActionVOs) {
+            if (companyActionVO.getAction() == AppConst.COMPANY_ACTION_TYPE.Merger) {
+                verified = true;
+                assertEquals(stockCode, companyActionVO.getParentEntity());
+            }
+        }
+        assertTrue(verified);
     }
 
     private void verifyDemergerList(List<CompanyActionVO> companyActionVOs, String stockCode) {

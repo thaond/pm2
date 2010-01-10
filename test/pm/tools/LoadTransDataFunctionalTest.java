@@ -29,7 +29,7 @@ public class LoadTransDataFunctionalTest extends TestCase {
     public void testLoadData() throws Exception {
         AppLoader.initConsoleLogger();
         loadData();
-        validateResult(AppConst.REPORT_TYPE.All.name(), AppConst.REPORT_TYPE.All.name(), 950424.25f, 1581853.75f, 631429.5f, 153120.84f, 35970.6f, 820520.81f);
+        validateResult(AppConst.REPORT_TYPE.All.name(), AppConst.REPORT_TYPE.All.name(), 950424.25f, 1581853.75f, 631429.5f, 153120.84f, 35970.6f, 820520.75f);
         validateResult(AppConst.REPORT_TYPE.All.name(), "Thiyagu", 850579.25f, 1485465f, 634885.81f, 80699.84f, 34035.6f, 749621.25f);
     }
 
