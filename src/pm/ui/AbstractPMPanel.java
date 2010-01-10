@@ -75,12 +75,13 @@ public abstract class AbstractPMPanel extends JPanel implements ActionListener {
     /* (non-Javadoc)
       * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
       */
+
     public void actionPerformed(ActionEvent e) {
         doAction(e.getActionCommand());
     }
 
-    protected JButton getSubmitButton() {
-        JButton saveButton = UIHelper.createButton("Submit");
+    protected JButton getActionButton(String text) {
+        JButton saveButton = UIHelper.createButton(text);
         saveButton.addActionListener(this);
         return saveButton;
     }

@@ -5,10 +5,11 @@
 package pm.ui;
 
 import pm.action.Controller;
-import static pm.ui.UIHelper.*;
 
 import javax.swing.*;
 import java.awt.*;
+
+import static pm.ui.UIHelper.*;
 
 /**
  * @author thiyagu1
@@ -38,7 +39,7 @@ public class PortfolioReport extends AbstractSplitPanel {
         gbc.gridx = 1;
         panel.add(buildPortfolioList(portfolioList, false), gbc);
         gbc.gridx = 2;
-        panel.add(getSubmitButton(), gbc);
+        panel.add(getActionButton("Submit"), gbc);
         gbc.gridx = 3;
         gbc.insets = new Insets(2, 100, 2, 2);
         panel.add(getPrintSavePanel(editorPane), gbc);
@@ -49,6 +50,7 @@ public class PortfolioReport extends AbstractSplitPanel {
     /* (non-Javadoc)
       * @see pm.ui.AbstractPMPanel#doDisplay(java.lang.Object, java.lang.String)
       */
+
     protected void doDisplay(Object retVal, String actionCommand) {
         if (retVal != null) {
             String data = (String) retVal;
@@ -74,6 +76,7 @@ public class PortfolioReport extends AbstractSplitPanel {
     /* (non-Javadoc)
       * @see pm.ui.AbstractPMPanel#getData(java.lang.String)
       */
+
     protected Object getData(String actionCommand) {
         return Controller.getPortfolioEODReport(portfolioList.getSelectedItem().toString());
     }

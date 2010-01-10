@@ -10,10 +10,7 @@
 package pm.ui;
 
 import pm.action.Controller;
-import static pm.ui.UIHelper.*;
 import pm.util.AppConst;
-import static pm.util.AppConst.FUND_TRANSACTION_REASON;
-import static pm.util.AppConst.FUND_TRANSACTION_TYPE;
 import pm.util.DropDownWrapper;
 import pm.vo.FundTransactionVO;
 import pm.vo.PortfolioDetailsVO;
@@ -26,6 +23,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.util.Vector;
+
+import static pm.ui.UIHelper.*;
+import static pm.util.AppConst.FUND_TRANSACTION_REASON;
+import static pm.util.AppConst.FUND_TRANSACTION_TYPE;
 
 /**
  * @author Thiyagu
@@ -68,7 +69,7 @@ public class FundTransaction extends AbstractPMPanel {
         gbc.gridy++;
         gbc.gridx = 1;
         gbc.anchor = GridBagConstraints.WEST;
-        add(getSubmitButton(), gbc);
+        add(getActionButton("Submit"), gbc);
     }
 
     private Component getTransactionTypePanel() {

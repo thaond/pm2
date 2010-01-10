@@ -2,11 +2,13 @@ package pm.vo;
 
 import pm.util.AppConst;
 import pm.util.PMDate;
+import pm.util.enumlist.ICICITransactionStatus;
 
 public class ICICITransaction extends TransactionVO {
 
     private String orderRef;
     private String iciciCode;
+    private ICICITransactionStatus status;
 
     public ICICITransaction() {
 
@@ -16,6 +18,7 @@ public class ICICITransaction extends TransactionVO {
         super(date, null, action, qty, price, brokerage, null, null, dayTrading);
         this.iciciCode = iciciCode;
         this.orderRef = orderRef;
+        this.status = ICICITransactionStatus.Pending;
     }
 
     public String getOrderRef() {
@@ -34,6 +37,20 @@ public class ICICITransaction extends TransactionVO {
         this.iciciCode = iciciCode;
     }
 
+
+    public ICICITransactionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ICICITransactionStatus status) {
+        this.status = status;
+    }
+
+    public void mapTransaction(String portfolio) {
+        super.setPortfolio(portfolio);
+        this.status = ICICITransactionStatus.AutoMapped;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -42,8 +59,9 @@ public class ICICITransaction extends TransactionVO {
 
         ICICITransaction that = (ICICITransaction) o;
 
-        if (!iciciCode.equals(that.iciciCode)) return false;
-        if (!orderRef.equals(that.orderRef)) return false;
+        if (iciciCode != null ? !iciciCode.equals(that.iciciCode) : that.iciciCode != null) return false;
+        if (orderRef != null ? !orderRef.equals(that.orderRef) : that.orderRef != null) return false;
+        if (status != that.status) return false;
 
         return true;
     }
@@ -51,8 +69,9 @@ public class ICICITransaction extends TransactionVO {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + orderRef.hashCode();
-        result = 31 * result + iciciCode.hashCode();
+        result = 31 * result + (orderRef != null ? orderRef.hashCode() : 0);
+        result = 31 * result + (iciciCode != null ? iciciCode.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
     }
 

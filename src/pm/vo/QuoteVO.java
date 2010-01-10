@@ -277,6 +277,7 @@ public class QuoteVO {
       *
       * @see java.lang.Object#hashCode()
       */
+
     @Override
     public int hashCode() {
         int i1 = date.hashCode() << 16;
@@ -299,7 +300,7 @@ public class QuoteVO {
         QuoteVO target = (QuoteVO) obj;
 
         boolean flag = this.date.equals(target.date)
-                && this.stockVO.getStockCode().equals(target.stockVO.getStockCode())
+                && this.stockVO.getStock().equals(target.stockVO.getStock())
                 && this.lastPrice == target.lastPrice
                 && this.open == target.open && this.high == target.high
                 && this.low == target.low && this.prevClose == target.prevClose

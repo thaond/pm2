@@ -45,7 +45,7 @@ public abstract class AbstractViewTransaction extends AbstractPMPanel {
 
     private Component getSplitPane() {
         splitPane = UIHelper.createSplitPane(JSplitPane.VERTICAL_SPLIT);
-        splitPane.setTopComponent(UIFactory.createTopPanel(tradeAcList, portfolioList, getSubmitButton()));
+        splitPane.setTopComponent(UIFactory.createTopPanel(tradeAcList, portfolioList, getActionButton("Submit")));
         splitPane.setBottomComponent(UIHelper.createChildPanel());
         return splitPane;
     }

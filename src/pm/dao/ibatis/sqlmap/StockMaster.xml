@@ -45,8 +45,8 @@
         STOCKID=ID and STOCKCODE=#value# and LISTED=1
     </select>
 
-    <update id="updateICICICodeMapping" parameterClass="java.util.Map">
-        UPDATE ICICI_STOCKCODE_MAPPING SET STOCKID = #stockID# WHERE ICICICODE = #iciciCode#
+    <update id="updateICICICodeMapping" parameterClass="pm.vo.ICICICodeMapping">
+        UPDATE ICICI_STOCKCODE_MAPPING SET STOCKID = #stockId# WHERE ICICICODE = #iciciCode#
     </update>
 
     <insert id="insertICICICodeIfMissing" parameterClass="java.lang.String">
@@ -67,7 +67,7 @@
         <property name="size" value="1500"/>
     </cacheModel>
 
-    <select id="getStockByID" parameterClass="java.lang.String"
+    <select id="getStockByID" parameterClass="java.lang.Integer"
             resultMap="stockMapping"
             cacheModel="stockByID-details-cache">
         SELECT * FROM STOCKMASTER WHERE ID=#value#
@@ -144,7 +144,16 @@
 
     <select id="iCICICodeMapping" resultClass="java.util.HashMap">
         SELECT ICICICODE, STOCKMASTER.STOCKCODE AS STOCKCODE FROM ICICI_STOCKCODE_MAPPING
-        LEFT OUTER JOIN STOCKMASTER ON ICICI_STOCKCODE_MAPPING.STOCKID = STOCKMASTER.ID
+        LEFT OUTER JOIN STOCKMASTER ON ICICI_STOCKCODE_MAPPING.STOCKID = STOCKMASTER.ID ORDER BY ICICICODE
+    </select>
+
+    <resultMap id="rm-iciciCodeMapping" class="pm.vo.ICICICodeMapping">
+        <result property="iciciCode" column="ICICICODE"/>
+        <result property="stock" column="STOCKID" select="getStockByID"/>
+    </resultMap>
+
+    <select id="getIciciCodeMappings" resultMap="rm-iciciCodeMapping">
+        SELECT * FROM ICICI_STOCKCODE_MAPPING
     </select>
 
 </sqlMap>

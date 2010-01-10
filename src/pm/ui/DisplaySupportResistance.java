@@ -2,7 +2,6 @@ package pm.ui;
 
 import pm.action.Controller;
 import pm.datamining.vo.SupportResistanceVO;
-import static pm.ui.UIHelper.*;
 import pm.ui.table.TableCellDisplay;
 
 import javax.swing.*;
@@ -10,6 +9,8 @@ import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.text.NumberFormat;
 import java.util.Vector;
+
+import static pm.ui.UIHelper.*;
 
 public class DisplaySupportResistance extends AbstractSplitPanel {
 
@@ -51,7 +52,7 @@ public class DisplaySupportResistance extends AbstractSplitPanel {
         buildFloatField(weightageField, 0f, 5, "Minimum Weightage");
         panel.add(weightageField, gbc);
         gbc.gridx = 6;
-        panel.add(getSubmitButton(), gbc);
+        panel.add(getActionButton("Submit"), gbc);
 
         return panel;
     }

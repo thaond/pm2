@@ -27,7 +27,7 @@ public class FinanceResultConverter {
                 }
             }
             if (!processedFinancialData.isEmpty()) {
-//                companyDAO.storeProcessedFinancialData(stockVO.getStockCode(), processedFinancialData);
+//                companyDAO.storeProcessedFinancialData(stockVO.getStock(), processedFinancialData);
                 throw new RuntimeException("Not implemented");
             }
         }

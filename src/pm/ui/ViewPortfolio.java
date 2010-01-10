@@ -5,7 +5,6 @@
 package pm.ui;
 
 import pm.action.Controller;
-import static pm.ui.UIHelper.*;
 import pm.ui.table.*;
 import pm.util.AppConst.REPORT_TYPE;
 import pm.vo.ConsolidatedTradeVO;
@@ -15,6 +14,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import static pm.ui.UIHelper.*;
 
 /**
  * @author thiyagu1
@@ -48,7 +49,7 @@ public class ViewPortfolio extends AbstractPMPanel {
 
     private Component getSplitPane() {
         splitPane = createSplitPane(JSplitPane.VERTICAL_SPLIT);
-        Component topPanel = UIFactory.createTopPanel(tradeAcList, portfolioList, typelist, time, getSubmitButton());
+        Component topPanel = UIFactory.createTopPanel(tradeAcList, portfolioList, typelist, time, getActionButton("Submit"));
         splitPane.setTopComponent(topPanel);
         splitPane.setBottomComponent(buildBottomPanel());
         return splitPane;
@@ -73,6 +74,7 @@ public class ViewPortfolio extends AbstractPMPanel {
     /* (non-Javadoc)
       * @see pm.ui.AbstractPMPanel#doDisplay(java.lang.Object)
       */
+
     protected void doDisplay(Object retVal, String actionCommand) {
         if (retVal == null) return;
         java.util.List<ConsolidatedTradeVO> tradeVOs = (java.util.List<ConsolidatedTradeVO>) retVal;
@@ -123,6 +125,7 @@ public class ViewPortfolio extends AbstractPMPanel {
     /* (non-Javadoc)
       * @see pm.ui.AbstractPMPanel#getData()
       */
+
     protected Object getData(String actionCommand) {
         String tradeAc = tradeAcList.getSelectedItem().toString();
         String portfolio = portfolioList.getSelectedItem().toString();

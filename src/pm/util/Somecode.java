@@ -323,7 +323,7 @@ public class Somecode {
 //				StringBuffer sb = new StringBuffer();
 //				sb.append("db.update(\"INSERT INTO TRADE(stockCode, purchaseDate, qty, purchasePrice, brokerage," +
 //			            "saleDate, salePrice, DividentFunction, weightage, portfolioID, TradingAcID ) VALUES(");
-//				sb.append("\'"+tradeVO.getStockCode()+"\',");
+//				sb.append("\'"+tradeVO.getStock()+"\',");
 //				sb.append(PMDateFormatter.formatYYYYMMDD(tradeVO.getPurchaseDate())).append(_DELIMITER);
 //				sb.append(tradeVO.getQty()).append(_DELIMITER);
 //				sb.append(tradeVO.getPurchasePrice()).append(_DELIMITER);
@@ -487,7 +487,7 @@ public class Somecode {
         CompanyDAO companyDAO = new CompanyDAO();
         for (Vector<CompanyActionVO> actionVOs : logDetails.values()) {
             for (CompanyActionVO actionVO : actionVOs) {
-                Hashtable<PMDate, Vector<CompanyActionVO>> downloadedData = companyDAO.getActionData(actionVO.getStockCode());
+                Hashtable<PMDate, Vector<CompanyActionVO>> downloadedData = companyDAO.getActionData(actionVO.getStock());
                 if (downloadedData == null) {
                     downloadedData = new Hashtable<PMDate, Vector<CompanyActionVO>>();
                 }
@@ -497,7 +497,7 @@ public class Somecode {
                 }
                 downloadedVOs.add(actionVO);
                 downloadedData.put(actionVO.getExDate(), downloadedVOs);
-                companyDAO.writeActionData(actionVO.getStockCode(), downloadedData);
+                companyDAO.writeActionData(actionVO.getStock(), downloadedData);
             }
         }
     }
@@ -513,7 +513,7 @@ public class Somecode {
             public int compare(CompanyActionVO o1, CompanyActionVO o2) {
                 int retVal = o1.getExDate().compareTo(o2.getExDate());
                 if (retVal == 0) {
-                    retVal = o1.getStockCode().compareTo(o2.getStockCode());
+                    retVal = o1.getStock().compareTo(o2.getStock());
                     if (retVal == 0) {
                         return o1.getAction().compareTo(o2.getAction());
                     } else {
@@ -527,7 +527,7 @@ public class Somecode {
         });
         for (Vector<CompanyActionVO> actionVOs : logDetails.values()) {
             for (CompanyActionVO actionVO : actionVOs) {
-                Hashtable<PMDate, Vector<CompanyActionVO>> downloadedData = companyDAO.getActionData(actionVO.getStockCode());
+                Hashtable<PMDate, Vector<CompanyActionVO>> downloadedData = companyDAO.getActionData(actionVO.getStock());
                 if (downloadedData == null) {
                     newSet.add(actionVO);
                     continue;
@@ -555,7 +555,7 @@ public class Somecode {
     }
 
     static String getUniqueKey(CompanyActionVO actionVO) {
-        return actionVO.getExDate() + actionVO.getStockCode()
+        return actionVO.getExDate() + actionVO.getStock()
                 + actionVO.getAction();
     }
 */
@@ -572,13 +572,13 @@ public class Somecode {
                 Vector<CompanyActionVO> list = (Vector<CompanyActionVO>) object;
                 for (CompanyActionVO actionVO : list) {
 
-                    Hashtable<PMDate, Vector<CompanyActionVO>> actionData = companyDAO.getActionData(actionVO.getStockCode());
+                    Hashtable<PMDate, Vector<CompanyActionVO>> actionData = companyDAO.getActionData(actionVO.getStock());
                     if (!isExists(actionVO, actionData)) {
                         System.out.print(actionVO);
 //						Vector<CompanyActionVO> vector = new Vector<CompanyActionVO>();
 //						vector.add(actionVO);
 //						actionData.put(actionVO.getExDate(), vector);
-//						companyDAO.writeActionData(actionVO.getStockCode(), actionData);
+//						companyDAO.writeActionData(actionVO.getStock(), actionData);
 
                     }
                 }

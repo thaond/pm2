@@ -2,12 +2,13 @@ package pm.ui;
 
 import pm.action.QuoteManager;
 import pm.ui.table.QuoteTableDisplay;
-import static pm.ui.table.QuoteTableDisplay.*;
 import pm.vo.QuoteVO;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+
+import static pm.ui.table.QuoteTableDisplay.*;
 
 
 /**
@@ -46,7 +47,7 @@ public class EODQuote extends AbstractSplitPanel {
         gbc.gridy = 0;
         UIHelper.addComponentWithTitle(panel, gbc, "Date", dateButton);
         gbc.gridx = 2;
-        panel.add(getSubmitButton(), gbc);
+        panel.add(getActionButton("Submit"), gbc);
         return panel;
     }
 }

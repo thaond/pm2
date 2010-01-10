@@ -6,13 +6,14 @@ package pm.ui;
 
 import pm.action.Controller;
 import pm.chart.WatchlistPerfChart;
-import static pm.ui.UIHelper.*;
 import pm.vo.WatchlistVO;
 
 import javax.swing.*;
 import java.awt.*;
 import java.text.NumberFormat;
 import java.util.Vector;
+
+import static pm.ui.UIHelper.*;
 
 /**
  * @author thiyagu1
@@ -46,7 +47,7 @@ public class WatchlistPerf extends AbstractSplitPanel {
         panel.add(buildIntField(noDays, "0", 5, "Enter no of Days"), gbc);
         gbc.gridx = 4;
         gbc.insets = new Insets(2, 20, 2, 2);
-        panel.add(getSubmitButton(), gbc);
+        panel.add(getActionButton("Submit"), gbc);
         return panel;
     }
 
@@ -69,6 +70,7 @@ public class WatchlistPerf extends AbstractSplitPanel {
     /* (non-Javadoc)
     * @see pm.ui.AbstractPMPanel#doDisplay(java.lang.Object, java.lang.String)
     */
+
     protected void doDisplay(Object retVal, String actionCommand) {
         if (retVal != null) {
             Vector reportVal = (Vector) retVal;
@@ -80,6 +82,7 @@ public class WatchlistPerf extends AbstractSplitPanel {
     /* (non-Javadoc)
     * @see pm.ui.AbstractPMPanel#getData(java.lang.String)
     */
+
     protected Object getData(String actionCommand) {
         try {
             if (namelistField.getSelectedItem() == null) return null;

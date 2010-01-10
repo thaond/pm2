@@ -5,7 +5,6 @@
 package pm.ui;
 
 import pm.action.Controller;
-import static pm.ui.UIHelper.*;
 import pm.ui.table.*;
 import pm.vo.TradeVO;
 
@@ -17,6 +16,8 @@ import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+
+import static pm.ui.UIHelper.*;
 
 
 public class ViewTransaction extends AbstractPMPanel {
@@ -52,7 +53,7 @@ public class ViewTransaction extends AbstractPMPanel {
 
     private Component getSplitPane() {
         splitPane = createSplitPane(JSplitPane.VERTICAL_SPLIT);
-        Component topPanel = UIFactory.createTopPanel(tradeAcList, portfolioList, inclDayTrading, getSubmitButton());
+        Component topPanel = UIFactory.createTopPanel(tradeAcList, portfolioList, inclDayTrading, getActionButton("Submit"));
         splitPane.setTopComponent(topPanel);
         splitPane.setBottomComponent(buildBottomPanel());
         return splitPane;

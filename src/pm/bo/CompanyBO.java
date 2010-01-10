@@ -318,7 +318,7 @@ public class CompanyBO {
                         }
                         actionDAO.insertActionMapping(actionVO.getAction(), new ActionMapping(actionVO.getId(), newBuyId));
                         for (TransactionVO transactionVO : childEntity) {
-//                            stockDAO.insertStock(new StockVO(transactionVO.getStockCode()));
+//                            stockDAO.insertStock(new StockVO(transactionVO.getStock()));
                             int childCompanyId = transactionDAO.insertTransaction(transactionVO);
 //                            actionDAO.insertActionMapping(actionVO.getAction(), new ActionMapping(actionVO.getId(), childCompanyId));
                         }
@@ -333,7 +333,7 @@ public class CompanyBO {
                         DAOManager.getDaoManager().startTransaction();
                         transactionDAO.updateTransaction(buyTransaction);
                         for (TransactionVO transactionVO : childEntity) {
-//                            stockDAO.insertStock(new StockVO(transactionVO.getStockCode()));
+//                            stockDAO.insertStock(new StockVO(transactionVO.getStock()));
                             int childCompanyId = transactionDAO.insertTransaction(transactionVO);
                         }
                         DAOManager.getDaoManager().commitTransaction();

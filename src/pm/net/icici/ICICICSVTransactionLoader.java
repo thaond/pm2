@@ -48,7 +48,7 @@ public class ICICICSVTransactionLoader {
         PMDate date = PMDateFormatter.parseDD_Mmm_YY(cells[0]);
         final AppConst.TRADINGTYPE action = AppConst.TRADINGTYPE.valueOf(cells[2].trim());
         return new ICICITransaction(date, cells[1].trim(), action, parseFloat(cells[3]), parseFloat(cells[4]),
-                parseFloat(cells[6]), !cells[10].startsWith("IN"), cells[7].trim());
+                parseFloat(cells[6]), !cells[10].trim().startsWith("IN"), cells[7].trim());
     }
 
     Float parseFloat(String value) {
