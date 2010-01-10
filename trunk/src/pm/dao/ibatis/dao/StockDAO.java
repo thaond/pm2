@@ -6,9 +6,7 @@ import org.apache.log4j.Logger;
 import pm.vo.ICICICodeMapping;
 import pm.vo.StockVO;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Date: 22-Jul-2006
@@ -61,10 +59,7 @@ public class StockDAO extends SqlMapDaoTemplate implements IStockDAO {
     }
 
     public void updateICICICode(StockVO stockVO, String iciciCode) {
-        Map params = new HashMap();
-        params.put("stockID", stockVO.getId());
-        params.put("iciciCode", iciciCode);
-        super.update("updateICICICodeMapping", params);
+        super.update("updateICICICodeMapping", new ICICICodeMapping(iciciCode, stockVO));
     }
 
     public String yahooCode(String stockCode) {
