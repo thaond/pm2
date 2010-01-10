@@ -214,6 +214,7 @@ public class LoadTransData {
             tradingAccList.remove(tradingAc.getName());
         }
         for (String accountName : tradingAccList) {
+            System.out.println("Creating Trading acc : " + accountName);
             TradingBO.saveTradingAc(new TradingAccountVO(accountName, getBrokerageType(accountName)));
         }
     }
