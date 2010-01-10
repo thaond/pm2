@@ -11,10 +11,10 @@ import java.util.List;
  * Date: Nov 15, 2006
  * Time: 8:48:06 PM
  */
-public class SomeTest extends PMDBTestCase {
+public class SomeTest extends PMDBCompositeDataSetTestCase {
 
     public SomeTest(String name) {
-        super(name, "SomeTestData.xml");
+        super(name, "EmptyData.xml", "SomeTestData.xml");
     }
 
     public void testGetHoldingDetailsForStockWithoutAnySellTransaction() {
