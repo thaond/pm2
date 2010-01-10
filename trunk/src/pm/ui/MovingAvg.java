@@ -2,7 +2,6 @@ package pm.ui;
 
 import pm.action.Controller;
 import pm.chart.MovAvgChart;
-import static pm.ui.UIHelper.*;
 import pm.util.Helper;
 import pm.vo.MovAvgVO;
 
@@ -12,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.util.Vector;
+
+import static pm.ui.UIHelper.*;
 
 public class MovingAvg extends AbstractPMPanel {
     private static final long serialVersionUID = 1L;
@@ -125,7 +126,7 @@ public class MovingAvg extends AbstractPMPanel {
         gbc.gridheight = 1;
         panel.add(dispPrice, gbc);
         gbc.gridy = 2;
-        panel.add(getSubmitButton(), gbc);
+        panel.add(getActionButton("Submit"), gbc);
         return panel;
     }
 

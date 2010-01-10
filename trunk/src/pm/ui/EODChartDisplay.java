@@ -2,8 +2,6 @@ package pm.ui;
 
 import pm.action.Controller;
 import pm.chart.EODChartPanel;
-import static pm.ui.UIHelper.*;
-import static pm.util.AppConst.TIMEPERIOD;
 import pm.util.DropDownWrapper;
 import pm.vo.EODChartVO;
 import pm.vo.PortfolioDetailsVO;
@@ -12,6 +10,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
+import static pm.ui.UIHelper.*;
+import static pm.util.AppConst.TIMEPERIOD;
 
 public class EODChartDisplay extends AbstractPMPanel {
     private static final long serialVersionUID = 1L;
@@ -115,7 +116,7 @@ public class EODChartDisplay extends AbstractPMPanel {
         buildTimePeriod();
         panel.add(timePeriod, gbc);
         gbc.gridx++;
-        panel.add(getSubmitButton(), gbc);
+        panel.add(getActionButton("Submit"), gbc);
 
         return panel;
     }

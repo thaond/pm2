@@ -2,14 +2,15 @@ package pm.ui;
 
 import pm.action.Controller;
 import pm.chart.FinancialChart;
-import static pm.ui.UIHelper.buildChildPanel;
-import static pm.ui.UIHelper.createSplitPane;
 import pm.util.AppConst.CORP_RESULT_TIMELINE;
 import pm.vo.CompanyPerfVO;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Vector;
+
+import static pm.ui.UIHelper.buildChildPanel;
+import static pm.ui.UIHelper.createSplitPane;
 
 public class CompanyGrowthChartDisplay extends AbstractPMPanel {
 
@@ -37,7 +38,7 @@ public class CompanyGrowthChartDisplay extends AbstractPMPanel {
 
     private Component getSplitPane() {
         splitPane = createSplitPane(JSplitPane.VERTICAL_SPLIT);
-        splitPane.setTopComponent(UIFactory.createTopPanelWithStockList(stockField, getSubmitButton()));
+        splitPane.setTopComponent(UIFactory.createTopPanelWithStockList(stockField, getActionButton("Submit")));
         splitPane.setBottomComponent(buildBottomPanel());
         splitPane.setMinimumSize(new Dimension(UIHelper.WIDTH, UIHelper.HEIGHT));
         return splitPane;

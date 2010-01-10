@@ -7,7 +7,6 @@ package pm.ui;
 import pm.action.Controller;
 import pm.action.QuoteManager;
 import pm.tools.BrokerageCalculator;
-import static pm.ui.UIHelper.*;
 import pm.util.AppConst.TRADINGTYPE;
 import pm.util.DropDownWrapper;
 import pm.vo.*;
@@ -24,6 +23,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
+
+import static pm.ui.UIHelper.*;
 
 public class SecurityTransaction extends AbstractPMPanel {
 
@@ -79,7 +80,7 @@ public class SecurityTransaction extends AbstractPMPanel {
         gbc.gridy++;
         gbc.gridx = 1;
         gbc.anchor = GridBagConstraints.CENTER;
-        add(getSubmitButton(), gbc);
+        add(getActionButton("Submit"), gbc);
     }
 
     private void addStockListUpdateListener() {
@@ -169,7 +170,7 @@ public class SecurityTransaction extends AbstractPMPanel {
         String action = bg.getSelection().getActionCommand();
         float brok = new BrokerageCalculator().getBrokerage(
                 (TradingAccountVO) ((DropDownWrapper) tradeAcList.getSelectedItem()).getAccount(), TRADINGTYPE
-                .valueOf(action), dateField.pmDate(), qty, price,
+                        .valueOf(action), dateField.pmDate(), qty, price,
                 dayTrading.isSelected());
         brokField.setValue(new Float(brok));
 
@@ -207,6 +208,7 @@ public class SecurityTransaction extends AbstractPMPanel {
       *
       * @see pm.ui.AbstractPMPanel#doDisplay(java.lang.Object)
       */
+
     protected void doDisplay(Object retVal, String actionCommand) {
 
     }
@@ -216,6 +218,7 @@ public class SecurityTransaction extends AbstractPMPanel {
       *
       * @see pm.ui.AbstractPMPanel#getData()
       */
+
     protected Object getData(String actionCommand) {
         if (validateForm()) {
             String action = bg.getSelection().getActionCommand();
@@ -226,10 +229,10 @@ public class SecurityTransaction extends AbstractPMPanel {
 
                 TransactionVO transVO = new TransactionVO(dateField.pmDate(),
                         stockField.getSelectedItem().toString(), TRADINGTYPE
-                        .valueOf(action), qty, price, brok,
+                                .valueOf(action), qty, price, brok,
                         portfolioList.getSelectedItem().toString(), tradeAcList
-                        .getSelectedItem().toString(), dayTrading
-                        .isSelected());
+                                .getSelectedItem().toString(), dayTrading
+                                .isSelected());
                 if (Controller.isDuplicate(transVO)) {
                     int i = JOptionPane.showOptionDialog(PortfolioManager.getInstance(), "Same transaction exists, enter again?", "Confirmation", JOptionPane.CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
                             null, new Object[]{"Yes", "No"}, "No");

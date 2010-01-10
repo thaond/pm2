@@ -6,11 +6,12 @@ package pm.ui;
 
 import pm.action.Controller;
 import pm.chart.PerfChart;
-import static pm.ui.UIHelper.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Vector;
+
+import static pm.ui.UIHelper.*;
 
 public class PortfolioPerf extends AbstractSplitPanel {
     private static final long serialVersionUID = 3978993180093854004L;
@@ -59,7 +60,7 @@ public class PortfolioPerf extends AbstractSplitPanel {
         panel.add(buildFloatField(capitalField, 10000, 7, "Capital Amount"), gbc);
         gbc.gridx = 10;
         gbc.insets = new Insets(2, 20, 2, 2);
-        panel.add(getSubmitButton(), gbc);
+        panel.add(getActionButton("Submit"), gbc);
 
         return panel;
     }

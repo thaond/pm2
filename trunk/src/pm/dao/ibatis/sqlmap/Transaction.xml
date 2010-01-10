@@ -252,21 +252,22 @@
         <parameter property="brokerage"/>
         <parameter property="iciciCode"/>
         <parameter property="portfolio" javaType="string" jdbcType="VARCHAR"/>
+        <parameter property="status" typeHandler="pm.dao.ibatis.handler.ICICITransactionStatusHandler"/>
         <parameter property="orderRef"/>
     </parameterMap>
 
     <insert id="insertICICITransaction" parameterMap="icici-transaction">
         INSERT INTO ICICITRANSACTION (ID,TDATE, QTY, PRICE, TRANSACTIONTYPE, DELIVERYTYPE, BROKERAGE, ICICICODE,
-        PORTFOLIOID, ORDERREF)
-        VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, (SELECT ID FROM PORTFOLIO WHERE NAME=?), ?)
+        PORTFOLIOID, SYNCSTATUS, ORDERREF)
+        VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, (SELECT ID FROM PORTFOLIO WHERE NAME=?), ?, ?)
         <selectKey keyProperty="id" resultClass="int">
             values IDENTITY_VAL_LOCAL()
         </selectKey>
     </insert>
     <update id="updateICICITransaction" parameterMap="icici-transaction">
         UPDATE ICICITRANSACTION SET TDATE = ?, QTY = ?, PRICE = ?, TRANSACTIONTYPE =?,
-        DELIVERYTYPE =?, BROKERAGE =?, ICICICODE =?, PORTFOLIOID =(SELECT ID FROM PORTFOLIO WHERE NAME=?)
-        WHERE ORDERREF =?
+        DELIVERYTYPE =?, BROKERAGE =?, ICICICODE =?, PORTFOLIOID = (SELECT ID FROM PORTFOLIO WHERE NAME=?),
+        SYNCSTATUS =? WHERE ORDERREF =?
     </update>
 
     <resultMap id="icici-transaction-get" class="pm.vo.ICICITransaction">
@@ -275,6 +276,8 @@
         <result property="qty" column="QTY"/>
         <result property="price" column="PRICE"/>
         <result property="action" column="TRANSACTIONTYPE" typeHandler="pm.dao.ibatis.handler.TransactionTypeHandler"/>
+        <result property="status" column="SYNCSTATUS"
+                typeHandler="pm.dao.ibatis.handler.ICICITransactionStatusHandler"/>
         <result property="dayTrading" column="DELIVERYTYPE"/>
         <result property="brokerage" column="BROKERAGE"/>
         <result property="stockCode" column="STOCKCODE"/>
@@ -285,7 +288,7 @@
     <select id="getICICITransaction" resultMap="icici-transaction-get">
         SELECT ICICITRANSACTION.ID,TDATE, QTY, PRICE, TRANSACTIONTYPE, DELIVERYTYPE, BROKERAGE, STOCKMASTER.STOCKCODE as
         STOCKCODE,
-        ICICITRANSACTION.ICICICODE as ICICICODE, PORTFOLIO.NAME as PORTFOLIONAME, ORDERREF
+        ICICITRANSACTION.ICICICODE as ICICICODE, PORTFOLIO.NAME as PORTFOLIONAME, SYNCSTATUS, ORDERREF
         FROM ICICITRANSACTION LEFT OUTER JOIN ICICI_STOCKCODE_MAPPING ON ICICI_STOCKCODE_MAPPING.ICICICODE =
         ICICITRANSACTION.ICICICODE
         LEFT OUTER JOIN STOCKMASTER ON ICICI_STOCKCODE_MAPPING.STOCKID = STOCKMASTER.ID LEFT OUTER JOIN PORTFOLIO ON

@@ -3,6 +3,7 @@ package pm.dao.ibatis.dao;
 import com.ibatis.dao.client.DaoManager;
 import com.ibatis.dao.client.template.SqlMapDaoTemplate;
 import org.apache.log4j.Logger;
+import pm.vo.ICICICodeMapping;
 import pm.vo.StockVO;
 
 import java.util.HashMap;
@@ -90,13 +91,17 @@ public class StockDAO extends SqlMapDaoTemplate implements IStockDAO {
         super.update("updateStock", stockVO);
     }
 
-    public Map<String, String> iciciCodeMapping() {
-        List<Map<String, String>> list = super.queryForList("iCICICodeMapping");
-        Map<String, String> mapping = new HashMap<String, String>();
-        for (Map<String, String> map : list) {
-            mapping.put(map.get("ICICICODE"), map.get("STOCKCODE"));
+    public void updateICICICodeMappings(List<ICICICodeMapping> iciciCodeMappings) {
+        super.startBatch();
+        for (ICICICodeMapping iciciCodeMapping : iciciCodeMappings) {
+            if (iciciCodeMapping.getStock() == null) continue;
+            super.update("updateICICICodeMapping", iciciCodeMapping);
         }
-        return mapping;
+        super.executeBatch();
+    }
+
+    public List<ICICICodeMapping> iciciCodeMappings() {
+        return super.queryForList("getIciciCodeMappings");
     }
 
 }

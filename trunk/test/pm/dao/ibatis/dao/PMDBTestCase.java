@@ -20,6 +20,7 @@ public class PMDBTestCase extends DatabaseTestCase {
     public PMDBTestCase(String string) {
         super(string);
         dataFileName = "TestData.xml";
+        AppLoader.initConsoleLogger();
     }
 
     public PMDBTestCase(String string, String dataFileName) {

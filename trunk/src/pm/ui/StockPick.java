@@ -5,7 +5,6 @@
 package pm.ui;
 
 import pm.action.Controller;
-import static pm.ui.UIHelper.*;
 import pm.ui.table.StockCodeDisplay;
 import pm.ui.table.TableCellDisplay;
 import pm.util.AppConst.ANALYZER_LIST;
@@ -21,6 +20,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.util.*;
+
+import static pm.ui.UIHelper.*;
 
 /**
  * @author thiyagu1
@@ -85,7 +86,7 @@ public class StockPick extends AbstractSplitPanel {
         panel.add(negative, gbc);
         gbc.gridx = 5;
         gbc.gridy = 2;
-        panel.add(getSubmitButton(), gbc);
+        panel.add(getActionButton("Submit"), gbc);
         return panel;
     }
 
@@ -165,6 +166,7 @@ public class StockPick extends AbstractSplitPanel {
     /* (non-Javadoc)
       * @see pm.ui.AbstractPMPanel#doDisplay(java.lang.Object, java.lang.String)
       */
+
     protected void doDisplay(Object retVal, String actionCommand) {
         if (retVal == null) return;
         dataToDisplay = (Vector) retVal;
@@ -254,6 +256,7 @@ public class StockPick extends AbstractSplitPanel {
     /* (non-Javadoc)
       * @see pm.ui.AbstractPMPanel#getData(java.lang.String)
       */
+
     protected Object getData(String actionCommand) {
 //        splitPane.setBottomComponent(buildBottomPanel());
         STOCK_PICK_TYPE funMode = STOCK_PICK_TYPE.valueOf(bg.getSelection().getActionCommand());

@@ -1,7 +1,6 @@
 package pm.ui;
 
 import pm.action.Controller;
-import static pm.ui.UIHelper.*;
 import pm.util.Helper;
 import pm.vo.CorpResultVO;
 
@@ -12,6 +11,8 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+
+import static pm.ui.UIHelper.*;
 
 public class FinResult extends AbstractPMPanel {
 
@@ -84,7 +85,7 @@ public class FinResult extends AbstractPMPanel {
         panel.add(getSelectList(), gbc);
         gbc.gridx = 3;
         gbc.gridy = 2;
-        panel.add(getSubmitButton(), gbc);
+        panel.add(getActionButton("Submit"), gbc);
         return panel;
     }
 

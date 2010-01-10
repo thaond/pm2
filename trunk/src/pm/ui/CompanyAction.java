@@ -5,11 +5,6 @@
 package pm.ui;
 
 import pm.action.Controller;
-
-import static pm.ui.UIHelper.*;
-import static pm.util.AppConst.COMPANY_ACTION_TYPE.*;
-import static pm.util.AppConst.COMPANY_ACTION_TYPE.Merger;
-
 import pm.ui.table.TableCellDisplay;
 import pm.util.AppConst.COMPANY_ACTION_TYPE;
 import pm.vo.CompanyActionVO;
@@ -24,6 +19,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.Vector;
+
+import static pm.ui.UIHelper.*;
+import static pm.util.AppConst.COMPANY_ACTION_TYPE.*;
 
 /**
  * @author thiyagu1
@@ -129,7 +127,7 @@ public class CompanyAction extends AbstractPMPanel {
         gbc.gridx = 1;
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.CENTER;
-        add(getSubmitButton(), gbc);
+        add(getActionButton("Submit"), gbc);
         toggleDisplayDSBFields(Bonus);
 
     }

@@ -2,6 +2,7 @@ package pm.dao.ibatis.dao;
 
 import pm.util.PMDate;
 import pm.util.enumlist.SERIESTYPE;
+import pm.vo.ICICICodeMapping;
 import pm.vo.StockVO;
 
 import java.util.List;
@@ -82,10 +83,24 @@ public class StockDAOTest extends PMDBCompositeDataSetTestCase {
         IStockDAO stockDAO = DAOManager.getStockDAO();
         StockVO stockVO = stockDAO.getStock("CODE2");
         assertNull(stockDAO.iciciCode("CODE2"));
-        int count = stockDAO.iciciCodeMapping().size();
+        int count = stockDAO.iciciCodeMappings().size();
         stockDAO.updateICICICode(stockVO, "ICODE2");
         assertEquals("ICODE2", stockDAO.iciciCode("CODE2"));
-        assertEquals(count, stockDAO.iciciCodeMapping().size());
+        assertEquals(count, stockDAO.iciciCodeMappings().size());
+    }
+
+    public void testICICICodeMappings() {
+        IStockDAO stockDAO = DAOManager.getStockDAO();
+        StockVO stockVO = stockDAO.getStock("CODE1");
+        List<ICICICodeMapping> iciciMappings = stockDAO.iciciCodeMappings();
+        ICICICodeMapping iciciCodeMapping = iciciMappings.get(0);
+        assertEquals("ICODE", iciciCodeMapping.getIciciCode());
+        assertEquals(stockVO, iciciCodeMapping.getStock());
+
+        iciciCodeMapping = iciciMappings.get(1);
+        assertEquals("ICODE2", iciciCodeMapping.getIciciCode());
+        assertNull(iciciCodeMapping.getStock());
+
     }
 
     public void testYahooCode() {

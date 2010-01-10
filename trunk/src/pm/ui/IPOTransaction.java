@@ -1,7 +1,6 @@
 package pm.ui;
 
 import pm.action.Controller;
-import static pm.ui.UIHelper.*;
 import pm.ui.util.autocomplete.CompleterTextField;
 import pm.util.AppConst;
 import pm.util.DropDownWrapper;
@@ -19,6 +18,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.util.Vector;
+
+import static pm.ui.UIHelper.*;
 
 public class IPOTransaction extends AbstractPMPanel {
 
@@ -186,7 +187,7 @@ public class IPOTransaction extends AbstractPMPanel {
         gbc.gridx = 0;
         gbc.gridwidth = 4;
         gbc.anchor = GridBagConstraints.CENTER;
-        add(getSubmitButton(), gbc);
+        add(getActionButton("Submit"), gbc);
 
     }
 

@@ -242,11 +242,23 @@ public class Controller {
         return new TradingBO().isDuplicate(transVO);
     }
 
-    public static Map<String, String> getIciciMapping() {
-        return DAOManager.getStockDAO().iciciCodeMapping();
-    }
-
     public static FYTransactionDetails getFiniancialYearTransaction(TradingAccountVO tradingAc, PortfolioDetailsVO portfolio, FinYear finYear) {
         return new PortfolioBO().getFiniancialYearTransaction(tradingAc, portfolio, finYear);
+    }
+
+    public static List<ICICITransaction> iciciTransactions() {
+        return DAOManager.getTransactionDAO().iciciTransactions();
+    }
+
+    public static void saveOrUpdateICICICodeMappings(List<ICICICodeMapping> iciciCodeMappings) {
+        DAOManager.getStockDAO().updateICICICodeMappings(iciciCodeMappings);
+    }
+
+    public static List<ICICICodeMapping> getIciciMappings() {
+        return DAOManager.getStockDAO().iciciCodeMappings();
+    }
+
+    public static void syncICICIWithPMTransaction() {
+        new IciciTradeBO().syncWithPMTrade();
     }
 }

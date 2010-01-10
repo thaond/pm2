@@ -38,7 +38,7 @@ public class CorpResultDownloaderTest extends TestCase {
 		
 		downloader.performTask();
 		
-		assertEquals("RELIANCE", downloader.resultVO.getStockCode());
+		assertEquals("RELIANCE", downloader.resultVO.getStock());
 		assertEquals(939800f, downloader.resultVO.getAdjustedNetProfit());
 		assertEquals(new PMDate(31,3,2006), downloader.resultVO.getEndDate());
 		assertEquals(67.4f, downloader.resultVO.getEps());

@@ -8,7 +8,7 @@ package pm.ui.table;
 public class StockCodeDisplayInput extends TableDisplayInput {
 
     public StockCodeDisplayInput() {
-        super("StockCode", "getStockCode", StockCodeDisplay.class);
+        super("StockCode", "getStock", StockCodeDisplay.class);
     }
 
     public AbstractTableCellDisplay createDisplayInstance(boolean isTotalCell, Object value) {

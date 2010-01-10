@@ -3,7 +3,6 @@ package pm.ui;
 import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.JXTaskPaneContainer;
 import pm.action.Controller;
-import static pm.ui.UIHelper.*;
 import pm.vo.CompanyActionVO;
 
 import javax.swing.*;
@@ -11,6 +10,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
+
+import static pm.ui.UIHelper.*;
 
 public class DisplayCompanyAction extends AbstractPMPanel {
     private static final int SPLITHEIGHT = 50;
@@ -38,7 +39,7 @@ public class DisplayCompanyAction extends AbstractPMPanel {
 
     private Component getSplitPane() {
         splitPane = createSplitPane(JSplitPane.VERTICAL_SPLIT);
-        splitPane.setTopComponent(UIFactory.createTopPanelWithStockList(stockField, getSubmitButton()));
+        splitPane.setTopComponent(UIFactory.createTopPanelWithStockList(stockField, getActionButton("Submit")));
         splitPane.setBottomComponent(buildBottomPanel());
         splitPane
                 .setMinimumSize(new Dimension(UIHelper.WIDTH, UIHelper.HEIGHT));// (PortfolioManager._WIDTH-10,PortfolioManager._HEIGHT-40));

@@ -2,11 +2,12 @@ package pm.ui;
 
 import pm.action.Controller;
 import pm.net.HTTPHelper;
-import static pm.ui.UIHelper.buildChildPanel;
-import static pm.ui.UIHelper.createSplitPane;
 
 import javax.swing.*;
 import java.awt.*;
+
+import static pm.ui.UIHelper.buildChildPanel;
+import static pm.ui.UIHelper.createSplitPane;
 
 public class DisplayQuote extends AbstractPMPanel {
 
@@ -36,7 +37,7 @@ public class DisplayQuote extends AbstractPMPanel {
 
     private Component getSplitPane() {
         splitPane = createSplitPane(JSplitPane.VERTICAL_SPLIT);
-        splitPane.setTopComponent(UIFactory.createTopPanelWithStockList(stockField, getSubmitButton()));
+        splitPane.setTopComponent(UIFactory.createTopPanelWithStockList(stockField, getActionButton("Submit")));
         splitPane.setBottomComponent(buildBottomPanel());
         splitPane.setMinimumSize(new Dimension(UIHelper.WIDTH, UIHelper.HEIGHT));//(PortfolioManager._WIDTH-10,PortfolioManager._HEIGHT-40));
         return splitPane;

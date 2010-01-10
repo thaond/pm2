@@ -18,7 +18,7 @@ public class ITView extends AbstractSplitPanel {
     protected JComboBox tradeAcList = UIHelper.buildTradingAccountList(new JComboBox(), true);
     protected JComboBox portfolioList = UIHelper.buildPortfolioList(new JComboBox(), true);
     protected JComboBox yearList;
-    protected JButton submitButton = getSubmitButton();
+    protected JButton submitButton = getActionButton("Submit");
     private final String PL = "P/L";
     private final String PURCHASEVALUE = "Purchase Value";
     private final String SALEVALUE = "Sale Value";

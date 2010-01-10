@@ -1,7 +1,6 @@
 package pm.ui;
 
 import pm.action.Controller;
-import static pm.ui.UIHelper.*;
 import pm.ui.table.QuoteTableDisplay;
 import pm.util.Helper;
 import pm.util.QuoteIterator;
@@ -15,6 +14,8 @@ import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+
+import static pm.ui.UIHelper.*;
 
 public class EODReport extends AbstractSplitPanel {
     private static final long serialVersionUID = 1L;
@@ -39,13 +40,14 @@ public class EODReport extends AbstractSplitPanel {
         gbc.gridy = 0;
         UIHelper.addComponentWithTitle(panel, gbc, "Date", dateButton);
         gbc.gridx = 2;
-        panel.add(getSubmitButton(), gbc);
+        panel.add(getActionButton("Submit"), gbc);
         return panel;
     }
 
     /* (non-Javadoc)
       * @see pm.ui.AbstractPMPanel#doDisplay(java.lang.Object, java.lang.String)
       */
+
     protected void doDisplay(Object retVal, String actionCommand) {
         if (retVal != null) {
             java.util.List<QuoteIterator> data = (java.util.List<QuoteIterator>) retVal;
@@ -163,6 +165,7 @@ public class EODReport extends AbstractSplitPanel {
     /* (non-Javadoc)
       * @see pm.ui.AbstractPMPanel#getData(java.lang.String)
       */
+
     protected Object getData(String actionCommand) {
         return Controller.getAnalysisReport(dateButton.pmDate());
     }

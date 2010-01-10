@@ -2,15 +2,14 @@ package pm.dao.ibatis.dao;
 
 import pm.bo.TradingBO;
 import pm.util.AppConst;
-import static pm.util.AppConst.COMPANY_ACTION_TYPE.Divident;
-import static pm.util.AppConst.TRADINGTYPE.Buy;
-import static pm.util.AppConst.TRADINGTYPE.Sell;
 import pm.util.PMDate;
 import pm.vo.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static pm.util.AppConst.COMPANY_ACTION_TYPE.Divident;
+import static pm.util.AppConst.TRADINGTYPE.Buy;
+import static pm.util.AppConst.TRADINGTYPE.Sell;
 
 /**
  * TransactionDAO Tester.
@@ -678,7 +677,12 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
         ICICITransaction transaction = new ICICITransaction(new PMDate(1, 1, 2006), iciciCode, Buy, 100f, 224.24f, 123.23f, true, "123123123");
         ITransactionDAO dao = DAOManager.getTransactionDAO();
         dao.updateOrInsertICICITransaction(transaction);
-        assertTrue(DAOManager.getStockDAO().iciciCodeMapping().containsKey("ICICI1"));
+        List<ICICICodeMapping> iciciMappings = DAOManager.getStockDAO().iciciCodeMappings();
+        Set<String> iciciCodes = new HashSet<String>();
+        for (ICICICodeMapping iciciMapping : iciciMappings) {
+            iciciCodes.add(iciciMapping.getIciciCode());
+        }
+        assertTrue(iciciCodes.contains(iciciCode));
     }
 
     public void testUpdateOrInsertICICITransactionShouldUpdateICICITransaction() {
@@ -699,9 +703,9 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
         String iciciCode = "ICICI1";
         ITransactionDAO dao = DAOManager.getTransactionDAO();
         dao.updateOrInsertICICITransaction(new ICICITransaction(new PMDate(1, 1, 2006), iciciCode, Buy, 100f, 224.24f, 123.23f, true, "123123123"));
-        int mappingSize = DAOManager.getStockDAO().iciciCodeMapping().size();
+        int mappingSize = DAOManager.getStockDAO().iciciCodeMappings().size();
         dao.updateOrInsertICICITransaction(new ICICITransaction(new PMDate(1, 2, 2006), iciciCode, Buy, 100f, 224.24f, 123.23f, true, "123123123"));
-        assertEquals(mappingSize, DAOManager.getStockDAO().iciciCodeMapping().size());
+        assertEquals(mappingSize, DAOManager.getStockDAO().iciciCodeMappings().size());
     }
 
     public void testGetICICITransactionLoadsMappedStockCode() {

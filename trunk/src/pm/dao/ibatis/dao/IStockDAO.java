@@ -1,9 +1,9 @@
 package pm.dao.ibatis.dao;
 
+import pm.vo.ICICICodeMapping;
 import pm.vo.StockVO;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Date: 22-Jul-2006
@@ -32,6 +32,7 @@ public interface IStockDAO {
 
     void delete(int stockId);
 
-    Map<String, String> iciciCodeMapping();
+    void updateICICICodeMappings(List<ICICICodeMapping> iciciCodeMappings);
 
+    List<ICICICodeMapping> iciciCodeMappings();
 }

@@ -243,10 +243,9 @@ public class PortfolioManager extends JFrame implements ActionListener {
     private JMenu buildStockMenu() {
         JMenu menu = createMenu("Stock");
         menu.add(getMenuItem("Quote", DisplayQuote.class));
-        menu.add(getMenuItem("SupportResistance",
-                DisplaySupportResistance.class));
-        menu.add(getMenuItem("CompanyAction",
-                DisplayCompanyAction.class));
+        menu.add(getMenuItem("SupportResistance", DisplaySupportResistance.class));
+        menu.add(getMenuItem("CompanyAction", DisplayCompanyAction.class));
+        menu.add(getMenuItem("IciciMapping", ICICIMappingDisplay.class));
         return menu;
     }
 
@@ -308,6 +307,7 @@ public class PortfolioManager extends JFrame implements ActionListener {
         menu.add(getMenuItem("Trading", ViewTransaction.class));
         menu.add(getMenuItem("IPO", ViewIPOTransaction.class));
         menu.add(getMenuItem("Fund", ViewFundTransaction.class));
+        menu.add(getMenuItem("ICICI", ViewICICITransaction.class));
         return menu;
     }
 

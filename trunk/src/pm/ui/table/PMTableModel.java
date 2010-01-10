@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class PMTableModel extends AbstractTableModel {
 
-    private final List dataVOs;
+    protected final List dataVOs;
 
     private final List<TableDisplayInput> displayInputs;
     private final Map<String, Object> totalRow;
@@ -65,5 +65,9 @@ public class PMTableModel extends AbstractTableModel {
     public Class<?> getColumnClass(int columnIndex) {
         if (getRowCount() > 0) return getValueAt(0, columnIndex).getClass();
         else return Object.class;
+    }
+
+    public List getDataVOs() {
+        return dataVOs;
     }
 }

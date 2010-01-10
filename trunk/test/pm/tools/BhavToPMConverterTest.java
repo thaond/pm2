@@ -579,10 +579,10 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
         assertEquals(date2, moveFileList.get(1));
 
         assertEquals(4, quoteDAOwriteDataList.size());
-        assertEquals(date1+"1", quoteDAOwriteDataList.get(0).getStockCode());
-        assertEquals(date1+"2", quoteDAOwriteDataList.get(1).getStockCode());
-        assertEquals(date2+"1", quoteDAOwriteDataList.get(2).getStockCode());
-        assertEquals(date2+"2", quoteDAOwriteDataList.get(3).getStockCode());
+        assertEquals(date1+"1", quoteDAOwriteDataList.get(0).getStock());
+        assertEquals(date1+"2", quoteDAOwriteDataList.get(1).getStock());
+        assertEquals(date2+"1", quoteDAOwriteDataList.get(2).getStock());
+        assertEquals(date2+"2", quoteDAOwriteDataList.get(3).getStock());
 
     }
     public void testProcessOrphanDeliveryPositionDataToSkipSaveIfNoData() {
