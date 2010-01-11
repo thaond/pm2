@@ -39,7 +39,7 @@ public class LoadTransDataFunctionalTest extends TestCase {
             void loadStockList() {
                 BufferedReader bufferedReader = null;
                 try {
-                    bufferedReader = new BufferedReader(new FileReader(dataDir + "EQUITY_L.csv"));
+                    bufferedReader = new BufferedReader(new FileReader(dataDir + "equity_l.csv"));
                     new StockListDownloader().loadStockList(bufferedReader);
                     bufferedReader.close();
                 } catch (FileNotFoundException e) {
