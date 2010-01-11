@@ -228,13 +228,25 @@
             <classpath refid="pm.test.classpath"/>
             <classpath location="${pm.testoutput.dir}"/>
             <classpath location="test/data"/>
-            <classpath location="pm.properties"/>
             <classpath location="."/>
             <batchtest todir="${pm.test.report.dir}">
                 <formatter type="xml"/>
-                <fileset dir="test" includes="**/*Test.*" excludes="**/*External*.*"/>
+                <fileset dir="test" includes="**/*Test.*" excludes="**/*External*.*, **/LoadTransDataFunctionalTest.*"/>
             </batchtest>
         </junit>
+
+        <junit jvm="${jdk.home.1.6}/bin/java" fork="true" forkmode="once" failureproperty="build.failed"
+               errorproperty="build.failed">
+            <classpath refid="pm.test.classpath"/>
+            <classpath location="${pm.testoutput.dir}"/>
+            <classpath location="test/data"/>
+            <classpath location="."/>
+            <batchtest todir="${pm.test.report.dir}">
+                <formatter type="xml"/>
+                <fileset dir="test" includes="**/LoadTransDataFunctionalTest.*"/>
+            </batchtest>
+        </junit>
+
         <!--<junitreport todir="${pm.test.report.dir}">-->
         <!--<fileset dir="${pm.test.report.dir}">-->
         <!--<include name="TEST-*.xml"/>-->
@@ -248,7 +260,7 @@
         <copyfile src="resources/pm.properties.hudson" dest="pm.properties" forceoverwrite="true"/>
         <copyfile src="resources/SQLMapConfiguration.xml" dest="SQLMapConfiguration.xml" forceoverwrite="true"/>
     </target>
-    
+
     <target name="all" depends="init, clean, compile.module.pm" description="build all"/>
     <target name="hudson" depends="copy.properties, test" description="hudson"/>
 
