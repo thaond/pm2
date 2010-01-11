@@ -211,6 +211,7 @@ public class LoadTransData {
     private void insertMissingTradingAccounts(Set<String> tradingAccList) throws Exception {
         List<TradingAccountVO> tradingAccVOs = new AccountBO().getTradingAccountVOs();
         for (Account tradingAc : tradingAccVOs) {
+            System.out.println("Existing trading acc : " + tradingAc.getName());
             tradingAccList.remove(tradingAc.getName());
         }
         for (String accountName : tradingAccList) {
