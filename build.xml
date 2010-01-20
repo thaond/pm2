@@ -3,6 +3,7 @@
 
 
     <property file="build.properties"/>
+    <property file="pm.properties"/>
     <!-- Uncomment the following property if no tests compilation is needed -->
     <!--
    <property name="skip.tests" value="true"/>
@@ -205,8 +206,8 @@
         <copy overwrite="true" failonerror="yes" todir="${production.location}">
             <fileset file="${ant.project.name}.jar"/>
             <fileset file="resources/SQLMapConfiguration.xml"/>
-            <fileset file="createDB.sql"/>
-            <fileset file="cleanUpTransactions.sql"/>
+            <fileset file="db/create-db.sql"/>
+            <fileset file="db/cleanUpTransactions.sql"/>
             <fileset dir="${module.pm.basedir}/lib" includes="*.jar" excludes="jmock*.jar, junit*.jar, dbunit*.jar"/>
         </copy>
     </target>
@@ -215,13 +216,36 @@
         <fail message="Build failed"/>
     </target>
 
+    <path id="dbdeploy.classpath">
+        <fileset dir="lib">
+            <include name="dbdeploy-ant-*.jar"/>
+            <include name="derbyclient.jar"/>
+        </fileset>
+
+    </path>
+    <taskdef name="dbdeploy" classname="com.dbdeploy.AntTarget" classpathref="dbdeploy.classpath"/>
+
     <target name="create-db" depends="compile.module.pm.production">
-        <java classname="pm.dao.derby.DBManager" jvm="${jdk.home.1.6}/bin/java" fork="true">
-            <classpath refid="pm.test.classpath"/>
-            <classpath location="pm.properties"/>
-        </java>
+        <sql
+                classpathref="dbdeploy.classpath"
+                driver="${DB_DRIVER}"
+                url="${DB_URL}"
+                userid="${DB_USER}"
+                password="${DB_PASSWORD}"
+                src="db/create-db.sql"
+                onerror="continue"
+                />
     </target>
-    <target name="test" depends="clean, compile.module.pm.tests, create-db">
+
+    <target name="update-db" depends="compile.module.pm.production">
+        <dbdeploy driver="${DB_DRIVER}" url="${DB_URL}"
+                  userid="${DB_USER}"
+                  password="${DB_PASSWORD}"
+                  dir="db"/>
+
+    </target>
+
+    <target name="test" depends="clean, compile.module.pm.tests, create-db, update-db">
         <mkdir dir="${pm.test.report.dir}"/>
         <junit jvm="${jdk.home.1.6}/bin/java" fork="true" forkmode="once" failureproperty="build.failed"
                errorproperty="build.failed">
