@@ -32,7 +32,7 @@ public class DBManager {
 
     public static void initDB() {
         logger.info("Creating Database");
-        runSQLsFromFile("createDB.sql", createNewConnection());
+        runSQLsFromFile("create-db.sql", createNewConnection());
 
     }
 
@@ -46,7 +46,7 @@ public class DBManager {
             PrintWriter pw = new PrintWriter(System.out);
             runner.setErrorLogWriter(pw);
             runner.setLogWriter(pw);
-            runner.runScript(new FileReader(sqlFileName));
+            runner.runScript(new FileReader("db/" + sqlFileName));
         } catch (FileNotFoundException e) {
             logger.error(e, e);
         } catch (IOException e) {
