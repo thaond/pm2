@@ -219,7 +219,7 @@
     <path id="dbdeploy.classpath">
         <fileset dir="lib">
             <include name="dbdeploy-ant-*.jar"/>
-            <include name="derbyclient.jar"/>
+            <include name="derby*.jar"/>
         </fileset>
 
     </path>
