@@ -231,7 +231,7 @@
     </target>
 
     <target name="stop-db">
-        <derby action="stop" spawn="false"/>
+        <derby action="shutdown" spawn="false"/>
     </target>
 
     <macrodef name="derby">
