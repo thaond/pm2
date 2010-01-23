@@ -223,8 +223,28 @@
         </fileset>
 
     </path>
+
     <taskdef name="dbdeploy" classname="com.dbdeploy.AntTarget" classpathref="dbdeploy.classpath"/>
 
+    <target name="start-db" depends="compile.module.pm.production">
+        <derby action="start" fork="true"/>
+    </target>
+
+    <target name="stop-db">
+        <derby action="stop" fork="false"/>
+    </target>
+
+    <macrodef name="derby">
+        <attribute name="action"/>
+        <attribute name="fork"/>
+        <sequential>
+            <java classpathref="pm.test.classpath" classname="org.apache.derby.drda.NetworkServerControl"
+                  fork="@{fork}">
+                <arg value="@{action}"/>
+                <env key="DERBY_HOME" value="db"/>
+            </java>
+        </sequential>
+    </macrodef>
     <target name="create-db" depends="compile.module.pm.production">
         <sql
                 classpathref="dbdeploy.classpath"
@@ -286,6 +306,6 @@
     </target>
 
     <target name="all" depends="init, clean, compile.module.pm" description="build all"/>
-    <target name="hudson" depends="copy.properties, test" description="hudson"/>
+    <target name="hudson" depends="copy.properties, start-db, test, stop-db" description="hudson"/>
 
 </project>
