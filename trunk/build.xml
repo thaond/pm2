@@ -227,19 +227,19 @@
     <taskdef name="dbdeploy" classname="com.dbdeploy.AntTarget" classpathref="dbdeploy.classpath"/>
 
     <target name="start-db" depends="compile.module.pm.production">
-        <derby action="start" fork="true"/>
+        <derby action="start" spawn="true"/>
     </target>
 
     <target name="stop-db">
-        <derby action="stop" fork="false"/>
+        <derby action="stop" spawn="false"/>
     </target>
 
     <macrodef name="derby">
         <attribute name="action"/>
-        <attribute name="fork"/>
+        <attribute name="spawn"/>
         <sequential>
             <java classpathref="pm.test.classpath" classname="org.apache.derby.drda.NetworkServerControl"
-                  fork="@{fork}">
+                  fork="true" spawn="@{spawn}">
                 <arg value="@{action}"/>
                 <env key="DERBY_HOME" value="db"/>
             </java>
