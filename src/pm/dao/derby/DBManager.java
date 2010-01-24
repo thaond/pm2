@@ -105,27 +105,4 @@ public class DBManager {
         return AppConfig.DB_DRIVER.Value.equals("org.apache.derby.jdbc.EmbeddedDriver");
     }
 
-    public static void initHsqlDB() {
-        runSQLsFromFile("createHsqlDB.sql", getHsqlDBConnection());
-
-    }
-
-
-    public static Connection getHsqlDBConnection() {
-        try {
-            Class.forName("org.hsqldb.jdbcDriver");
-        } catch (Exception e) {
-            System.out.println("ERROR: failed to load HSQLDB JDBC driver.");
-            e.printStackTrace();
-            return null;
-        }
-
-        try {
-            return DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/xdb", "sa", "");
-        } catch (SQLException e) {
-            logger.error(e, e);
-        }
-        return null;
-    }
-
 }
