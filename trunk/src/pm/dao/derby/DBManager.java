@@ -70,7 +70,7 @@ public class DBManager {
         props.put("password", AppConfig.DB_PASSWORD.Value);
         Connection connection = null;
         try {
-            connection = DriverManager.getConnection(AppConfig.DB_URL.Value + ";create=true", props);
+            connection = DriverManager.getConnection(AppConfig.DB_URL.Value, props);
         } catch (SQLException e) {
             logger.error(e, e);
         }
