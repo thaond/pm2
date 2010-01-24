@@ -14,7 +14,7 @@ import java.util.List;
 public class SomeTest extends PMDBCompositeDataSetTestCase {
 
     public SomeTest(String name) {
-        super(name, "EmptyData.xml", "SomeTestData.xml");
+        super(name, "SomeTestData.xml", "EmptyData.xml");
     }
 
     public void testGetHoldingDetailsForStockWithoutAnySellTransaction() {

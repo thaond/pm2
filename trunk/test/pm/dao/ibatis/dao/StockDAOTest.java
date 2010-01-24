@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class StockDAOTest extends PMDBCompositeDataSetTestCase {
     public StockDAOTest(String name) {
-        super(name, "EmptyData.xml", "TestData.xml");
+        super(name, "TestData.xml", "EmptyData.xml");
     }
 
     public void setUp() throws Exception {

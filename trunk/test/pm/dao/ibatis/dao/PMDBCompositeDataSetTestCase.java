@@ -21,6 +21,6 @@ public class PMDBCompositeDataSetTestCase extends PMDBTestCase {
         for (int i = 0; i < dataSets.length; i++) {
             dataSets[i] = new FlatXmlDataSet(new FileInputStream("test/data/" + dataFileNames[i]));
         }
-        return new CompositeDataSet(dataSets, false);
+        return new CompositeDataSet(dataSets, true);
     }
 }

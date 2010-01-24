@@ -20,7 +20,7 @@ import static pm.util.AppConst.TRADINGTYPE.Sell;
  */
 public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
     public TransactionDAOTest(String name) {
-        super(name, "EmptyData.xml", "TransactionData.xml");
+        super(name, "TransactionData.xml", "EmptyData.xml");
     }
 
     public void testGetTransactionById() throws Exception {

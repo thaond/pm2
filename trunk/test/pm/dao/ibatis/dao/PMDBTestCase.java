@@ -31,7 +31,7 @@ public class PMDBTestCase extends DatabaseTestCase {
 
     @Override
     protected IDatabaseConnection getConnection() throws Exception {
-        return new DatabaseConnection(pm.dao.derby.DBManager.getConnection());
+        return new DatabaseConnection(pm.dao.derby.DBManager.getConnection(), "PMUSER");
     }
 
     @Override

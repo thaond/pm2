@@ -14,7 +14,7 @@ import java.util.List;
 public class CompanyResultDAOTest extends PMDBCompositeDataSetTestCase {
 
     public CompanyResultDAOTest(String string) {
-        super(string, "EmptyData.xml", "CompanyResultTestData.xml");
+        super(string, "CompanyResultTestData.xml", "EmptyData.xml");
     }
 
     public void testSave_Get() {
