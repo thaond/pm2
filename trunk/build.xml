@@ -97,7 +97,7 @@
     <path id="pm.module.classpath">
         <path refid="${module.jdk.classpath.pm}"/>
         <fileset dir="${module.pm.basedir}/lib" includes="*.jar"/>
-        <fileset dir="resources"/>
+        <path path="resources"/>
     </path>
 
     <path id="pm.test.classpath">

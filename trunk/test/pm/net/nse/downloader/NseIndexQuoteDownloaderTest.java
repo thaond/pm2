@@ -1,16 +1,20 @@
 package pm.net.nse.downloader;
 
+import org.htmlparser.util.ParserException;
 import org.junit.Test;
+import pm.net.eod.EODDownloadManager;
 import pm.util.PMDate;
 import pm.util.enumlist.SERIESTYPE;
 import pm.vo.QuoteVO;
 import pm.vo.StockVO;
 
 import java.io.IOException;
+import java.io.Reader;
 import java.io.StringReader;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
 public class NseIndexQuoteDownloaderTest {
 
@@ -33,6 +37,19 @@ public class NseIndexQuoteDownloaderTest {
         StockVO stockVO = new StockVO("^NIFTY", "S&P CNX NIFTY", 0f, SERIESTYPE.nseindex, 0f, (short) 0, "", new PMDate(), true);
         List<QuoteVO> quotes = new NseIndexQuoteDownloader(null, stockVO).parse(new StringReader(getCSVContentWithoutVolume()));
         verifyQuotes(quotes, true);
+    }
+
+    @Test
+    public void runToHandleException() {
+        StockVO stockVO = new StockVO("^NIFTY", "S&P CNX NIFTY", 0f, SERIESTYPE.nseindex, 0f, (short) 0, "", new PMDate(), true);
+        NseIndexQuoteDownloader downloader = new NseIndexQuoteDownloader(new EODDownloadManager(null), stockVO) {
+            @Override
+            Reader getData(String postData) throws ParserException, IOException {
+                throw new NullPointerException();
+            }
+        };
+        downloader.run();
+        assertTrue(downloader.hasError());
     }
 
     private String getCSVContentWithoutVolume() {

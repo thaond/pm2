@@ -18,7 +18,12 @@ public abstract class IndexQuoteDownloader extends AbstractDownloader {
 
     public void run() {
         if (!stop) {
-            downloadData(findStartDate(stockVO.getStockCode()), new PMDate());
+            try {
+                downloadData(findStartDate(stockVO.getStockCode()), new PMDate());
+            } catch (Exception e) {
+                logger.error(e, e);
+                error = true;
+            }
         }
         completed = true;
         manager.taskCompleted(this);
