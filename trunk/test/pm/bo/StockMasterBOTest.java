@@ -130,7 +130,6 @@ public class StockMasterBOTest extends PMDBTestCase {
     }
 
     public void testDoSymbolChange() throws Exception {
-        setUp();
         String code1 = "CODE1";
         StockMasterBO bo = new StockMasterBO();
         StockVO stockVO = bo.getListedStockDetails(code1);

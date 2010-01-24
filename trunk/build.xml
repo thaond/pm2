@@ -293,13 +293,12 @@
             </batchtest>
         </junit>
 
-        <!--<junitreport todir="${pm.test.report.dir}">-->
-        <!--<fileset dir="${pm.test.report.dir}">-->
-        <!--<include name="TEST-*.xml"/>-->
-        <!--</fileset>-->
-        <!--<report format="frames" todir="${pm.test.report.dir}/html"/>-->
-        <!--</junitreport>-->
-        <antcall target="check-failure"/>
+        <junitreport todir="${pm.test.report.dir}">
+            <fileset dir="${pm.test.report.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${pm.test.report.dir}/html"/>
+        </junitreport>
     </target>
 
     <target name="copy.properties">
@@ -307,7 +306,8 @@
         <copy file="resources/SQLMapConfiguration.xml" tofile="SQLMapConfiguration.xml" overwrite="true"/>
     </target>
 
-    <target name="all" depends="init, clean, compile.module.pm" description="build all"/>
-    <target name="hudson" depends="copy.properties, clean, start-db, test, stop-db" description="hudson"/>
+    <target name="all" depends="init, clean, compile.module.pm, test, check-failure" description="build all"/>
+    <target name="hudson" depends="copy.properties, clean, start-db, test, stop-db, check-failure"
+            description="hudson"/>
 
 </project>

@@ -85,7 +85,7 @@ public class TradingBOTest extends PMDBTestCase {
     }
 
     public void testPerformSellToSellPartialFromFirstAvailable() throws Exception {
-        setUp();
+
         PMDate buyDate2 = new PMDate(1, 1, 2000);
         String stockCode = "CODE11";
         float qty = 1000.5f;
@@ -136,7 +136,6 @@ public class TradingBOTest extends PMDBTestCase {
     }
 
     public void testPerformSellToUseSameCompanyStock() throws Exception {
-        setUp();
         PMDate date = new PMDate(1, 1, 2000);
         String stockCode = "CODE11";
         float qty = 1000.5f;
@@ -163,7 +162,6 @@ public class TradingBOTest extends PMDBTestCase {
     }
 
     public void testPerformSellToUseStockFromSameAccount() throws Exception {
-        setUp();
         PMDate date = new PMDate(1, 1, 2000);
         String stockCode = "CODE11";
         float qty = 1000.5f;
@@ -195,7 +193,6 @@ public class TradingBOTest extends PMDBTestCase {
     }
 
     public void testPerformSellToSellAllFromFirstAvailable() throws Exception {
-        setUp();
         PMDate date = new PMDate(1, 1, 2000);
         String stockCode = "CODE11";
         float qty = 1000.5f;
@@ -230,7 +227,6 @@ public class TradingBOTest extends PMDBTestCase {
     }
 
     public void testPerformSellToUseOnlyWhichAreBoughtBefore() throws Exception {
-        setUp();
         PMDate date = new PMDate(1, 1, 2000);
         String stockCode = "CODE11";
         float qty = 1000.5f;
@@ -263,7 +259,6 @@ public class TradingBOTest extends PMDBTestCase {
     }
 
     public void testPerformSellToUseOnlyWhichAreBoughtOnSameAsSaleDate() throws Exception {
-        setUp();
         PMDate date = new PMDate(1, 1, 2000);
         String stockCode = "CODE11";
         float qty = 1000.5f;
@@ -286,7 +281,6 @@ public class TradingBOTest extends PMDBTestCase {
     }
 
     public void testPerformSellToSellAllFromFirstAndPartialFromSecond() throws Exception {
-        setUp();
         PMDate date1 = new PMDate(1, 1, 2000);
         String stockCode = "CODE11";
         float qty = 1000.5f;
@@ -329,7 +323,6 @@ public class TradingBOTest extends PMDBTestCase {
     }
 
     public void testPerformSellToSellAllFromFirstAndSecond() throws Exception {
-        setUp();
         PMDate date1 = new PMDate(1, 1, 2000);
         String stockCode = "CODE11";
         float qty = 1000.5f;
@@ -369,7 +362,6 @@ public class TradingBOTest extends PMDBTestCase {
     }
 
     public void testPerformSellToTrySellingMoreThanAvailableQty() throws Exception {
-        setUp();
         PMDate date = new PMDate(1, 1, 2000);
         String stockCode = "CODE11";
         float qty = 1000.5f;
@@ -400,7 +392,6 @@ public class TradingBOTest extends PMDBTestCase {
     }
 
     public void testPerformSellToTrySellingWithoutAvailable() throws Exception {
-        setUp();
         PMDate date = new PMDate(1, 1, 2000);
         String stockCode = "CODE11";
         float qty = 1000.5f;
@@ -437,7 +428,6 @@ public class TradingBOTest extends PMDBTestCase {
     }
 
     private void performTransaction(boolean dayTrade) throws Exception {
-        setUp();
         String stockCode = "CODE11";
         float qty = 1000.5f;
         float price = 2012.05f;
@@ -469,7 +459,6 @@ public class TradingBOTest extends PMDBTestCase {
     }
 
     public void testPerformSellToRemoveStopLossEntry() throws Exception {
-        setUp();
         PMDate date = new PMDate(1, 1, 2000);
         String stockCode = "CODE15";
         float qty = 1000.5f;
@@ -498,7 +487,6 @@ public class TradingBOTest extends PMDBTestCase {
     }
 
     public void testPerformSellNotToRemoveStopLossIfHoldingExists() throws Exception {
-        setUp();
         PMDate date = new PMDate(1, 1, 2000);
         String stockCode = "CODE15";
         float qty = 1000.5f;

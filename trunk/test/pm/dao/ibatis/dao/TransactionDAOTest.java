@@ -91,7 +91,6 @@ public class TransactionDAOTest extends PMDBCompositeDataSetTestCase {
     }
 
     public void testInsertGetTransaction() throws Exception {
-        setUp();
         PMDate buyDate = new PMDate(4, 1, 2000);
         String stockCode = "CODE2";
         String portfolioName = "PortfolioName2";
