@@ -31,7 +31,7 @@ public class PMDBTestCase extends DatabaseTestCase {
 
     @Override
     protected IDatabaseConnection getConnection() throws Exception {
-        return new DatabaseConnection(pm.dao.derby.DBManager.getConnection());
+        return new DatabaseConnection(pm.dao.derby.DBManager.createNewConnection());
     }
 
     @Override
@@ -40,11 +40,5 @@ public class PMDBTestCase extends DatabaseTestCase {
         builder.setColumnSensing(false);
         return builder.build(new FileInputStream("test/data/" + dataFileName));
     }
-
-    @Override
-    protected void closeConnection(IDatabaseConnection arg0) throws Exception {
-//		super.closeConnection(arg0);
-    }
-
 }
 
