@@ -208,7 +208,8 @@
             <fileset file="resources/SQLMapConfiguration.xml"/>
             <fileset file="db/create-db.sql"/>
             <fileset file="db/cleanUpTransactions.sql"/>
-            <fileset dir="${module.pm.basedir}/lib" includes="*.jar" excludes="jmock*.jar, junit*.jar, dbunit*.jar"/>
+            <fileset dir="${module.pm.basedir}/lib" includes="*.jar"
+                     excludes="jmock*.jar, junit*.jar, dbunit*.jar, slf4j*.jar"/>
         </copy>
     </target>
     <!---->
@@ -267,6 +268,7 @@
 
     <target name="test" depends="clean, compile.module.pm.tests, create-db, update-db">
         <mkdir dir="${pm.test.report.dir}"/>
+        <mkdir dir="log"/>
         <junit jvm="${jdk.home.1.6}/bin/java" fork="true" forkmode="once" failureproperty="build.failed"
                errorproperty="build.failed">
             <classpath refid="pm.test.classpath"/>
