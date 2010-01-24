@@ -72,8 +72,8 @@ public class ICICIQuoteDownloaderTest extends TestCase {
                 "918,042\n" +
                 "|X| CLOSE\n" +
                 "Minimum Browser Requirement: You must have Internet Explorer 5.5 & above or Netscape Communicator 4.7 & above.\n" +
-                "Copyright© 2007.All rights Reserved. ICICI Brokerage Services Ltd\n" +
-                "® trademark registration in respect of the concerned mark has been applied for by ICICI Bank Limited\n" +
+                "Copyright 2007.All rights Reserved. ICICI Brokerage Services Ltd\n" +
+                " trademark registration in respect of the concerned mark has been applied for by ICICI Bank Limited\n" +
                 "NSE SEBI Registration Number :- INB 230773037 | BSE SEBI Registration Number :- INB 010773035\n" +
                 "NSE SEBI Registration Number Derivatives :- INF 230773037.\n" +
                 "ICICI Comm Trade Limited\n" +

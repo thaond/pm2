@@ -52,7 +52,7 @@ public class YahooQuoteDownloader extends AbstractQuoteDownloader {
                 case 4:
                     if (line.indexOf(':') != -1) { //current days data
                         quoteVO.setDate(new PMDate());
-                    } else { //some other days data sample [16 Mar · 907.55]
+                    } else { //some other days data sample [16 Mar 907.55]
                         try {
                             quoteVO.setDate(PMDateFormatter.parseMMMspDD(line));
                         } catch (ApplicationException e) {
