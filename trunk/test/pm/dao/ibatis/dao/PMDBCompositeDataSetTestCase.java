@@ -2,7 +2,7 @@ package pm.dao.ibatis.dao;
 
 import org.dbunit.dataset.CompositeDataSet;
 import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 
 import java.io.FileInputStream;
 
@@ -18,8 +18,10 @@ public class PMDBCompositeDataSetTestCase extends PMDBTestCase {
     @Override
     protected IDataSet getDataSet() throws Exception {
         IDataSet[] dataSets = new IDataSet[dataFileNames.length];
+        FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
+        builder.setColumnSensing(false);
         for (int i = 0; i < dataSets.length; i++) {
-            dataSets[i] = new FlatXmlDataSet(new FileInputStream("test/data/" + dataFileNames[i]));
+            dataSets[i] = builder.build(new FileInputStream("test/data/" + dataFileNames[i]));
         }
         return new CompositeDataSet(dataSets, true);
     }
