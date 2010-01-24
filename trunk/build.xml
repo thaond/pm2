@@ -301,8 +301,8 @@
     </target>
 
     <target name="copy.properties">
-        <copyfile src="resources/pm.properties.hudson" dest="pm.properties" forceoverwrite="true"/>
-        <copyfile src="resources/SQLMapConfiguration.xml" dest="SQLMapConfiguration.xml" forceoverwrite="true"/>
+        <copy file="resources/pm.properties.hudson" tofile="pm.properties" overwrite="true"/>
+        <copy file="resources/SQLMapConfiguration.xml" tofile="SQLMapConfiguration.xml" overwrite="true"/>
     </target>
 
     <target name="all" depends="init, clean, compile.module.pm" description="build all"/>
