@@ -21,6 +21,7 @@ public class EODDownloadManager implements ILongTask {
 
     private static Logger logger = Logger.getLogger(EODDownloadManager.class);
     private static int _MAXTASKPERCENTAGE = 100;
+    private static int _WEIGHTAGEFORBGPROCESS = 25;
 
     private ThreadPoolExecutor executor;
 
@@ -28,6 +29,7 @@ public class EODDownloadManager implements ILongTask {
 
     private boolean initComplete = false;
     private boolean stopFlag = false;
+    private boolean bgCompleted = false;
     private int totalTask = 0;
 
     private int completedTask = 0;
@@ -60,6 +62,7 @@ public class EODDownloadManager implements ILongTask {
             flagStartBhavConverter = false;
             if (!stopFlag) {
                 new BhavToPMConverter().processData();
+                bgCompleted = true;
             }
         }
         completedFlag = (totalTask == completedTask);
@@ -91,7 +94,11 @@ public class EODDownloadManager implements ILongTask {
     }
 
     public synchronized int getProgress() {
-        return (int) ((float) completedTask / (float) totalTask * (float) _MAXTASKPERCENTAGE);
+        int taskCompletedRatio = (int) ((float) completedTask / (float) totalTask * (float) _MAXTASKPERCENTAGE);
+        if (!bgCompleted) {
+            taskCompletedRatio -= _WEIGHTAGEFORBGPROCESS;
+        }
+        return taskCompletedRatio;
     }
 
     public synchronized int getTaskLength() {

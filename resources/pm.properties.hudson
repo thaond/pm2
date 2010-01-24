@@ -30,7 +30,7 @@ DB_PASSWORD=PMUSER
 dateCORPACTIONDOWNLOADMANAGER=20000101
 statusCORPRESULTDOWNLOADMANAGER=
 EODRunMM=0
-DB_URL=jdbc\:derby\://localhost\:1527/pmdb_test;create=true
+DB_URL=jdbc\:derby\://localhost\:1527/pmdb_test;create=true;
 fromMailId=
 mailServer=
 DB_DRIVER=org.apache.derby.jdbc.ClientDriver
