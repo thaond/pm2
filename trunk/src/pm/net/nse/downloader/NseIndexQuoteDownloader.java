@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,11 +60,12 @@ public class NseIndexQuoteDownloader extends IndexQuoteDownloader {
     private void waitForServerToCreateFile(String csvURL) {
         int count = 0;
         while (!HTTPHelper.isExists(csvURL) && count < 120) {
-            count ++;
+            count++;
             try {
                 Thread.sleep(1000);
-            } catch (InterruptedException e) {}
-            System.out.println("waiting for url " + csvURL);
+            } catch (InterruptedException e) {
+            }
+            logger.info("waiting for url " + csvURL);
         }
     }
 
@@ -120,7 +120,7 @@ public class NseIndexQuoteDownloader extends IndexQuoteDownloader {
         try {
             floatValue = Float.parseFloat(value);
         } catch (NumberFormatException e) {
-            
+
         }
         return floatValue;
     }
