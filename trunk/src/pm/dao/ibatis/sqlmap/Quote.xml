@@ -12,6 +12,7 @@
         <result property="prevClose" column="SPREVCLOSE"/>
         <result property="tradeValue" column="STRADEVALUE"/>
         <result property="perDeliveryQty" column="SPERDELIVERYQTY"/>
+        <result property="adjustedClose" column="ADJUSTEDCLOSE"/>
         <result property="stockVO" column="STOCKID" select="getStockByID"/>
     </resultMap>
 
@@ -85,24 +86,31 @@
         <parameter property="tradeValue"/>
         <parameter property="perDeliveryQty"/>
         <parameter property="stockVO.stockCode"/>
+        <parameter property="lastPrice"/>
     </parameterMap>
 
     <insert id="insertQuote" parameterMap="quote-insert">
         INSERT INTO QUOTE (DATEID, SOPEN, SHIGH, SLOW, SCLOSE, SVOLUME,
         SPREVCLOSE, STRADEVALUE,
-        SPERDELIVERYQTY, STOCKID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, (SELECT ID
+        SPERDELIVERYQTY, STOCKID, ADJUSTEDCLOSE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, (SELECT ID
         FROM STOCKMASTER WHERE STOCKCODE=? AND
-        LISTED = 1))
+        LISTED = 1), ?)
     </insert>
 
     <update id="updateQuote" parameterClass="pm.vo.QuoteVO">
         UPDATE QUOTE SET SOPEN=#open#, SHIGH= #high#, SLOW= #low#,
         SCLOSE=#lastPrice#, SVOLUME=#volume#,
         SPREVCLOSE=#prevClose#, STRADEVALUE=#tradeValue#, SPERDELIVERYQTY
-        =#perDeliveryQty#
+        =#perDeliveryQty#, ADJUSTEDCLOSE=#lastPrice#
         WHERE DATEID=#dateVal# and STOCKID = (SELECT ID FROM STOCKMASTER WHERE
         STOCKCODE=#stockVO.stockCode# AND LISTED
         = 1)
+    </update>
+
+    <update id="updateAdjustedClose" parameterClass="java.util.Map">
+        update quote set adjustedclose=adjustedclose * #ratio# where stockid = (
+        SELECT ID FROM STOCKMASTER WHERE STOCKCODE = #stockCode# and Listed = 1) and
+        <![CDATA[dateid < #exDate#]]>
     </update>
 
 

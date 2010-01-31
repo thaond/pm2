@@ -174,6 +174,34 @@ public class QuoteDAOTest extends PMDBTestCase {
         assertTrue(quoteVOs.contains(quoteVO));
     }
 
+    public void testInsertQuoteToInsertAdjustedClose() throws Exception {
+        IQuoteDAO quoteDAO = DAOManager.getQuoteDAO();
+        String stockCode = "CODE1";
+        PMDate date = new PMDate(2, 1, 2006);
+        QuoteVO quoteVO = new QuoteVO(stockCode, date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
+        quoteVO.setStockVO(DAOManager.getStockDAO().getStock(stockCode));
+        quoteDAO.insertQuote(quoteVO);
+
+        QuoteVO actualQuoteVO = quoteDAO.getQuote(stockCode, date);
+        assertEquals(7.5f, actualQuoteVO.getAdjustedClose());
+    }
+
+    public void testUpdateAdjustedClose() throws Exception {
+        IQuoteDAO quoteDAO = DAOManager.getQuoteDAO();
+        String stockCode = "CODE1";
+        PMDate date = new PMDate(2, 1, 2006);
+        createQuote(quoteDAO, stockCode, date);
+        quoteDAO.updateAdjustedClose(stockCode, date.next(), 1f / 5f);
+        QuoteVO actualQuoteVO = quoteDAO.getQuote(stockCode, date);
+        assertEquals(2f, actualQuoteVO.getAdjustedClose());
+    }
+
+    private void createQuote(IQuoteDAO quoteDAO, String stockCode, PMDate date) {
+        QuoteVO quoteVO = new QuoteVO(stockCode, date, 10f, 15f, 5f, 10f, 100f, 15f, 1000f, 98f);
+        quoteVO.setStockVO(DAOManager.getStockDAO().getStock(stockCode));
+        quoteDAO.insertQuote(quoteVO);
+    }
+
     public void testInsertQuotes() throws Exception {
         IQuoteDAO quoteDAO = DAOManager.getQuoteDAO();
         String stockCode = "CODE1";

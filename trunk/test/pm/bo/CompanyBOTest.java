@@ -1186,6 +1186,34 @@ public class CompanyBOTest extends PMDBTestCase {
         assertEquals(brok, list.get(0).getBrokerage());
     }
 
+    public void testDoActionForUpdatingAdjustedCloseForSplit() throws Exception {
+        PMDate exDate = new PMDate(3, 1, 2008);
+        String stockCode = "CODE4";
+        new QuoteBO().saveNseQuotes(exDate, Arrays.asList(new QuoteVO(stockCode, exDate, 10f, 11f, 9f, 10.5f, 10f, 0f, 100f, 20f)));
+        new QuoteBO().saveNseQuotes(exDate.previous(), Arrays.asList(new QuoteVO(stockCode, exDate.previous(), 10f, 11f, 9f, 10.5f, 10f, 0f, 100f, 20f)));
+        new QuoteBO().saveNseQuotes(exDate.previous().previous(), Arrays.asList(new QuoteVO(stockCode, exDate.previous().previous(), 10f, 11f, 9f, 10.5f, 10f, 0f, 100f, 20f)));
+        CompanyActionVO splitAction = new CompanyActionVO(AppConst.COMPANY_ACTION_TYPE.Split, exDate, stockCode, 2f, 10f);
+        new CompanyBO().doAction(splitAction);
+        assertEquals(10.5f, DAOManager.getQuoteDAO().getQuote(stockCode, exDate).getAdjustedClose());
+        assertEquals(10.5f / 5f, DAOManager.getQuoteDAO().getQuote(stockCode, exDate.previous()).getAdjustedClose(), 0.0001);
+        assertEquals(10.5f / 5f, DAOManager.getQuoteDAO().getQuote(stockCode, exDate.previous().previous()).getAdjustedClose(), 0.0001);
+    }
+
+    public void testDoActionForUpdatingAdjustedCloseForBonus() throws Exception {
+        PMDate exDate = new PMDate(3, 1, 2007);
+        String stockCode = "CODE4";
+        new QuoteBO().saveNseQuotes(exDate.next(), Arrays.asList(new QuoteVO(stockCode, exDate.next(), 10f, 11f, 9f, 10.5f, 10f, 0f, 100f, 20f)));
+        new QuoteBO().saveNseQuotes(exDate, Arrays.asList(new QuoteVO(stockCode, exDate, 10f, 11f, 9f, 10.5f, 10f, 0f, 100f, 20f)));
+        new QuoteBO().saveNseQuotes(exDate.previous(), Arrays.asList(new QuoteVO(stockCode, exDate.previous(), 10f, 11f, 9f, 10.5f, 10f, 0f, 100f, 20f)));
+        new QuoteBO().saveNseQuotes(exDate.previous().previous(), Arrays.asList(new QuoteVO(stockCode, exDate.previous().previous(), 10f, 11f, 9f, 10.5f, 10f, 0f, 100f, 20f)));
+        CompanyActionVO splitAction = new CompanyActionVO(AppConst.COMPANY_ACTION_TYPE.Bonus, exDate, stockCode, 2f, 3f);
+        new CompanyBO().doAction(splitAction);
+        assertEquals(10.5f, DAOManager.getQuoteDAO().getQuote(stockCode, exDate.next()).getAdjustedClose());
+        assertEquals(10.5f, DAOManager.getQuoteDAO().getQuote(stockCode, exDate).getAdjustedClose());
+        assertEquals(10.5f / 5f * 3f, DAOManager.getQuoteDAO().getQuote(stockCode, exDate.previous()).getAdjustedClose(), 0.0001);
+        assertEquals(10.5f / 5f * 3f, DAOManager.getQuoteDAO().getQuote(stockCode, exDate.previous().previous()).getAdjustedClose(), 0.0001);
+    }
+
     public void testDoActionForSplitForSellBeforeExDateWithHolding() throws Exception {
         PMDate buyDate = new PMDate(3, 1, 2007);
         String stockCode = "CODE4";

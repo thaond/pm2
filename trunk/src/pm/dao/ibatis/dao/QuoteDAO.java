@@ -110,6 +110,14 @@ public class QuoteDAO extends SqlMapDaoTemplate implements IQuoteDAO {
         super.update("updateStockID", params);
     }
 
+    public void updateAdjustedClose(String stockCode, PMDate exDate, float ratio) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("exDate", exDate);
+        params.put("stockCode", stockCode);
+        params.put("ratio", ratio);
+        super.update("updateAdjustedClose", params);
+    }
+
     public QuoteVO getQuote(String stockCode) {
         return (QuoteVO) super.queryForObject("getLastQuote", stockCode);
     }

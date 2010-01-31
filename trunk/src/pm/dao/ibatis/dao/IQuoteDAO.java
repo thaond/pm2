@@ -38,4 +38,6 @@ public interface IQuoteDAO {
     QuoteVO quote(StockVO stockVO, PMDate date);
 
     void updateStockId(int fromStockId, int toStockId);
+
+    void updateAdjustedClose(String stockCode, PMDate exDate, float ratio);
 }

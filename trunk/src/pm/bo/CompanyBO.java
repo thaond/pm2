@@ -262,6 +262,7 @@ public class CompanyBO {
         }
 
         updateStockMaster(actionVO);
+        DAOManager.getQuoteDAO().updateAdjustedClose(actionVO.getStockCode(), actionVO.getExDate(), actionVO.getDsbValue() / actionVO.getBase());
         return true; //TODO refactor this
 
     }
@@ -544,7 +545,7 @@ public class CompanyBO {
                         bonusQty, portfolioVO);
             }
         }
-
+        DAOManager.getQuoteDAO().updateAdjustedClose(actionVO.getStockCode(), actionVO.getExDate(), actionVO.getBase() / (actionVO.getDsbValue() + actionVO.getBase()));
         return retVal;
     }
 
