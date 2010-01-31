@@ -31,6 +31,8 @@ public class QuoteVO {
 
     private float perDeliveryQty;
 
+    private float adjustedClose;
+
     private StringBuffer pickDetails = new StringBuffer();
 
     private float scoreCard;
@@ -409,5 +411,11 @@ public class QuoteVO {
         date = new PMDate(val);
     }
 
+    public float getAdjustedClose() {
+        return adjustedClose;
+    }
 
+    public void setAdjustedClose(float adjustedClose) {
+        this.adjustedClose = adjustedClose;
+    }
 }
