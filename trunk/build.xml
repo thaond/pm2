@@ -262,7 +262,7 @@
         <dbdeploy driver="${DB_DRIVER}" url="${DB_URL}"
                   userid="${DB_USER}"
                   password="${DB_PASSWORD}"
-                  dir="db"/>
+                  dir="db" delimiter=";"/>
 
     </target>
 
