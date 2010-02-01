@@ -240,7 +240,7 @@
         <attribute name="spawn"/>
         <sequential>
             <java classpathref="pm.test.classpath" classname="org.apache.derby.drda.NetworkServerControl"
-                  fork="true" spawn="@{spawn}">
+                  fork="true" spawn="@{spawn}" jvm="${jdk.home.1.6}/bin/java">
                 <arg value="@{action}"/>
                 <env key="DERBY_HOME" value="db"/>
             </java>
