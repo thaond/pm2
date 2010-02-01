@@ -62,32 +62,19 @@ public class LoadTransData {
         DBManager.shutDown();
     }
 
-    void loadQuotes(int quoteStartDate, String appStartDate) {
-        cleanupTables(false);
-        resetDownloadDates(appStartDate);
-        System.out.println("Loading Stocklist");
-        loadStockList();
-        System.out.println("Loading Quotes");
-        loadQuotesFromFiles(quoteStartDate);
-    }
-
     void loadData(String appStartDate, int quoteStartDate, String transLogFilePath,
                   String compActLogFilePath, boolean renameLogFiles, boolean onlyLog) throws Exception {
         System.out.println("Loading DB");
-        cleanupTables(onlyLog);
-        if (!onlyLog) {
-            resetDownloadDates(appStartDate);
-            System.out.println("Loading Stocklist");
-            loadStockList();
-        }
+        resetDownloadDates(appStartDate);
+        System.out.println("Loading Stocklist");
+        loadStockList();
         System.out.println("Loading logs");
         loadLogData(transLogFilePath, compActLogFilePath, renameLogFiles, onlyLog);
         System.out.println("Performing divident normalization");
         new CompanyBO().normalizeDividents();
-        if (!onlyLog) {
-            System.out.println("Loading Quotes");
-            loadQuotesFromFiles(quoteStartDate);
-        }
+        System.out.println("Loading Quotes");
+        loadQuotesFromFiles(quoteStartDate);
+
     }
 
     void loadStockList() {
@@ -111,11 +98,6 @@ public class LoadTransData {
 
     BhavToPMConverter bhavToPMConverter() {
         return new BhavToPMConverter();
-    }
-
-    private void cleanupTables(boolean onlyLog) {
-        if (onlyLog) DBManager.cleanUpDB();
-        else DBManager.initDB();
     }
 
     public void loadLogData(String transLogFilePath, String compActLogFilePath, boolean renameLogFiles, boolean onlyLog) throws Exception {

@@ -13,10 +13,8 @@ import pm.net.nse.CorpActionDownloadManager;
 import pm.net.nse.CorpResultDownloadManager;
 import pm.tools.BhavToPMConverter;
 import pm.tools.EODScheduler;
-import pm.tools.LoadTransData;
 import pm.ui.PortfolioManager;
 import pm.util.AppConfig;
-import pm.util.BusinessLogger;
 import pm.util.enumlist.AppConfigWrapper;
 
 import java.io.IOException;
@@ -47,7 +45,7 @@ public class AppLoader {
     public static void main(String[] args) throws Exception {
         initLogger();
         if (args.length < 1) {
-            String message = "Usage: pm.AppLoader ui | scheduler | download | alert | bhav2pm | checkSymbolChange | restorelog | downloadCompResult | downloadCompAction | execStmt | loadIciciTransaction";
+            String message = "Usage: pm.AppLoader ui | scheduler | download | alert | bhav2pm | checkSymbolChange | downloadCompResult | downloadCompAction | execStmt | loadIciciTransaction";
             logger.error(message);
             System.out.println(message);
             System.out.println("Terminating...");
@@ -87,9 +85,6 @@ public class AppLoader {
         } else if (args[0].equalsIgnoreCase("checkSymbolChange")) {
             logger.info("Starting checkSymbolChange");
 //			NSETradingSymbol.updateSymbolChange();          //TODO make it working
-        } else if (args[0].equalsIgnoreCase("restorelog")) {
-            logger.info("Starting restorelog");
-            new LoadTransData().loadLogData(BusinessLogger.getTransLogFilePath(), BusinessLogger.getCompActLogFilePath(), true, true);
         } else if (args[0].equalsIgnoreCase("downloadCompResult")) {
             logger.info("Starting Company Result download");
             new CorpResultDownloadManager(TaskManager.getExecutor());
