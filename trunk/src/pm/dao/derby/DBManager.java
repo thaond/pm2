@@ -2,7 +2,6 @@ package pm.dao.derby;
 
 import com.ibatis.common.jdbc.ScriptRunner;
 import org.apache.log4j.Logger;
-import pm.AppLoader;
 import pm.util.AppConfig;
 
 import java.io.FileNotFoundException;
@@ -28,16 +27,6 @@ public class DBManager {
         } catch (ClassNotFoundException e) {
             logger.error(e, e);
         }
-    }
-
-    public static void initDB() {
-        logger.info("Creating Database");
-        runSQLsFromFile("create-db.sql", createNewConnection());
-
-    }
-
-    public static void cleanUpDB() {
-        runSQLsFromFile("cleanUpTransactions.sql", createNewConnection());
     }
 
     private static void runSQLsFromFile(String sqlFileName, Connection conn) {
@@ -83,11 +72,6 @@ public class DBManager {
     public static Connection getConnection() {
         if (connection == null) connection = createNewConnection();
         return connection;
-    }
-
-    public static void main(String[] str) {
-        AppLoader.initConsoleLogger();
-        initDB();
     }
 
     public static void shutDown() {
