@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="DW">
+
+    <resultMap id="eodStatistics" class="pm.vo.EODStatistics">
+        <result property="stock" column="STOCKID" select="getStockByID"/>
+        <result property="date" column="DATEID" typeHandler="pm.dao.ibatis.handler.PMDateHandler"/>
+        <result property="high5D" column="HIGH5D"/>
+        <result property="high20D" column="HIGH20D"/>
+        <result property="high52Week" column="HIGH52W"/>
+        <result property="highLifeTime" column="HIGHLIFETIME"/>
+        <result property="low5D" column="LOW5D"/>
+        <result property="low20D" column="LOW20D"/>
+        <result property="low52Week" column="LOW52W"/>
+        <result property="lowLifeTime" column="LOWLIFETIME"/>
+        <result property="moving10DAverage" column="MOVAVG10D"/>
+        <result property="moving50DAverage" column="MOVAVG50D"/>
+        <result property="moving200DAverage" column="MOVAVG200D"/>
+    </resultMap>
+
+    <select id="fetchEodStatics" parameterClass="java.util.Map" resultMap="eodStatistics">
+        SELECT * FROM EODSTATISTICS WHERE STOCKID = #stockID# and DATEID = #dateID#
+    </select>
+
+
+    <procedure id="callUpdateEodStatics">
+        {call UpdateEodStatics()}
+    </procedure>
+</sqlMap>

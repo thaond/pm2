@@ -87,4 +87,8 @@ public class DAOManager {
     public static ICompanyResultDAO companyResultDAO() {
         return (ICompanyResultDAO) daoManager.getDao(ICompanyResultDAO.class, contextId);
     }
+
+    public static IDataWarehouseDAO getDataWarehouseDAO() {
+        return (IDataWarehouseDAO) daoManager.getDao(IDataWarehouseDAO.class, contextId);
+    }
 }

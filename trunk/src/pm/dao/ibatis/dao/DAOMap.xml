@@ -15,6 +15,7 @@
         <dao interface="pm.dao.ibatis.dao.ICompanyActionDAO" implementation="pm.dao.ibatis.dao.CompanyActionDAO"/>
         <dao interface="pm.dao.ibatis.dao.IFundTransactionDAO" implementation="pm.dao.ibatis.dao.FundTransactionDAO"/>
         <dao interface="pm.dao.ibatis.dao.ICompanyResultDAO" implementation="pm.dao.ibatis.dao.CompanyResultDAO"/>
+        <dao interface="pm.dao.ibatis.dao.IDataWarehouseDAO" implementation="pm.dao.ibatis.dao.DataWarehouseDAO"/>
     </context>
 </daoConfig>
 

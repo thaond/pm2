@@ -258,6 +258,8 @@
                 />
     </target>
 
+    <target name="recreate-db" depends="create-db, update-db" description="recreates database"/>
+
     <target name="update-db" depends="compile.module.pm.production">
         <dbdeploy driver="${DB_DRIVER}" url="${DB_URL}"
                   userid="${DB_USER}"

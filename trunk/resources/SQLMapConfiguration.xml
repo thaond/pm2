@@ -55,5 +55,6 @@
     <sqlMap resource="pm/dao/ibatis/sqlmap/CompanyAction.xml"/>
     <sqlMap resource="pm/dao/ibatis/sqlmap/FundTransaction.xml"/>
     <sqlMap resource="pm/dao/ibatis/sqlmap/CompanyResult.xml"/>
+    <sqlMap resource="pm/dao/ibatis/sqlmap/DataWarehouse.xml"/>
 </sqlMapConfig>
 
