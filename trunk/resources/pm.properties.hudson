@@ -49,3 +49,4 @@ iciciPasswd=
 dateLastDeliveryPosition=20070827
 alertSleepTime=15
 marketOpenTimeHH=9
+ENABLE_CACHE=false

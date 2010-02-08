@@ -28,7 +28,8 @@ public enum AppConfig {
     dateMARKETHOLIDAYDOWNLOADER, statusMARKETHOLIDAYDOWNLOADER,
     DB_DRIVER, DB_URL, DB_USER, DB_PASSWORD,
     HP_CHART_STOCKCODE, DEFAULT_PORTFOLIO, runBackgroundTask,
-    iciciUserName, iciciPasswd, dateICICITRANSACTIONSYNCHRONIZER, statusICICITRANSACTIONSYNCHRONIZER;
+    iciciUserName, iciciPasswd, dateICICITRANSACTIONSYNCHRONIZER, statusICICITRANSACTIONSYNCHRONIZER,
+    ENABLE_CACHE;
 
     public String Value = null;
     public static Logger logger = Logger.getLogger(AppConfig.class);
