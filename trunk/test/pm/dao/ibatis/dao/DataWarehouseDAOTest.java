@@ -13,12 +13,13 @@ public class DataWarehouseDAOTest extends PMDBCompositeDataSetTestCase {
         super(string, "TestData.xml");
     }
 
+
     public void testFetchEodStatics() throws Exception {
 //   <EODSTATISTICS STOCKID="1" DATEID="20060101" HIGH5D="5.0" HIGH20D="20.0" HIGH52W="52.0" HIGHLIFETIME="1000.0"
 //     LOW5D="3.0" LOW20D="2.0" LOW52W="1.0" LOWLIFETIME="0.5" MOVAVG10D="10.01" MOVAVG50D="50.05" MOVAVG200D="200.20"/>
 
         StockVO stockVO = DAOManager.getStockDAO().getStock("CODE1");
-        System.out.println("------" + stockVO);
+        System.out.println("------" + stockVO.toPrint());
         PMDate pmDate = new PMDate(20060101);
         EODStatistics eodStatistics = DAOManager.getDataWarehouseDAO().fetchEodStatics(pmDate, stockVO);
 
