@@ -8,7 +8,7 @@
     <!-- These settings control SqlMap configuration details, primarily to do with transaction
      management. They are all optional (see the Developer Guide for more). -->
     <settings
-            cacheModelsEnabled="true"
+            cacheModelsEnabled="${ENABLE_CACHE}"
             enhancementEnabled="true"
             lazyLoadingEnabled="false"
             maxRequests="32"
