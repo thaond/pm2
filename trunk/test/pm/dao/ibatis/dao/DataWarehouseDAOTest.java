@@ -8,7 +8,7 @@ import pm.vo.StockVO;
 import java.sql.SQLException;
 import java.util.List;
 
-public class DataWarehouseDAOTest extends PMDBTestCase {
+public class DataWarehouseDAOTest extends PMDBCompositeDataSetTestCase {
     public DataWarehouseDAOTest(String string) {
         super(string, "TestData.xml");
     }
@@ -18,6 +18,7 @@ public class DataWarehouseDAOTest extends PMDBTestCase {
 //     LOW5D="3.0" LOW20D="2.0" LOW52W="1.0" LOWLIFETIME="0.5" MOVAVG10D="10.01" MOVAVG50D="50.05" MOVAVG200D="200.20"/>
 
         StockVO stockVO = DAOManager.getStockDAO().getStock("CODE1");
+        System.out.println("------" + stockVO);
         PMDate pmDate = new PMDate(20060101);
         EODStatistics eodStatistics = DAOManager.getDataWarehouseDAO().fetchEodStatics(pmDate, stockVO);
 
