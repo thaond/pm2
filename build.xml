@@ -268,9 +268,24 @@
 
     </target>
 
+    <target name="disableCache">
+        <replace file="resources/SQLMapConfiguration.xml">
+            <replacetoken>cacheModelsEnabled="true"</replacetoken>
+            <replacevalue>cacheModelsEnabled="false"</replacevalue>
+        </replace>
+    </target>
+
+    <target name="enableCache">
+        <replace file="resources/SQLMapConfiguration.xml">
+            <replacetoken>cacheModelsEnabled="false"</replacetoken>
+            <replacevalue>cacheModelsEnabled="true"</replacevalue>
+        </replace>
+    </target>
+
     <target name="test" depends="clean, compile.module.pm.tests, create-db, update-db">
         <mkdir dir="${pm.test.report.dir}"/>
         <mkdir dir="log"/>
+        <antcall target="disableCache"/>
         <junit jvm="${jdk.home.1.6}/bin/java" fork="true" forkmode="once" failureproperty="build.failed"
                errorproperty="build.failed">
             <classpath refid="pm.test.classpath"/>
@@ -294,7 +309,8 @@
                 <fileset dir="test" includes="**/LoadTransDataFunctionalTest.*"/>
             </batchtest>
         </junit>
-
+        <antcall target="enableCache"/>
+        y
         <junitreport todir="${pm.test.report.dir}">
             <fileset dir="${pm.test.report.dir}">
                 <include name="TEST-*.xml"/>

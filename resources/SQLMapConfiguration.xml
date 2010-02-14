@@ -8,7 +8,7 @@
     <!-- These settings control SqlMap configuration details, primarily to do with transaction
      management. They are all optional (see the Developer Guide for more). -->
     <settings
-            cacheModelsEnabled="${ENABLE_CACHE}"
+            cacheModelsEnabled="true"
             enhancementEnabled="true"
             lazyLoadingEnabled="false"
             maxRequests="32"
@@ -30,16 +30,8 @@
                       value="${DB_DRIVER}"/>
             <property name="JDBC.ConnectionURL"
                       value="${DB_URL}"/>
-            <!--<property name="JDBC.Driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>-->
-            <!--<property name="JDBC.ConnectionURL" value="jdbc:derby:pmDBProd;create=true"/>-->
             <property name="JDBC.Username" value="${DB_USER}"/>
             <property name="JDBC.Password" value="${DB_PASSWORD}"/>
-            <!--
-                                    <property name="JDBC.Driver" value="org.hsqldb.jdbcDriver"/>
-                                    <property name="JDBC.ConnectionURL" value="jdbc:hsqldb:hsql://localhost/xdb"/>
-                                    <property name="JDBC.Username" value="sa"/>
-                                    <property name="JDBC.Password" value=""/>
-            -->
         </dataSource>
     </transactionManager>
     <!-- Identify all SQL Map XML files to be loaded by this SQL map. Notice the paths
