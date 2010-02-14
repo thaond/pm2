@@ -310,7 +310,6 @@
             </batchtest>
         </junit>
         <antcall target="enableCache"/>
-        y
         <junitreport todir="${pm.test.report.dir}">
             <fileset dir="${pm.test.report.dir}">
                 <include name="TEST-*.xml"/>
