@@ -25,27 +25,21 @@ import java.util.Vector;
  */
 public class MarketHolidayDownloader implements ILongTask {
 
-    static String MARKET_HOLIDAY_LIST_URL = "content/equities/eq_holidays.htm";
-
     private boolean taskCompleted = false;
 
     private Logger logger = Logger.getLogger(MarketHolidayDownloader.class);
-    static final String LINE_AFTER_CALENDAR_YEAR = "In pursuance to clause 2 of Chapter IX";
+    static final String LAST_LINE_BEFORE_DATA_START = "Description";
 
 
-    List<PMDate> findMarketDays(Reader reader) throws IOException, ApplicationException {
+    List<PMDate> findMarketDays(Reader reader, int year) throws IOException, ApplicationException {
         BufferedReader br = new BufferedReader(reader);
-        int calendarYear = findCalendarYear(br);
-        if (isCurrentYear(calendarYear)) {
-            Set<PMDate> holidays = findHolidays(br);
-            return getMarketDaysFrom(calendarYear, holidays);
-        }
-        return null;
+        Set<PMDate> holidays = findHolidays(br);
+        return getMarketDaysFrom(year, holidays);
     }
 
     Set<PMDate> findHolidays(BufferedReader br) throws IOException, ApplicationException {
         Set<PMDate> holidayList = new HashSet<PMDate>();
-        String endOfListIdentifier = "The holidays falling on";
+        String endOfListIdentifier = "Top";
         skipTitle(br);
         String line;
         int columnID = 0;
@@ -55,7 +49,7 @@ public class MarketHolidayDownloader implements ILongTask {
             }
             columnID++;
             if (columnID == 2) {
-                holidayList.add(PMDateFormatter.parseDD_Mmm_YY(line));
+                holidayList.add(PMDateFormatter.parseDD_Mmm_YYYY(line));
             }
             columnID %= 4;
         }
@@ -64,34 +58,13 @@ public class MarketHolidayDownloader implements ILongTask {
     }
 
     private void skipTitle(BufferedReader br) throws IOException, ApplicationException {
-        String line = br.readLine();
-        if (!line.trim().startsWith(LINE_AFTER_CALENDAR_YEAR)) {
-            throw new ApplicationException("NSE holidays table list starting with invalid title : " + line + " - expected : " + LINE_AFTER_CALENDAR_YEAR);
-        }
-        for (int i = 0; i < 4; i++) {
-            br.readLine();
-        }
-    }
-
-    int findCalendarYear(BufferedReader br) throws IOException {
-        logger.debug("looking for calendar year");
-        String yearIdentifier = "calendar year";
         String line;
-        while ((line = br.readLine()) != null) {
-            int index = line.indexOf(yearIdentifier);
-            if (index != -1) {
-                int st = index + yearIdentifier.length() + 1;
-                int yy = Integer.parseInt(line.substring(st));
-                logger.debug("found year : " + yy);
-                return yy;
-            }
-        }
-        return -1;
+        while ((line = br.readLine()) != null && !line.startsWith(LAST_LINE_BEFORE_DATA_START)) ;
     }
 
-
-    public String getURL() {
-        return AppConst.NSE_BASE_URL + MARKET_HOLIDAY_LIST_URL;
+    public String getURL(int year) {
+        String relativeURLWithDate = "marketinfo/holiday_master/holidaysList.jsp?clgData=N&fromDt=01-01-" + year + "&mktSeg=CM&pageType=outuser&toDt=31-12-" + year;
+        return AppConst.NSE_BASE_URL + relativeURLWithDate;
     }
 
     public boolean isTaskCompleted() {
@@ -124,7 +97,8 @@ public class MarketHolidayDownloader implements ILongTask {
     public void run() {
         logger.debug("Starting Market holiday download..");
         try {
-            List<PMDate> marketDays = findMarketDays(getDataReader());
+            int year = new PMDate().getYear();
+            List<PMDate> marketDays = findMarketDays(getDataReader(year), year);
             saveData(marketDays);
         } catch (IOException e) {
             logger.error(e, e);
@@ -172,13 +146,8 @@ public class MarketHolidayDownloader implements ILongTask {
         return marketDays;
     }
 
-    private boolean isCurrentYear(int calendarYear) {
-        PMDate pmDate = new PMDate();
-        return calendarYear == pmDate.getYear();
-    }
-
-    Reader getDataReader() throws ParserException {
-        return new HTTPHelper().getHTMLContentReader(getURL());
+    Reader getDataReader(int year) throws ParserException {
+        return new HTTPHelper().getHTMLContentReader(getURL(year));
     }
 
 }

@@ -25,6 +25,7 @@ public class MarketHolidayDownloaderExternalTest extends TestCase {
         PMDate currYearRepublicDay = new PMDate();
         currYearRepublicDay.setDate(26);
         currYearRepublicDay.setMonth(1);
+        assertFalse(marketWorkingDays.isEmpty());
         assertFalse(marketWorkingDays.contains(currYearRepublicDay));
     }
 }
