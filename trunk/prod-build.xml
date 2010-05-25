@@ -20,9 +20,12 @@
                 url="${DB_URL};create=true"
                 userid="${DB_USER}"
                 password="${DB_PASSWORD}"
-                src="db/001_Quote_AddAdjustedClose.sql"
                 onerror="continue"
-                />
+                >
+            <sort>
+                <fileset dir="db" includes="*.sql" excludes="create-db.sql"/>
+            </sort>
+        </sql>
     </target>
 
     <taskdef name="dbdeploy" classname="com.dbdeploy.AntTarget" classpath="dbdeploy-ant-3.0M2.jar;derby.jar;pm.jar"/>
