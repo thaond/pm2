@@ -203,13 +203,15 @@
     </target>
 
     <target name="deploy" depends="jar" description="deploys">
-        <copy overwrite="true" failonerror="yes" todir="${production.location}">
+        <copy overwrite="true" failonerror="yes" todir="${production.location}" flatten="no">
             <fileset file="${ant.project.name}.jar"/>
             <fileset file="resources/SQLMapConfiguration.xml"/>
-            <fileset file="db/create-db.sql"/>
-            <fileset file="db/cleanUpTransactions.sql"/>
+            <fileset file="prod-build.xml"/>
             <fileset dir="${module.pm.basedir}/lib" includes="*.jar"
                      excludes="jmock*.jar, junit*.jar, dbunit*.jar, slf4j*.jar"/>
+        </copy>
+        <copy overwrite="true" failonerror="yes" todir="${production.location}/db">
+            <fileset file="db/*.sql"/>
         </copy>
     </target>
     <!---->

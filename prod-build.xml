@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="pm" default="update-db">
+    <property file="pm.properties"/>
+
+
+    <target name="create-db">
+        <sql
+                classpath="derby.jar;pm.jar"
+                driver="${DB_DRIVER}"
+                url="${DB_URL};create=true"
+                userid="${DB_USER}"
+                password="${DB_PASSWORD}"
+                src="db/create-db.sql"
+                onerror="continue"
+                />
+
+        <sql
+                classpath="derby.jar;pm.jar"
+                driver="${DB_DRIVER}"
+                url="${DB_URL};create=true"
+                userid="${DB_USER}"
+                password="${DB_PASSWORD}"
+                src="db/001_Quote_AddAdjustedClose.sql"
+                onerror="continue"
+                />
+    </target>
+
+    <taskdef name="dbdeploy" classname="com.dbdeploy.AntTarget" classpath="dbdeploy-ant-3.0M2.jar;derby.jar;pm.jar"/>
+
+    <target name="recreate-db" description="recreates database">
+        <antcall target="create-db"/>
+        <antcall target="update-db"/>
+    </target>
+
+    <target name="update-db">
+        <dbdeploy driver="${DB_DRIVER}" url="${DB_URL}"
+                  userid="${DB_USER}"
+                  password="${DB_PASSWORD}"
+                  dir="db" delimiter=";"/>
+
+    </target>
+
+</project>
