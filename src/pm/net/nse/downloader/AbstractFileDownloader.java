@@ -22,12 +22,15 @@ public abstract class AbstractFileDownloader extends AbstractDownloader {
     }
 
     public void run() {
-        logger.info("Downloading " + getFileType() + " file : " + date);
-        InputStream reader = getHTTPHelper().getDataStream(getThisURL());
-        if (reader != null) {
-            storeData(reader);
+        try {
+            logger.info("Downloading " + getFileType() + " file : " + date);
+            InputStream reader = getHTTPHelper().getDataStream(getThisURL());
+            if (reader != null) {
+                storeData(reader);
+            }
+        } finally {
+            manager.taskCompleted(this);
         }
-        manager.taskCompleted(this);
     }
 
     abstract protected String getFileType();

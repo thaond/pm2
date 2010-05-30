@@ -17,16 +17,19 @@ public abstract class IndexQuoteDownloader extends AbstractDownloader {
     }
 
     public void run() {
-        if (!stop) {
-            try {
-                downloadData(findStartDate(stockVO.getStockCode()), new PMDate());
-            } catch (Exception e) {
-                logger.error(e, e);
-                error = true;
+        try {
+            if (!stop) {
+                try {
+                    downloadData(findStartDate(stockVO.getStockCode()), new PMDate());
+                } catch (Exception e) {
+                    logger.error(e, e);
+                    error = true;
+                }
             }
+            completed = true;
+        } finally {
+            manager.taskCompleted(this);
         }
-        completed = true;
-        manager.taskCompleted(this);
     }
 
     PMDate findStartDate(String indexCode) {
