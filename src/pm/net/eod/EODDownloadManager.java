@@ -53,8 +53,8 @@ public class EODDownloadManager implements ILongTask {
         } else if (downloader instanceof DeliveryPositionDownloader) {
             logger.info("DeliveryPosi downloaded for date : " + ((AbstractFileDownloader) downloader).getDate());
             countDeliveryDownloader--;
-        } else if (downloader instanceof YahooQuoteDownloadHandler) {
-            logger.info("Index quote downloaded for " + ((YahooQuoteDownloadHandler) downloader).getIndexCode());
+        } else if (downloader instanceof IndexQuoteDownloader) {
+            logger.info("Index quote downloaded for " + ((IndexQuoteDownloader) downloader).getIndexCode());
             countIndexDownloader--;
         }
 
@@ -151,7 +151,7 @@ public class EODDownloadManager implements ILongTask {
             countBhavDownloader++;
         } else if (downloader instanceof DeliveryPositionDownloader) {
             countDeliveryDownloader++;
-        } else if (downloader instanceof YahooQuoteDownloadHandler) {
+        } else if (downloader instanceof IndexQuoteDownloader) {
             countIndexDownloader++;
         }
         downloaderList.add(downloader);
