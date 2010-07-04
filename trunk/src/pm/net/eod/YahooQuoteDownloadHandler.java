@@ -57,7 +57,4 @@ public class YahooQuoteDownloadHandler extends IndexQuoteDownloader {
         return quoteVO;
     }
 
-    public String getIndexCode() {
-        return stockVO.getStockCode();
-    }
 }

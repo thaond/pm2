@@ -46,4 +46,8 @@ public abstract class IndexQuoteDownloader extends AbstractDownloader {
     }
 
     public abstract void downloadData(PMDate stDate, PMDate enDate);
+
+    public String getIndexCode() {
+        return stockVO.getStockCode();
+    }
 }
