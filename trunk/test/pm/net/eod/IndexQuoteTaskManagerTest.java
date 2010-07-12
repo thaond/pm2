@@ -1,7 +1,5 @@
 package pm.net.eod;
 
-import static junit.framework.Assert.assertSame;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import pm.net.AbstractDownloader;
 import pm.net.nse.downloader.NseIndexQuoteDownloader;
@@ -11,6 +9,9 @@ import pm.vo.StockVO;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static junit.framework.Assert.assertSame;
+import static org.junit.Assert.assertEquals;
 
 public class IndexQuoteTaskManagerTest {
 
@@ -49,10 +50,10 @@ public class IndexQuoteTaskManagerTest {
 
     @Test
     public void getIndexQuoteDownloader() {
-        StockVO nseStock = new StockVO("^NIFTY", "S&P CNX NIFTY", 0f, SERIESTYPE.nseindex, 0f, (short) 0, "", new PMDate(), true);
+        StockVO nseStock = new StockVO("NIFTY", "S&P CNX NIFTY", 0f, SERIESTYPE.nseindex, 0f, (short) 0, "", new PMDate(), true);
         AbstractDownloader downloader = new IndexQuoteTaskManager().getIndexQuoteDownloader(nseStock, null);
         assertSame(NseIndexQuoteDownloader.class, downloader.getClass());
-        StockVO nonNseStock = new StockVO("^NIFTY", "S&P CNX NIFTY", 0f, SERIESTYPE.index, 0f, (short) 0, "", new PMDate(), true);
+        StockVO nonNseStock = new StockVO("NIFTY", "S&P CNX NIFTY", 0f, SERIESTYPE.index, 0f, (short) 0, "", new PMDate(), true);
         downloader = new IndexQuoteTaskManager().getIndexQuoteDownloader(nonNseStock, null);
         assertSame(YahooQuoteDownloadHandler.class, downloader.getClass());
     }

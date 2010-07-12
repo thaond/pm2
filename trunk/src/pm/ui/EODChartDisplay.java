@@ -5,6 +5,7 @@ import pm.chart.EODChartPanel;
 import pm.util.DropDownWrapper;
 import pm.vo.EODChartVO;
 import pm.vo.PortfolioDetailsVO;
+import pm.vo.StockVO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -91,7 +92,7 @@ public class EODChartDisplay extends AbstractPMPanel {
         gbc.gridx++;
         panel.add(createLabel("Stock"), gbc);
         gbc.gridx++;
-        stockField = UIHelper.createStocklistIncIndexJCB();
+        stockField = UIHelper.createStockVOlistIncIndexJCB();
         panel.add(stockField, gbc);
         stockField.addKeyListener(new KeyListener() {
             public void keyTyped(KeyEvent e) {
@@ -149,7 +150,8 @@ public class EODChartDisplay extends AbstractPMPanel {
             return null;
         }
         try {
-            return Controller.getEODData(frmDate.pmDate(), toDate.pmDate(), days, stockField.getSelectedItem().toString(), applyComAction.isSelected(), portfolioField.getSelectedItem().toString(), (TIMEPERIOD) timePeriod.getSelectedItem());
+            String stockCode = ((StockVO) stockField.getSelectedItem()).getStockCode();
+            return Controller.getEODData(frmDate.pmDate(), toDate.pmDate(), days, stockCode, applyComAction.isSelected(), portfolioField.getSelectedItem().toString(), (TIMEPERIOD) timePeriod.getSelectedItem());
         } catch (Exception e) {
             logger.error(e, e);
             UIHelper.displayInformation(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -159,7 +161,7 @@ public class EODChartDisplay extends AbstractPMPanel {
 
     private void setSelectedStock(String stockCode) {
         for (int i = 0; i < stockField.getItemCount(); i++) {
-            if (stockField.getItemAt(i).equals(stockCode)) {
+            if (((StockVO) stockField.getItemAt(i)).getStockCode().equals(stockCode)) {
                 stockField.setSelectedIndex(i);
                 return;
             }

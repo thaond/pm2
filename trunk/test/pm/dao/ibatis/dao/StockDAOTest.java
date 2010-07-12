@@ -50,16 +50,16 @@ public class StockDAOTest extends PMDBCompositeDataSetTestCase {
         stockList = stockDAO.getStockList(true);
         assertEquals(18, stockList.size());
         assertEquals("CODE1", stockList.get(0).getStockCode());
-        assertEquals("^INDEX", stockList.get(17).getStockCode());
+        assertEquals("INDEX", stockList.get(17).getStockCode());
         assertEquals(SERIESTYPE.index, stockList.get(17).getSeries());
 
     }
 
     public void testGetStockListToIncludeNseIndex() {
         IStockDAO stockDAO = DAOManager.getStockDAO();
-        stockDAO.insertStock(new StockVO("^Nifty", "S&P CNX Nifty", 0f, SERIESTYPE.nseindex, 0f, (short) 0, "", new PMDate(), true));
+        stockDAO.insertStock(new StockVO("Nifty", "S&P CNX Nifty", 0f, SERIESTYPE.nseindex, 0f, (short) 0, "", new PMDate(), true));
         List<StockVO> stockList = stockDAO.getStockList(true);
-        assertEquals("^Nifty", stockList.get(18).getStockCode());
+        assertEquals("Nifty", stockList.get(18).getStockCode());
         assertEquals(SERIESTYPE.nseindex, stockList.get(18).getSeries());
 
     }
@@ -68,15 +68,15 @@ public class StockDAOTest extends PMDBCompositeDataSetTestCase {
         IStockDAO stockDAO = DAOManager.getStockDAO();
         List<StockVO> stockList = stockDAO.getIndexList();
         assertEquals(1, stockList.size());
-        assertEquals("^INDEX", stockList.get(0).getStockCode());
+        assertEquals("INDEX", stockList.get(0).getStockCode());
     }
 
     public void testGetIndexListToIncludeNSEIndexList() {
         IStockDAO stockDAO = DAOManager.getStockDAO();
-        stockDAO.insertStock(new StockVO("^Nifty", "S&P CNX Nifty", 0f, SERIESTYPE.nseindex, 0f, (short) 0, "", new PMDate(), true));
+        stockDAO.insertStock(new StockVO("Nifty", "S&P CNX Nifty", 0f, SERIESTYPE.nseindex, 0f, (short) 0, "", new PMDate(), true));
         List<StockVO> stockList = stockDAO.getIndexList();
         assertEquals(2, stockList.size());
-        assertEquals("^Nifty", stockList.get(1).getStockCode());
+        assertEquals("Nifty", stockList.get(1).getStockCode());
     }
 
     public void testUpdateICICICode() {

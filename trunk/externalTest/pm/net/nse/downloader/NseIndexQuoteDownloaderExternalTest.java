@@ -16,7 +16,7 @@ public class NseIndexQuoteDownloaderExternalTest {
 
     @Test
     public void testDownloadData() throws Exception {
-        StockVO stockVO = new StockVO("^NIFTY", "S&P CNX NIFTY", 0f, SERIESTYPE.nseindex, 0f, (short) 0, "", new PMDate(), true);
+        StockVO stockVO = new StockVO("NIFTY", "S&P CNX NIFTY", 0f, SERIESTYPE.nseindex, 0f, (short) 0, "", new PMDate(), true);
         final List<QuoteVO> quoteVOs = new ArrayList<QuoteVO>();
         NseIndexQuoteDownloader downloader = new NseIndexQuoteDownloader(null, stockVO) {
             @Override

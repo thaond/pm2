@@ -1,7 +1,6 @@
 package pm.net.eod;
 
 import org.apache.log4j.Logger;
-import pm.AppLoader;
 import pm.bo.QuoteBO;
 import pm.net.HTTPHelper;
 import pm.util.ApplicationException;
@@ -99,8 +98,4 @@ public class YahooHQDownloader {
         return null;
     }
 
-    public static void main(String[] args) {
-        AppLoader.initConsoleLogger();
-        new YahooHQDownloader().downloadQuote("^NSEI", new PMDate(31, 8, 2006), new PMDate(1, 9, 2006));
-    }
 }

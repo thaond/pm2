@@ -27,21 +27,21 @@ public class NseIndexQuoteDownloaderTest {
 
     @Test
     public void parse() throws IOException {
-        StockVO stockVO = new StockVO("^NIFTY", "S&P CNX NIFTY", 0f, SERIESTYPE.nseindex, 0f, (short) 0, "", new PMDate(), true);
+        StockVO stockVO = new StockVO("NIFTY", "S&P CNX NIFTY", 0f, SERIESTYPE.nseindex, 0f, (short) 0, "", new PMDate(), true);
         List<QuoteVO> quotes = new NseIndexQuoteDownloader(null, stockVO).parse(new StringReader(getCSVContent()));
         verifyQuotes(quotes, false);
     }
 
     @Test
     public void parseToHandleWithoutTradedColumn() throws IOException {
-        StockVO stockVO = new StockVO("^NIFTY", "S&P CNX NIFTY", 0f, SERIESTYPE.nseindex, 0f, (short) 0, "", new PMDate(), true);
+        StockVO stockVO = new StockVO("NIFTY", "S&P CNX NIFTY", 0f, SERIESTYPE.nseindex, 0f, (short) 0, "", new PMDate(), true);
         List<QuoteVO> quotes = new NseIndexQuoteDownloader(null, stockVO).parse(new StringReader(getCSVContentWithoutVolume()));
         verifyQuotes(quotes, true);
     }
 
     @Test
     public void runToHandleException() {
-        StockVO stockVO = new StockVO("^NIFTY", "S&P CNX NIFTY", 0f, SERIESTYPE.nseindex, 0f, (short) 0, "", new PMDate(), true);
+        StockVO stockVO = new StockVO("NIFTY", "S&P CNX NIFTY", 0f, SERIESTYPE.nseindex, 0f, (short) 0, "", new PMDate(), true);
         NseIndexQuoteDownloader downloader = new NseIndexQuoteDownloader(new EODDownloadManager(null), stockVO) {
             @Override
             Reader getData(String postData) throws ParserException, IOException {
