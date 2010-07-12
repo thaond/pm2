@@ -86,7 +86,7 @@ public class WelcomeScreen extends JPanel {
         PMDate currDate = new PMDate();
         PMDate yearBack = currDate.getDateAddingDays(-365);
         String stockCode = AppConfig.HP_CHART_STOCKCODE.Value;
-        if (stockCode == null) stockCode = "^NSEI";
+        if (stockCode == null) stockCode = "NIFTY";
         String[] stockCodes = {stockCode};
         int[] days = {1, 50};
         GridBagConstraints gbc = new GridBagConstraints();

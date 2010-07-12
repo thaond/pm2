@@ -26,11 +26,6 @@ public class ChartDownloader {
     private static String baseURL = "http://ichart.yahoo.com/t?s=";
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
-    public static void main(String[] args) {
-        download("^BSESN", "S");
-        download("^NSEI", "N");
-    }
-
     public static void download(String index, String id) {
         String baseDir = AppConfig.dataDownloadDir.Value + "/Chart";
         try {

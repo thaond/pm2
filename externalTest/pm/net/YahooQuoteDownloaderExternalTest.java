@@ -19,7 +19,7 @@ public class YahooQuoteDownloaderExternalTest extends TestCase {
             }
         };
         verifyResult(quoteDownloader, "RELIANCE.NS");
-        verifyResult(quoteDownloader, "^BSESN");
+        verifyResult(quoteDownloader, "BSESN");
     }
 
     private void verifyResult(YahooQuoteDownloader quoteDownloader, String stockCode) throws Exception {

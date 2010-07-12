@@ -13,14 +13,17 @@ import pm.ui.table.PMTableMouseListener;
 import pm.util.AppConfig;
 import pm.util.DropDownWrapper;
 import pm.util.Helper;
+import pm.util.enumlist.SERIESTYPE;
 import pm.util.enumlist.TASKNAME;
 import pm.vo.PortfolioDetailsVO;
+import pm.vo.StockVO;
 import pm.vo.TradingAccountVO;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import java.awt.*;
@@ -184,7 +187,18 @@ public class UIHelper {
     }
 
     public static JComboBox createStockVOlistIncIndexJCB() {
-        return createJCB(Controller.stockList(true));
+        JComboBox comboBox = createJCB(Controller.stockList(true));
+        comboBox.setRenderer(new BasicComboBoxRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component component = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (((StockVO) value).getSeries() != SERIESTYPE.equity) {
+                    component.setForeground(Color.BLUE);
+                }
+                return component;
+            }
+        });
+        return comboBox;
     }
 
     public static JComboBox createStockVOlistJCB() {

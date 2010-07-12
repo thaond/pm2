@@ -26,7 +26,7 @@ public class LiveQuoteLoader {
         QuoteVO[] quoteVOs = new QuoteVO[stockCode.length];
         try {
             for (int i = 0; i < stockCode.length; i++) {
-                if (stockCode[i].startsWith("^"))
+                if (stockCode[i].startsWith("^"))  // TODO broken because index doesn't start with ^
                     workerThread[i] = new WorkerThread(new YahooQuoteDownloader(), stockCode[i].substring(1));
                 else
                     workerThread[i] = new WorkerThread((AbstractQuoteDownloader) QServerClass.newInstance(), stockCode[i]);
