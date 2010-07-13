@@ -30,12 +30,12 @@ public class AbstractDateTaskManagerTest extends TestCase {
                 return new AbstractFileDownloader(null, null) {
 
                     @Override
-                    protected String getThisURL() {
+                    protected String getURL() {
                         return null;
                     }
 
                     @Override
-                    public String getThisFilePath() {
+                    public String getFilePath() {
                         return null;
                     }
 

@@ -112,8 +112,13 @@ public class EODDownloadManager implements ILongTask {
         logger.info("Downloading EOD Data started");
         loadBhavCopyDownloaders();
         loadDeliveryPostDownloaders();
+        loadFandODownloaders();
         loadIndexDownloaders();
         initComplete = true;
+    }
+
+    void loadFandODownloaders() {
+        new NSEFOTaskManager().loadDownloaders(this);
     }
 
     void loadIndexDownloaders() {

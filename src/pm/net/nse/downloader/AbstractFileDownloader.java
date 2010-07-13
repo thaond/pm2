@@ -24,7 +24,7 @@ public abstract class AbstractFileDownloader extends AbstractDownloader {
     public void run() {
         try {
             logger.info("Downloading " + getFileType() + " file : " + date);
-            InputStream reader = getHTTPHelper().getDataStream(getThisURL());
+            InputStream reader = getHTTPHelper().getDataStream(getURL());
             if (reader != null) {
                 storeData(reader);
             }
@@ -35,7 +35,7 @@ public abstract class AbstractFileDownloader extends AbstractDownloader {
 
     abstract protected String getFileType();
 
-    abstract protected String getThisURL();
+    abstract protected String getURL();
 
     void storeData(InputStream reader) {
         try {
@@ -53,10 +53,10 @@ public abstract class AbstractFileDownloader extends AbstractDownloader {
     }
 
     OutputStream getOutputStream() throws FileNotFoundException {
-        return new FileOutputStream(getThisFilePath());
+        return new FileOutputStream(getFilePath());
     }
 
-    public abstract String getThisFilePath();
+    public abstract String getFilePath();
 
     HTTPHelper getHTTPHelper() {
         return new HTTPHelper();

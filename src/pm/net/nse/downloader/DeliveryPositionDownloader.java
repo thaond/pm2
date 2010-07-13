@@ -15,7 +15,7 @@ public class DeliveryPositionDownloader extends AbstractFileDownloader {
         super(date, manager);
     }
 
-    public String getThisURL() {
+    public String getURL() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
         String sDate = dateFormat.format(date);
         String sURL = baseURL + "MTO_" + sDate + ".DAT";
@@ -23,7 +23,7 @@ public class DeliveryPositionDownloader extends AbstractFileDownloader {
     }
 
     @Override
-    public String getThisFilePath() {
+    public String getFilePath() {
         return getFilePath(date);
     }
 

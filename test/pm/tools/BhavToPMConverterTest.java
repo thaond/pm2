@@ -2,7 +2,7 @@ package pm.tools;
 
 import org.jmock.MockObjectTestCase;
 import pm.AppLoader;
-import pm.net.nse.downloader.BhavCopyDownloader;
+import pm.net.nse.FileNameUtil;
 import pm.net.nse.downloader.DeliveryPositionDownloader;
 import pm.util.AppConfig;
 import pm.util.ApplicationException;
@@ -27,7 +27,7 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
     public void testGetBhavCopyAsReaderForCSVFile() throws IOException {
         BhavToPMConverter converter = new BhavToPMConverter();
         Date date = new PMDate(10, 5, 2009).getJavaDate();
-        String filePath = BhavCopyDownloader.getFilePath(date);
+        String filePath = FileNameUtil.getEquityFilePath(date);
 
         File file = new File(filePath);
         file.createNewFile();
@@ -46,7 +46,7 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
         String content = "some content";
         Date date = new PMDate(10, 12, 2009).getJavaDate();
 
-        String zipFilePath = BhavCopyDownloader.getFilePath(date);
+        String zipFilePath = FileNameUtil.getEquityFilePath(date);
         File file = new File(zipFilePath.substring(0, zipFilePath.lastIndexOf('.')));
         file.createNewFile();
         storeContent(file, content);
@@ -758,7 +758,7 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
         Calendar cal = Calendar.getInstance();
         cal.set(1901, 5, 12);
         Date date = cal.getTime();
-        String bhavFilePath = BhavCopyDownloader.getFilePath(date);
+        String bhavFilePath = FileNameUtil.getEquityFilePath(date);
         String deliveryFilePath = DeliveryPositionDownloader.getFilePath(date);
         String backupFolder = Helper.backupFolder(new PMDate(date));
         String newBhavFilePath = backupFolder + File.pathSeparator + bhavFilePath.substring(bhavFilePath.lastIndexOf("/"));
@@ -782,7 +782,7 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
         Calendar cal = Calendar.getInstance();
         cal.set(1901, 6, 12);
         Date date = cal.getTime();
-        String bhavFilePath = BhavCopyDownloader.getFilePath(date);
+        String bhavFilePath = FileNameUtil.getEquityFilePath(date);
         String deliveryFilePath = DeliveryPositionDownloader.getFilePath(date);
         String backupFolder = Helper.backupFolder(new PMDate(date));
         String newBhavFilePath = backupFolder + "/" + bhavFilePath.substring(bhavFilePath.lastIndexOf("/"));

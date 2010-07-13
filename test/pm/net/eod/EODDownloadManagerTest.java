@@ -5,6 +5,7 @@ import org.jmock.MockObjectTestCase;
 import pm.dao.ibatis.dao.IDateDAO;
 import pm.net.nse.downloader.BhavCopyDownloader;
 import pm.net.nse.downloader.DeliveryPositionDownloader;
+import pm.net.nse.downloader.FandODownloader;
 import pm.util.PMDate;
 import pm.vo.StockVO;
 
@@ -45,7 +46,7 @@ public class EODDownloadManagerTest extends MockObjectTestCase {
 
     public void testAddingTasksAndHandlingCompletion() throws Exception {
         final boolean[] processStatus = {false, false};
-        ThreadPoolExecutor executor = new ThreadPoolExecutor(3, 3, 5, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(4, 4, 5, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
         EODDownloadManager downloadManager = new EODDownloadManager(executor) {
             @Override
             void loadIndexDownloaders() {
@@ -78,6 +79,16 @@ public class EODDownloadManagerTest extends MockObjectTestCase {
             }
 
             @Override
+            void loadFandODownloaders() {
+                this.addTask(new FandODownloader(null, this) {
+                    @Override
+                    public void run() {
+                        manager.taskCompleted(this);
+                    }
+                });
+            }
+
+            @Override
             void processEODData() {
                 processStatus[0] = true;
             }
@@ -96,4 +107,6 @@ public class EODDownloadManagerTest extends MockObjectTestCase {
         assertTrue(downloadManager.isTaskCompleted());
 
     }
+
+
 }

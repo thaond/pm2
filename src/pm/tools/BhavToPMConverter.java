@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import pm.bo.QuoteBO;
 import pm.dao.ibatis.dao.DAOManager;
 import pm.dao.ibatis.dao.IQuoteDAO;
-import pm.net.nse.downloader.BhavCopyDownloader;
+import pm.net.nse.FileNameUtil;
 import pm.net.nse.downloader.DeliveryPositionDownloader;
 import pm.util.*;
 import pm.util.enumlist.AppConfigWrapper;
@@ -108,7 +108,7 @@ public class BhavToPMConverter {
         String backupFolder = Helper.backupFolder(new PMDate(date));
 
         if (moveBhavFile) {
-            String downloadedFilePath = BhavCopyDownloader.getFilePath(date);
+            String downloadedFilePath = FileNameUtil.getEquityFilePath(date);
             File bhavSourceFile = new File(downloadedFilePath);
             File bhavDestFile = new File(backupFolder + "/" + bhavSourceFile.getName());
             bhavSourceFile.renameTo(bhavDestFile);
@@ -128,7 +128,7 @@ public class BhavToPMConverter {
     }
 
     Reader getBhavCopyAsReader(Date date) throws IOException {
-        String filePath = BhavCopyDownloader.getFilePath(date);
+        String filePath = FileNameUtil.getEquityFilePath(date);
         if (filePath.endsWith(".zip")) {
             unzip(filePath);
             filePath = filePath.substring(0, filePath.lastIndexOf("."));
