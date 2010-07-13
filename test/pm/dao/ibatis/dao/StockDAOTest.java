@@ -50,8 +50,8 @@ public class StockDAOTest extends PMDBCompositeDataSetTestCase {
         stockList = stockDAO.getStockList(true);
         assertEquals(18, stockList.size());
         assertEquals("CODE1", stockList.get(0).getStockCode());
-        assertEquals("INDEX", stockList.get(17).getStockCode());
-        assertEquals(SERIESTYPE.index, stockList.get(17).getSeries());
+        assertEquals("INDEX", stockList.get(15).getStockCode());
+        assertEquals(SERIESTYPE.index, stockList.get(15).getSeries());
 
     }
 
