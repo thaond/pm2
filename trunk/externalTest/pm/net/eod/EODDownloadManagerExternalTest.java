@@ -34,6 +34,11 @@ public class EODDownloadManagerExternalTest {
             }
 
             @Override
+            void loadFandODownloaders() {
+
+            }
+
+            @Override
             void loadBhavCopyDownloaders() {
                 NSEBhavCopyTaskManager manager = new NSEBhavCopyTaskManager() {
                     @Override

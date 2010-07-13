@@ -34,7 +34,7 @@ public class EODScheduler implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (HTTPHelper.isExists(BhavCopyDownloader.getURL(new Date()))) {
+            if (HTTPHelper.isExists(new BhavCopyDownloader(new Date(), null).getURL())) {
                 new EODDownloadManager(TaskManager.getExecutor());
                 noAttempts = 0;
                 incomplete = false;
