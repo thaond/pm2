@@ -5,9 +5,6 @@ import pm.action.ILongTask;
 import pm.dao.ibatis.dao.DAOManager;
 import pm.dao.ibatis.dao.IDateDAO;
 import pm.net.AbstractDownloader;
-import pm.net.nse.downloader.AbstractFileDownloader;
-import pm.net.nse.downloader.BhavCopyDownloader;
-import pm.net.nse.downloader.DeliveryPositionDownloader;
 import pm.tools.BhavToPMConverter;
 import pm.ui.PortfolioManager;
 import pm.util.PMDate;
@@ -16,6 +13,7 @@ import pm.util.enumlist.TASKNAME;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class EODDownloadManager implements ILongTask {
 
@@ -30,15 +28,13 @@ public class EODDownloadManager implements ILongTask {
     private boolean initComplete = false;
     private boolean stopFlag = false;
     private boolean bgCompleted = false;
-    private int totalTask = 0;
-
     private int completedTask = 0;
-    private int countBhavDownloader = 0;
-    private int countDeliveryDownloader = 0;
-    private int countIndexDownloader = 0;
+
     private boolean flagStartBhavConverter = true;
 
     private List<AbstractDownloader> downloaderList = new Vector<AbstractDownloader>();
+    private AtomicLong quoteDownloaderCount = new AtomicLong();
+    private AtomicLong indexQuoteDownloaderCount = new AtomicLong();
 
     public EODDownloadManager(ThreadPoolExecutor executor) {
         this.executor = executor;
@@ -47,28 +43,28 @@ public class EODDownloadManager implements ILongTask {
     synchronized public void taskCompleted(Runnable downloader) {
 
         completedTask++;
-        if (downloader instanceof BhavCopyDownloader) {
-            logger.info("BhavCopy downloaded for date : " + ((AbstractFileDownloader) downloader).getDate());
-            countBhavDownloader--;
-        } else if (downloader instanceof DeliveryPositionDownloader) {
-            logger.info("DeliveryPosi downloaded for date : " + ((AbstractFileDownloader) downloader).getDate());
-            countDeliveryDownloader--;
-        } else if (downloader instanceof IndexQuoteDownloader) {
-            logger.info("Index quote downloaded for " + ((IndexQuoteDownloader) downloader).getIndexCode());
-            countIndexDownloader--;
+
+        if (downloader instanceof IndexQuoteDownloader) {
+            indexQuoteDownloaderCount.decrementAndGet();
+        } else {
+            quoteDownloaderCount.decrementAndGet();
         }
 
-        if (flagStartBhavConverter && countBhavDownloader == 0 && countDeliveryDownloader == 0) {
+        if (flagStartBhavConverter && quoteDownloaderCount.get() == 0) {
             flagStartBhavConverter = false;
             if (!stopFlag) {
-                new BhavToPMConverter().processData();
+                processEODData();
                 bgCompleted = true;
             }
         }
-        completedFlag = (totalTask == completedTask);
+        completedFlag = (initComplete && completedTask == downloaderList.size());
         if (completedFlag) {
             shutdown();
         }
+    }
+
+    void processEODData() {
+        new BhavToPMConverter().processData();
     }
 
     void shutdown() {
@@ -94,7 +90,7 @@ public class EODDownloadManager implements ILongTask {
     }
 
     public synchronized int getProgress() {
-        int taskCompletedRatio = (int) ((float) completedTask / (float) totalTask * (float) _MAXTASKPERCENTAGE);
+        int taskCompletedRatio = (int) ((float) completedTask / (float) downloaderList.size() * (float) _MAXTASKPERCENTAGE);
         if (!bgCompleted) {
             taskCompletedRatio -= _WEIGHTAGEFORBGPROCESS;
         }
@@ -117,8 +113,6 @@ public class EODDownloadManager implements ILongTask {
         loadBhavCopyDownloaders();
         loadDeliveryPostDownloaders();
         loadIndexDownloaders();
-        totalTask = countBhavDownloader + countDeliveryDownloader + countIndexDownloader;
-
         initComplete = true;
     }
 
@@ -147,12 +141,10 @@ public class EODDownloadManager implements ILongTask {
     }
 
     public void addTask(AbstractDownloader downloader) {
-        if (downloader instanceof BhavCopyDownloader) {
-            countBhavDownloader++;
-        } else if (downloader instanceof DeliveryPositionDownloader) {
-            countDeliveryDownloader++;
-        } else if (downloader instanceof IndexQuoteDownloader) {
-            countIndexDownloader++;
+        if (downloader instanceof IndexQuoteDownloader) {
+            indexQuoteDownloaderCount.incrementAndGet();
+        } else {
+            quoteDownloaderCount.incrementAndGet();
         }
         downloaderList.add(downloader);
         executor.execute(downloader);
