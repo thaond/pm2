@@ -298,6 +298,7 @@
                 <formatter type="xml"/>
                 <fileset dir="test" includes="**/*Test.*" excludes="**/*External*.*, **/LoadTransDataFunctionalTest.*"/>
             </batchtest>
+            <jvmarg value="-Xmx512M"/>
         </junit>
 
         <junit jvm="${jdk.home.1.6}/bin/java" fork="true" forkmode="once" failureproperty="build.failed"
@@ -310,6 +311,7 @@
                 <formatter type="xml"/>
                 <fileset dir="test" includes="**/LoadTransDataFunctionalTest.*"/>
             </batchtest>
+            <jvmarg value="-Xmx512M"/>
         </junit>
         <antcall target="enableCache"/>
         <junitreport todir="${pm.test.report.dir}">
