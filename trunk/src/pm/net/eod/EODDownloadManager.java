@@ -41,7 +41,6 @@ public class EODDownloadManager implements ILongTask {
     }
 
     synchronized public void taskCompleted(Runnable downloader) {
-        System.out.println("task completed " + downloader.getClass().getSimpleName());
         completedTask++;
 
         if (downloader instanceof IndexQuoteDownloader) {
@@ -146,7 +145,6 @@ public class EODDownloadManager implements ILongTask {
     }
 
     public void addTask(AbstractDownloader downloader) {
-        System.out.println("adding task " + downloader.getClass().getName());
         if (downloader instanceof IndexQuoteDownloader) {
             indexQuoteDownloaderCount.incrementAndGet();
         } else {

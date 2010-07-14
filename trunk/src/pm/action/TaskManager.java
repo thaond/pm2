@@ -5,14 +5,15 @@ import pm.ui.ILongTaskView;
 import pm.util.AppConfig;
 import pm.util.enumlist.ITaskDetail;
 import pm.util.enumlist.TASKACTION;
-import static pm.util.enumlist.TASKACTION.Start;
-import static pm.util.enumlist.TASKACTION.Stop;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import static pm.util.enumlist.TASKACTION.Start;
+import static pm.util.enumlist.TASKACTION.Stop;
 
 public class TaskManager {
 
@@ -50,7 +51,7 @@ public class TaskManager {
     private static ILongTask createTask(ITaskDetail taskname) {
         ILongTask newTask = taskname.getTask(executor);
         taskname.incAttemptCount();
-        new Thread(newTask).start();
+        executor.execute(newTask);
         return newTask;
     }
 
