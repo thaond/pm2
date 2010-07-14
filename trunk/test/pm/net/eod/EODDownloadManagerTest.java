@@ -9,9 +9,9 @@ import pm.net.nse.downloader.FandODownloader;
 import pm.util.PMDate;
 import pm.vo.StockVO;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.SynchronousQueue;
+import java.util.Vector;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -47,8 +47,24 @@ public class EODDownloadManagerTest extends MockObjectTestCase {
     }
 
     public void testAddingTasksAndHandlingCompletion() throws Exception {
-        final List<Boolean> processStatus = new ArrayList<Boolean>();
-        ThreadPoolExecutor executor = new ThreadPoolExecutor(4, 4, 5, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
+        List<Boolean> processStatus = new Vector<Boolean>();
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(15, 15, 5, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+        EODDownloadManager downloadManager = create(processStatus, executor);
+
+        executor.execute(downloadManager);
+        while (!downloadManager.isTaskCompleted()) {
+            Thread.sleep(1000);
+        }
+
+        executor.shutdown();
+        assertTrue(processStatus.get(0));
+        assertTrue(processStatus.get(1));
+        assertEquals(100, downloadManager.getProgress());
+        assertTrue(downloadManager.isTaskCompleted());
+
+    }
+
+    private EODDownloadManager create(final List<Boolean> processStatus, final ThreadPoolExecutor executor) {
         EODDownloadManager downloadManager = new EODDownloadManager(executor) {
             @Override
             void loadIndexDownloaders() {
@@ -100,17 +116,7 @@ public class EODDownloadManagerTest extends MockObjectTestCase {
                 processStatus.add(true);
             }
         };
-
-        downloadManager.run();
-        executor.shutdown();
-        while (!executor.isShutdown()) {
-            Thread.sleep(1000);
-        }
-        assertTrue(processStatus.get(0));
-        assertTrue(processStatus.get(1));
-        assertEquals(100, downloadManager.getProgress());
-        assertTrue(downloadManager.isTaskCompleted());
-
+        return downloadManager;
     }
 
 
