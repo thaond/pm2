@@ -9,6 +9,8 @@ import pm.net.nse.downloader.FandODownloader;
 import pm.util.PMDate;
 import pm.vo.StockVO;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -45,7 +47,7 @@ public class EODDownloadManagerTest extends MockObjectTestCase {
     }
 
     public void testAddingTasksAndHandlingCompletion() throws Exception {
-        final boolean[] processStatus = {false, false};
+        final List<Boolean> processStatus = new ArrayList<Boolean>();
         ThreadPoolExecutor executor = new ThreadPoolExecutor(4, 4, 5, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
         EODDownloadManager downloadManager = new EODDownloadManager(executor) {
             @Override
@@ -90,12 +92,12 @@ public class EODDownloadManagerTest extends MockObjectTestCase {
 
             @Override
             void processEODData() {
-                processStatus[0] = true;
+                processStatus.add(true);
             }
 
             @Override
             void shutdown() {
-                processStatus[1] = true;
+                processStatus.add(true);
             }
         };
 
@@ -104,8 +106,8 @@ public class EODDownloadManagerTest extends MockObjectTestCase {
         while (!executor.isShutdown()) {
             Thread.sleep(1000);
         }
-        assertTrue(processStatus[0]);
-        assertTrue(processStatus[1]);
+        assertTrue(processStatus.get(0));
+        assertTrue(processStatus.get(1));
         assertEquals(100, downloadManager.getProgress());
         assertTrue(downloadManager.isTaskCompleted());
 
