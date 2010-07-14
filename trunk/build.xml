@@ -298,7 +298,7 @@
                 <formatter type="xml"/>
                 <fileset dir="test" includes="**/*Test.*" excludes="**/*External*.*, **/LoadTransDataFunctionalTest.*"/>
             </batchtest>
-            <jvmarg value="-Xmx512m"/>
+            <jvmarg value="-Xmx1024m"/>
         </junit>
 
         <junit jvm="${jdk.home.1.6}/bin/java" fork="true" forkmode="once" failureproperty="build.failed"
@@ -311,15 +311,15 @@
                 <formatter type="xml"/>
                 <fileset dir="test" includes="**/LoadTransDataFunctionalTest.*"/>
             </batchtest>
-            <jvmarg value="-Xmx512m"/>
+            <jvmarg value="-Xmx1024m"/>
         </junit>
         <antcall target="enableCache"/>
-        <junitreport todir="${pm.test.report.dir}">
-            <fileset dir="${pm.test.report.dir}">
-                <include name="TEST-*.xml"/>
-            </fileset>
-            <report format="frames" todir="${pm.test.report.dir}/html"/>
-        </junitreport>
+        <!--<junitreport todir="${pm.test.report.dir}">-->
+        <!--<fileset dir="${pm.test.report.dir}">-->
+        <!--<include name="TEST-*.xml"/>-->
+        <!--</fileset>-->
+        <!--<report format="frames" todir="${pm.test.report.dir}/html"/>-->
+        <!--</junitreport>-->
     </target>
 
     <target name="copy.properties">
