@@ -101,6 +101,9 @@ public class EODDownloadManagerTest extends MockObjectTestCase {
 
         downloadManager.run();
         executor.shutdown();
+        while (!executor.isShutdown()) {
+            Thread.sleep(1000);
+        }
         assertTrue(processStatus[0]);
         assertTrue(processStatus[1]);
         assertEquals(100, downloadManager.getProgress());
