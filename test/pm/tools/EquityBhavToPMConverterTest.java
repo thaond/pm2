@@ -18,14 +18,14 @@ import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-public class BhavToPMConverterTest extends MockObjectTestCase {
+public class EquityBhavToPMConverterTest extends MockObjectTestCase {
 
     protected void setUp() throws Exception {
         AppLoader.initConsoleLogger();
     }
 
     public void testGetBhavCopyAsReaderForZipFile() throws IOException {
-        BhavToPMConverter converter = new BhavToPMConverter();
+        EquityBhavToPMConverter converter = new EquityBhavToPMConverter();
         String content = "some content";
         Date date = new PMDate(10, 12, 2009).getJavaDate();
 
@@ -76,7 +76,7 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
 
     public void testProcessData() {
         final Vector<Integer> orderList = new Vector<Integer>();
-        BhavToPMConverter converter = new BhavToPMConverter() {
+        EquityBhavToPMConverter converter = new EquityBhavToPMConverter() {
             @Override
             void processOrphanDeliveryPositionData() {
                 orderList.add(new Integer(1));
@@ -105,7 +105,7 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
     public void testProcessFiles() {
         AppConfig.dateLastBhavCopy.Value = "20051003";
         final Vector<PMDate> dateList = new Vector<PMDate>();
-        BhavToPMConverter converter = new BhavToPMConverter() {
+        EquityBhavToPMConverter converter = new EquityBhavToPMConverter() {
             @Override
             void processDayData(Date date, boolean flagWriteToEOD) {
                 dateList.add(new PMDate(date));
@@ -134,7 +134,7 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
         final Vector<Integer> orderList = new Vector<Integer>();
         final Date dummyDate = Calendar.getInstance().getTime();
 
-        BhavToPMConverter converter = new BhavToPMConverter() {
+        EquityBhavToPMConverter converter = new EquityBhavToPMConverter() {
             @Override
             Reader getBhavCopyAsReader(Date date) throws FileNotFoundException {
                 orderList.add(1);
@@ -186,7 +186,7 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
       */
     public void testProcessDayDataForMissingBhavCopyFile() {
 
-        BhavToPMConverter converter = new BhavToPMConverter() {
+        EquityBhavToPMConverter converter = new EquityBhavToPMConverter() {
             @Override
             Reader getBhavCopyAsReader(Date date) throws FileNotFoundException {
                 throw new FileNotFoundException("From UnitTesting");
@@ -229,7 +229,7 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
     */
     public void testProcessDayDataForInvalidBhavCopyFile() {
 
-        BhavToPMConverter converter = new BhavToPMConverter() {
+        EquityBhavToPMConverter converter = new EquityBhavToPMConverter() {
             @Override
             Reader getBhavCopyAsReader(Date date) throws FileNotFoundException {
                 return new StringReader("DUMMY");
@@ -272,7 +272,7 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
         final Vector<String[]> dummyData = new Vector<String[]>();
         final Date dummyDate = Calendar.getInstance().getTime();
 
-        BhavToPMConverter converter = new BhavToPMConverter() {
+        EquityBhavToPMConverter converter = new EquityBhavToPMConverter() {
             @Override
             Reader getBhavCopyAsReader(Date date) throws FileNotFoundException {
                 return dummyReader;
@@ -311,7 +311,7 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
         final Vector<String[]> dummyData = new Vector<String[]>();
         final Date dummyDate = Calendar.getInstance().getTime();
 
-        BhavToPMConverter converter = new BhavToPMConverter() {
+        EquityBhavToPMConverter converter = new EquityBhavToPMConverter() {
             @Override
             Reader getBhavCopyAsReader(Date date) throws FileNotFoundException {
                 return dummyReader;
@@ -350,7 +350,7 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
     public void testWriteToMetaInputFile() {
         final StringWriter stringWriter = new StringWriter();
 
-        BhavToPMConverter converter = new BhavToPMConverter() {
+        EquityBhavToPMConverter converter = new EquityBhavToPMConverter() {
             @Override
             PrintWriter getWriter(String sDate) throws FileNotFoundException {
                 return new PrintWriter(stringWriter);
@@ -363,7 +363,7 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
         data.add(dataLine2);
         String sDate = "20051001";
         String newLine = System.getProperty("line.separator");
-        StringBuffer sb = new StringBuffer(BhavToPMConverter.META_INPUT_FILE_HEADER);
+        StringBuffer sb = new StringBuffer(EquityBhavToPMConverter.META_INPUT_FILE_HEADER);
         sb.append(newLine);
         sb.append(sDate);
         sb.append(",01,02,03,04,05,07").append(newLine);
@@ -383,7 +383,7 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
         sb.append("\n");
         sb.append("SYMBOL2,EQ,20,21,22,23,24,25,26,27,31-JAN-2006,\n");
         StringReader reader = new StringReader(sb.toString());
-        BhavToPMConverter converter = new BhavToPMConverter();
+        EquityBhavToPMConverter converter = new EquityBhavToPMConverter();
         Vector<String[]> loadedData = converter.loadBhavCopyData(reader);
         assertEquals(2, loadedData.size());
         assertEquals("SYMBOL1", loadedData.get(0)[0]);
@@ -403,7 +403,7 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
         sb.append("SYMBOL,SERIES,OPEN,HIGH,LOW,CLOSE,LAST,PREVCLOSE,TOTTRDQTY,TOTTRDVAL,TIMESTAMP,\n");
         sb.append("SYMBOL1,BE,10,11,12,13,14,15,16,17,31-JAN-2006,\n");
         StringReader reader = new StringReader(sb.toString());
-        BhavToPMConverter converter = new BhavToPMConverter();
+        EquityBhavToPMConverter converter = new EquityBhavToPMConverter();
         Vector<String[]> loadedData = converter.loadBhavCopyData(reader);
         assertEquals(1, loadedData.size());
         assertEquals("SYMBOL1", loadedData.get(0)[0]);
@@ -422,7 +422,7 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
         sb.append("SYMBOL,OPEN,SERIES,HIGH,LOW,CLOSE,LAST,PREVCLOSE,TOTTRDQTY,TOTTRDVAL,TIMESTAMP,\n");
         sb.append("SYMBOL1,EQ,10,11,12,13,14,15,16,17,31-JAN-2006,\n");
         StringReader reader = new StringReader(sb.toString());
-        BhavToPMConverter converter = new BhavToPMConverter();
+        EquityBhavToPMConverter converter = new EquityBhavToPMConverter();
         try {
             converter.loadBhavCopyData(reader);
             fail("Exeption is not thrown");
@@ -636,9 +636,9 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
     public void testIsBhavAndDeliveryPosDateSame() {
         AppConfig.dateLastBhavCopy.Value = "20050101";
         AppConfig.dateLastDeliveryPosition.Value = "20050101";
-        assertTrue(new BhavToPMConverter().isBhavAndDeliveryPosDateSame());
+        assertTrue(new EquityBhavToPMConverter().isBhavAndDeliveryPosDateSame());
         AppConfig.dateLastDeliveryPosition.Value = "20051001";
-        assertFalse(new BhavToPMConverter().isBhavAndDeliveryPosDateSame());
+        assertFalse(new EquityBhavToPMConverter().isBhavAndDeliveryPosDateSame());
     }
 
     /*
@@ -655,7 +655,7 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
         final String data1 = "40.28";
         String[] dayData2 = {stock2, "0", "0", "0", "0", "0", "0", "0", "0"};
         dailyData.add(dayData2);
-        BhavToPMConverter converter = new BhavToPMConverter() {
+        EquityBhavToPMConverter converter = new EquityBhavToPMConverter() {
             @Override
             Hashtable<String, String> loadDeliveryPositionDataFromFile(Reader reader) {
                 Hashtable<String, String> data = new Hashtable<String, String>();
@@ -687,7 +687,7 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
         dailyData.add(new QuoteVO(stock1));
         dailyData.add(new QuoteVO(stock2));
         PMDate date = new PMDate();
-        BhavToPMConverter converter = new BhavToPMConverter() {
+        EquityBhavToPMConverter converter = new EquityBhavToPMConverter() {
             @Override
             Hashtable<String, String> loadDeliveryPositionDataFromFile(Reader reader) {
                 Hashtable<String, String> data = new Hashtable<String, String>();
@@ -718,7 +718,7 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
         PMDate date = new PMDate(1, 1, 2006);
         String STOCK1 = "STOCK1";
         String STOCK2 = "STOCK2";
-        BhavToPMConverter converter = new BhavToPMConverter();
+        EquityBhavToPMConverter converter = new EquityBhavToPMConverter();
         StringBuffer sb = new StringBuffer();
         sb.append("Security Wise Delivery Position - Compulsory Rolling Settlement\n");
         sb.append("10,MTO,01022006,131889689,0000764\n");
@@ -751,7 +751,7 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
 
         createTempFile(bhavFilePath);
         createTempFile(deliveryFilePath);
-        new BhavToPMConverter().moveFileToBackup(date, true, true);
+        new EquityBhavToPMConverter().moveFileToBackup(date, true, true);
         assertTrue(new File(newBhavFilePath).exists());
         assertTrue(new File(newDeliveryFilePath).exists());
     }
@@ -775,7 +775,7 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
 
         createTempFile(bhavFilePath);
         createTempFile(deliveryFilePath);
-        new BhavToPMConverter().moveFileToBackup(date, false, true);
+        new EquityBhavToPMConverter().moveFileToBackup(date, false, true);
         assertFalse(new File(newBhavFilePath).exists());
         assertTrue(new File(newDeliveryFilePath).exists());
     }

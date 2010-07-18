@@ -59,8 +59,8 @@ public class LoadTransDataFunctionalTest extends TestCase {
             }
 
             @Override
-            BhavToPMConverter bhavToPMConverter() {
-                return new BhavToPMConverter() {
+            EquityBhavToPMConverter bhavToPMConverter() {
+                return new EquityBhavToPMConverter() {
                     @Override
                     void moveFileToBackup(Date date, boolean moveBhavFile, boolean moveDelivFile) {
                     }

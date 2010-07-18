@@ -15,6 +15,6 @@ public class NSEFOTaskManager extends AbstractDateTaskManager {
 
     @Override
     public PMDate getLastCompletedDate() {
-        return new PMDate(1, 7, 2010);
+        return new PMDate(1, 1, 2006);
     }
 }
