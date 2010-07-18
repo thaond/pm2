@@ -24,15 +24,6 @@ public class BhavToPMConverterTest extends MockObjectTestCase {
         AppLoader.initConsoleLogger();
     }
 
-    public void testGetBhavCopyAsReaderForCSVFile() throws IOException {
-        BhavToPMConverter converter = new BhavToPMConverter();
-        Date date = new PMDate(10, 5, 2009).getJavaDate();
-
-        Reader reader = converter.getBhavCopyAsReader(date);
-        String fileContent = getContent(reader);
-        assertTrue(fileContent.startsWith("SYMBOL,SERIES,OPEN,"));
-    }
-
     public void testGetBhavCopyAsReaderForZipFile() throws IOException {
         BhavToPMConverter converter = new BhavToPMConverter();
         String content = "some content";
