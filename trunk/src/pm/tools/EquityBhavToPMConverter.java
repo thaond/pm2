@@ -7,7 +7,6 @@ import pm.dao.ibatis.dao.IQuoteDAO;
 import pm.net.nse.FileNameUtil;
 import pm.net.nse.downloader.DeliveryPositionDownloader;
 import pm.util.*;
-import pm.util.enumlist.AppConfigWrapper;
 import pm.vo.QuoteVO;
 
 import java.io.*;
@@ -18,10 +17,7 @@ import java.util.zip.ZipInputStream;
 
 public class EquityBhavToPMConverter {
 
-    public static final String META_INPUT_FILE_HEADER = "<date>,<ticker>,<open>,<high>,<low>,<close>,<vol>";
     public static final String BHAV_COPY_FILE_HEADER = "SYMBOL,SERIES,OPEN,HIGH,LOW,CLOSE,LAST,PREVCLOSE,TOTTRDQTY,TOTTRDVAL,TIMESTAMP,";
-
-    public static final String DELIVERY_POSITION_DIR = "DeliveryPosition";
 
     private static Logger logger = Logger.getLogger(EquityBhavToPMConverter.class);
 
@@ -53,9 +49,8 @@ public class EquityBhavToPMConverter {
         Calendar stCal = Helper.getLastBhavCopyDate().getCalendar();
         stCal.add(Calendar.DATE, 1);  //skipping the last processed date
         Calendar enCal = getTodayDate();
-        boolean flagWriteToMetaInput = isSaveToMetaInput();
         for (; !stCal.after(enCal); stCal.add(Calendar.DATE, 1)) {
-            processDayData(stCal.getTime(), flagWriteToMetaInput);
+            processDayData(stCal.getTime());
         }
     }
 
@@ -63,11 +58,7 @@ public class EquityBhavToPMConverter {
         return Calendar.getInstance();
     }
 
-    boolean isSaveToMetaInput() {
-        return false;
-    }
-
-    void processDayData(Date date, boolean flagWriteToEOD) {
+    void processDayData(Date date) {
         String sDate = formatyyyyMMdd.format(date);
         Reader reader = null;
         try {
@@ -78,9 +69,6 @@ public class EquityBhavToPMConverter {
             }
             if (loadDeliveryPositionData(date, data)) {
                 dateDeliveryLast = date;
-            }
-            if (flagWriteToEOD) {
-                writeToMetaInputFile(data, sDate);
             }
             storeData(data, sDate);
             dateBhavLast = date;
@@ -176,37 +164,6 @@ public class EquityBhavToPMConverter {
             quoteVOs.add(quoteVO);
         }
         return quoteVOs;
-    }
-
-    void writeToMetaInputFile(Vector<String[]> dailyData, String sDate) {
-
-        PrintWriter outWr = null;
-
-        try {
-            outWr = getWriter(sDate);
-            outWr.println(META_INPUT_FILE_HEADER);
-            for (int i = 0; i < dailyData.size(); i++) {
-                String[] data = (String[]) dailyData.elementAt(i);
-                StringBuffer sbr = new StringBuffer();
-                sbr.append(sDate);
-                for (int j = 0; j < 5; j++) {
-                    sbr.append(",").append(data[j]);
-                }
-                sbr.append(",").append(data[6]);
-                outWr.println(sbr.toString());
-            }
-        } catch (FileNotFoundException e) {
-            logger.error("Error writing MetaInput file ", e);
-        } finally {
-            if (outWr != null) {
-                outWr.close();
-            }
-        }
-    }
-
-    PrintWriter getWriter(String sDate) throws FileNotFoundException {
-        String fileName = AppConfigWrapper.metaInputFolder.Value + "/" + sDate + ".txt";
-        return new PrintWriter(fileName);
     }
 
     Vector<String[]> loadBhavCopyData(Reader reader) throws IOException,

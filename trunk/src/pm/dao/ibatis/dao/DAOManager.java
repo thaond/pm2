@@ -91,4 +91,8 @@ public class DAOManager {
     public static IDataWarehouseDAO getDataWarehouseDAO() {
         return (IDataWarehouseDAO) daoManager.getDao(IDataWarehouseDAO.class, contextId);
     }
+
+    public static IFandODAO fandoDAO() {
+        return (IFandODAO) daoManager.getDao(IFandODAO.class, contextId);
+    }
 }

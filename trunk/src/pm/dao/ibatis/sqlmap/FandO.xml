@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="FandO">
+
+    <select id="latestQuoteDate" resultClass="pm.util.PMDate">
+        SELECT MAX(DATEID) FROM FUTURE_QUOTES
+    </select>
+
+
+</sqlMap>
