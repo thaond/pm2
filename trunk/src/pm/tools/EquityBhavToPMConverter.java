@@ -16,14 +16,14 @@ import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public class BhavToPMConverter {
+public class EquityBhavToPMConverter {
 
     public static final String META_INPUT_FILE_HEADER = "<date>,<ticker>,<open>,<high>,<low>,<close>,<vol>";
     public static final String BHAV_COPY_FILE_HEADER = "SYMBOL,SERIES,OPEN,HIGH,LOW,CLOSE,LAST,PREVCLOSE,TOTTRDQTY,TOTTRDVAL,TIMESTAMP,";
 
     public static final String DELIVERY_POSITION_DIR = "DeliveryPosition";
 
-    private static Logger logger = Logger.getLogger(BhavToPMConverter.class);
+    private static Logger logger = Logger.getLogger(EquityBhavToPMConverter.class);
 
     private static SimpleDateFormat formatyyyyMMdd = new SimpleDateFormat(
             "yyyyMMdd");

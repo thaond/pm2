@@ -11,8 +11,8 @@ import pm.dao.derby.DBManager;
 import pm.net.eod.EODDownloadManager;
 import pm.net.nse.CorpActionDownloadManager;
 import pm.net.nse.CorpResultDownloadManager;
-import pm.tools.BhavToPMConverter;
 import pm.tools.EODScheduler;
+import pm.tools.EquityBhavToPMConverter;
 import pm.ui.PortfolioManager;
 import pm.util.AppConfig;
 import pm.util.enumlist.AppConfigWrapper;
@@ -78,7 +78,7 @@ public class AppLoader {
         } else if (args[0].equalsIgnoreCase("bhav2pm")) {
             logger.info("Starting Bhav To PM converter");
             try {
-                new BhavToPMConverter().processData();
+                new EquityBhavToPMConverter().processData();
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }

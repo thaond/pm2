@@ -96,8 +96,8 @@ public class LoadTransData {
         bhavToPMConverter().processData();
     }
 
-    BhavToPMConverter bhavToPMConverter() {
-        return new BhavToPMConverter();
+    EquityBhavToPMConverter bhavToPMConverter() {
+        return new EquityBhavToPMConverter();
     }
 
     public void loadLogData(String transLogFilePath, String compActLogFilePath, boolean renameLogFiles, boolean onlyLog) throws Exception {

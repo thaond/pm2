@@ -5,7 +5,7 @@ import pm.action.ILongTask;
 import pm.dao.ibatis.dao.DAOManager;
 import pm.dao.ibatis.dao.IDateDAO;
 import pm.net.AbstractDownloader;
-import pm.tools.BhavToPMConverter;
+import pm.tools.EquityBhavToPMConverter;
 import pm.ui.PortfolioManager;
 import pm.util.PMDate;
 import pm.util.enumlist.TASKNAME;
@@ -63,7 +63,7 @@ public class EODDownloadManager implements ILongTask {
     }
 
     void processEODData() {
-        new BhavToPMConverter().processData();
+        new EquityBhavToPMConverter().processData();
     }
 
     void shutdown() {
