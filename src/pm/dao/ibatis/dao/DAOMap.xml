@@ -16,6 +16,7 @@
         <dao interface="pm.dao.ibatis.dao.IFundTransactionDAO" implementation="pm.dao.ibatis.dao.FundTransactionDAO"/>
         <dao interface="pm.dao.ibatis.dao.ICompanyResultDAO" implementation="pm.dao.ibatis.dao.CompanyResultDAO"/>
         <dao interface="pm.dao.ibatis.dao.IDataWarehouseDAO" implementation="pm.dao.ibatis.dao.DataWarehouseDAO"/>
+        <dao interface="pm.dao.ibatis.dao.IFandODAO" implementation="pm.dao.ibatis.dao.FandODAO"/>
     </context>
 </daoConfig>
 

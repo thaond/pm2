@@ -107,7 +107,7 @@ public class EquityBhavToPMConverterTest extends MockObjectTestCase {
         final Vector<PMDate> dateList = new Vector<PMDate>();
         EquityBhavToPMConverter converter = new EquityBhavToPMConverter() {
             @Override
-            void processDayData(Date date, boolean flagWriteToEOD) {
+            void processDayData(Date date) {
                 dateList.add(new PMDate(date));
             }
 
@@ -156,24 +156,18 @@ public class EquityBhavToPMConverterTest extends MockObjectTestCase {
             }
 
             @Override
-            void writeToMetaInputFile(Vector<String[]> dailyData, String sDate) {
-                orderList.add(4);
-                assertEquals(dummyData, dailyData);
-            }
-
-            @Override
             void storeData(Vector<String[]> data, String sDate) {
-                orderList.add(5);
+                orderList.add(4);
                 assertEquals(dummyData, data);
             }
 
             @Override
             void moveFileToBackup(Date date, boolean moveBhavFile, boolean moveDelivFile) {
-                orderList.add(6);
+                orderList.add(5);
                 assertEquals(dummyDate, date);
             }
         };
-        converter.processDayData(dummyDate, true);
+        converter.processDayData(dummyDate);
         for (int i = 0; i < orderList.size(); i++) {
             assertTrue((i + 1) == orderList.elementAt(i));
         }
@@ -205,11 +199,6 @@ public class EquityBhavToPMConverterTest extends MockObjectTestCase {
             }
 
             @Override
-            void writeToMetaInputFile(Vector<String[]> dailyData, String sDate) {
-                fail("should not come here");
-            }
-
-            @Override
             void storeData(Vector<String[]> data, String sDate) {
                 fail("should not come here");
             }
@@ -219,7 +208,7 @@ public class EquityBhavToPMConverterTest extends MockObjectTestCase {
                 fail("should not come here");
             }
         };
-        converter.processDayData(new Date(), true);
+        converter.processDayData(new Date());
         assertNull(converter.dateBhavLast);
         assertNull(converter.dateDeliveryLast);
     }
@@ -247,11 +236,6 @@ public class EquityBhavToPMConverterTest extends MockObjectTestCase {
             }
 
             @Override
-            void writeToMetaInputFile(Vector<String[]> dailyData, String sDate) {
-                fail("should not come here");
-            }
-
-            @Override
             void storeData(Vector<String[]> data, String sDate) {
                 fail("should not come here");
             }
@@ -261,7 +245,7 @@ public class EquityBhavToPMConverterTest extends MockObjectTestCase {
                 fail("should not come here");
             }
         };
-        converter.processDayData(new Date(), true);
+        converter.processDayData(new Date());
         assertNull(converter.dateBhavLast);
         assertNull(converter.dateDeliveryLast);
     }
@@ -289,10 +273,6 @@ public class EquityBhavToPMConverterTest extends MockObjectTestCase {
             }
 
             @Override
-            void writeToMetaInputFile(Vector<String[]> dailyData, String sDate) {
-            }
-
-            @Override
             void storeData(Vector<String[]> data, String sDate) {
             }
 
@@ -300,77 +280,9 @@ public class EquityBhavToPMConverterTest extends MockObjectTestCase {
             void moveFileToBackup(Date date, boolean moveBhavFile, boolean moveDelivFile) {
             }
         };
-        converter.processDayData(dummyDate, true);
+        converter.processDayData(dummyDate);
         assertEquals(dummyDate, converter.dateBhavLast);
         assertNull(converter.dateDeliveryLast);
-    }
-
-    public void testProcessDayDataForSkippingSaveToMetaInput() {
-
-        final StringReader dummyReader = new StringReader("DUMMY");
-        final Vector<String[]> dummyData = new Vector<String[]>();
-        final Date dummyDate = Calendar.getInstance().getTime();
-
-        EquityBhavToPMConverter converter = new EquityBhavToPMConverter() {
-            @Override
-            Reader getBhavCopyAsReader(Date date) throws FileNotFoundException {
-                return dummyReader;
-            }
-
-            @Override
-            Vector<String[]> loadBhavCopyData(Reader reader) throws IOException, ApplicationException {
-                return dummyData;
-            }
-
-            @Override
-            boolean loadDeliveryPositionData(Date date, Vector<String[]> dailyData) {
-                return false;
-            }
-
-            @Override
-            void writeToMetaInputFile(Vector<String[]> dailyData, String sDate) {
-                fail("should not come here");
-            }
-
-            @Override
-            void storeData(Vector<String[]> data, String sDate) {
-            }
-
-            @Override
-            void moveFileToBackup(Date date, boolean moveBhavFile, boolean moveDelivFile) {
-            }
-        };
-        converter.processDayData(dummyDate, false);
-    }
-
-    /*
-      * Test method for 'pm.tools.BhavToPMConverter.writeToMetaInputFile(Vector<String[]>,
-      * String)'
-      */
-    public void testWriteToMetaInputFile() {
-        final StringWriter stringWriter = new StringWriter();
-
-        EquityBhavToPMConverter converter = new EquityBhavToPMConverter() {
-            @Override
-            PrintWriter getWriter(String sDate) throws FileNotFoundException {
-                return new PrintWriter(stringWriter);
-            }
-        };
-        String[] dataLine1 = {"01", "02", "03", "04", "05", "06", "07", "08", "09"};
-        String[] dataLine2 = {"11", "12", "13", "14", "15", "16", "17", "18", "19"};
-        Vector<String[]> data = new Vector<String[]>();
-        data.add(dataLine1);
-        data.add(dataLine2);
-        String sDate = "20051001";
-        String newLine = System.getProperty("line.separator");
-        StringBuffer sb = new StringBuffer(EquityBhavToPMConverter.META_INPUT_FILE_HEADER);
-        sb.append(newLine);
-        sb.append(sDate);
-        sb.append(",01,02,03,04,05,07").append(newLine);
-        sb.append(sDate);
-        sb.append(",11,12,13,14,15,17").append(newLine);
-        converter.writeToMetaInputFile(data, sDate);
-        assertEquals(sb.toString().trim(), stringWriter.getBuffer().toString().trim());
     }
 
     /*
