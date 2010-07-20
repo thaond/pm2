@@ -182,4 +182,8 @@
     <CORPRESULT/>
     <CA_MERGER/>
     <EODSTATISTICS/>
+    <FO_STOCKMASTER/>
+    <FO_STOCK_EXPIRY/>
+    <FUTURE_QUOTES/>
+    <OPTION_QUOTES/>
 </dataset>
