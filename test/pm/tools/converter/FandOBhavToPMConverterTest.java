@@ -6,47 +6,47 @@ public class FandOBhavToPMConverterTest {
 
 
     @Test
-    void parseFileToReadFandOBhavFileContent() {
+    public void parseFileToReadFandOBhavFileContent() {
 
     }
 
     @Test
-    void parseFileToUseTimeStampToVerify() {
+    public void parseFileToUseTimeStampToVerify() {
 
     }
 
     @Test
-    void processFileToReadBhavFileContentAndStoreInDB() {
+    public void processFileToReadBhavFileContentAndStoreInDB() {
 
     }
 
     @Test
-    void processFileToHandleNewExpieryPeriod() {
+    public void processFileToHandleNewExpieryPeriod() {
 
     }
 
     @Test
-    void processFileToMoveProcessedFileToBackupFolder() {
+    public void processFileToMoveProcessedFileToBackupFolder() {
 
     }
 
     @Test
-    void processFileToMoveOnlyProcessedFileToBackupFolder() {
+    public void processFileToMoveOnlyProcessedFileToBackupFolder() {
 
     }
 
     @Test
-    void processFilesToSkipFODataIfEquityDataIsMissing() {
+    public void processFilesToSkipFODataIfEquityDataIsMissing() {
 
     }
 
     @Test
-    void processFilesToLoadAllDaysDataUptoLatestFandOAvailable() {
+    public void processFilesToLoadAllDaysDataUptoLatestFandOAvailable() {
 
     }
 
     @Test
-    void processFilesToLoadAllDaysDataUptoLatestEquityDataAvailable() {
+    public void processFilesToLoadAllDaysDataUptoLatestEquityDataAvailable() {
 
     }
 
