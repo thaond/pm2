@@ -41,6 +41,15 @@ public class QuoteVO {
 
     }
 
+    public QuoteVO(PMDate date, float high, float lastPrice, float low, float open, StockVO stockVO) {
+        this.date = date;
+        this.high = high;
+        this.lastPrice = lastPrice;
+        this.low = low;
+        this.open = open;
+        this.stockVO = stockVO;
+    }
+
     public QuoteVO(String stockCode, PMDate date, float open, float high,
                    float low, float lastPrice, float volume, float prevClose,
                    float tradeValue, float perDeliveryQty) {
@@ -287,32 +296,6 @@ public class QuoteVO {
         return i1 + i2;
     }
 
-/*
-    */
-/*
-      * (non-Javadoc)
-      *
-      * @see java.lang.Object#equals(java.lang.Object)
-      */
-/*
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof QuoteVO))
-            return false;
-        QuoteVO target = (QuoteVO) obj;
-
-        boolean flag = this.date.equals(target.date)
-                && this.stockVO.getStock().equals(target.stockVO.getStock())
-                && this.lastPrice == target.lastPrice
-                && this.open == target.open && this.high == target.high
-                && this.low == target.low && this.prevClose == target.prevClose
-                && this.volume == target.volume
-                && this.tradeValue == target.tradeValue
-                && this.perDeliveryQty == target.perDeliveryQty;
-
-        return flag;
-    }
-*/
 
     public boolean equals(Object o) {
         if (this == o) {
