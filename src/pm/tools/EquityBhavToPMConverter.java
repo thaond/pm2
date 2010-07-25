@@ -46,12 +46,16 @@ public class EquityBhavToPMConverter {
 
     void processFiles() {
         logger.info("Processing files");
-        Calendar stCal = Helper.getLastBhavCopyDate().getCalendar();
+        Calendar stCal = latestBhavCopyDate().getCalendar();
         stCal.add(Calendar.DATE, 1);  //skipping the last processed date
         Calendar enCal = getTodayDate();
         for (; !stCal.after(enCal); stCal.add(Calendar.DATE, 1)) {
             processDayData(stCal.getTime());
         }
+    }
+
+    protected PMDate latestBhavCopyDate() {
+        return Helper.getLastBhavCopyDate();
     }
 
     Calendar getTodayDate() {
@@ -226,7 +230,7 @@ public class EquityBhavToPMConverter {
         }
 
         PMDate stDate = Helper.getLastDeliveryPosDate();
-        PMDate enDate = Helper.getLastBhavCopyDate();
+        PMDate enDate = latestBhavCopyDate();
 
         IQuoteDAO quoteDAO = getQuoteDAO();
         DateIterator iterator = getDateIterator(stDate, enDate);

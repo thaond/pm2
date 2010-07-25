@@ -7,5 +7,45 @@
         SELECT MAX(DATEID) FROM FUTURE_QUOTES
     </select>
 
+    <resultMap id="FandOQuoteMapping" class="pm.vo.FOQuote">
+        <result property="dateVal" column="DATEID"/>
+        <result property="open" column="SOPEN"/>
+        <result property="high" column="SHIGH"/>
+        <result property="low" column="SLOW"/>
+        <result property="lastPrice" column="SCLOSE"/>
+        <result property="openInterest" column="OPENINTEREST"/>
+        <result property="changeInOpenInterest" column="CHANGEINOPENINTEREST"/>
+        <result property="activeContracts" column="ACTIVECONTRACTS"/>
+        <result property="expiryDate" column="EXPIRYDATE"/>
+        <result property="fotype" column="FOTYPE" typeHandler="pm.dao.ibatis.handler.FOTypeHandler"/>
+        <result property="strikePrice" column="STRIKEPRICE"/>
+        <result property="stockVO" column="STOCKID" select="getStockByID"/>
+    </resultMap>
+
+    <select id="futureQuotes" parameterClass="java.lang.Integer"
+            resultMap="FandOQuoteMapping">
+        SELECT * FROM FO_QUOTES WHERE DATEID=#VALUE#
+    </select>
+
+    <parameterMap id="future-quote-insert" class="pm.vo.FOQuote">
+        <parameter property="stockVO.id"/>
+        <parameter property="dateVal"/>
+        <parameter property="open"/>
+        <parameter property="high"/>
+        <parameter property="low"/>
+        <parameter property="lastPrice"/>
+        <parameter property="activeContracts"/>
+        <parameter property="openInterest"/>
+        <parameter property="changeInOpenInterest"/>
+        <parameter property="strikePrice"/>
+        <parameter property="expiryDate"/>
+        <parameter property="fotype" typeHandler="pm.dao.ibatis.handler.FOTypeHandler"/>
+    </parameterMap>
+
+    <insert id="insertFutureQuote" parameterMap="future-quote-insert">
+        INSERT INTO FO_QUOTES (STOCKID,DATEID,SOPEN,SHIGH,SLOW,SCLOSE,ACTIVECONTRACTS,OPENINTEREST,CHANGEINOPENINTEREST,
+        STRIKEPRICE, EXPIRYDATE, FOTYPE)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    </insert>
 
 </sqlMap>
