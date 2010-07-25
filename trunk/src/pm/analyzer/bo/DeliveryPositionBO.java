@@ -7,7 +7,7 @@ package pm.analyzer.bo;
 import pm.util.AppConst.ANALYZER_LIST;
 import pm.util.PMDate;
 import pm.util.QuoteIterator;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 /**
  * @author thiyagu1
@@ -26,11 +26,11 @@ public class DeliveryPositionBO extends AbsStockAnalyzerBO {
         boolean retFlag = false;
         if (!quoteIterator.movePtrToDate(stDate)) return false;
         for (; quoteIterator.hasNext();) {
-            QuoteVO quoteVO = quoteIterator.next();
+            EquityQuote quoteVO = quoteIterator.next();
             if (quoteVO.after(enDate)) break;
             float delivPerTot = 0;
             for (int i = -_AVGDAYS - 1; i < -1; i++) {
-                QuoteVO prevQuote = quoteIterator.getItemFrmCurrPos(i);
+                EquityQuote prevQuote = quoteIterator.getItemFrmCurrPos(i);
                 if (prevQuote == null) {
                     delivPerTot = 0;
                     break;

@@ -6,7 +6,7 @@ import pm.dao.ibatis.dao.IDateDAO;
 import pm.dao.ibatis.dao.IQuoteDAO;
 import pm.util.DateIterator;
 import pm.util.PMDate;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 import java.util.*;
 
@@ -31,7 +31,7 @@ public class QuoteBOTest extends MockObjectTestCase {
     public void testSaveIndexQuotesToInsertNewDateAndInsertQuote() {
         PMDate date = new PMDate(2, 1, 2006);
         String indexCode = "INDEXCODE";
-        QuoteVO quoteVO = new QuoteVO(indexCode, date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
+        EquityQuote quoteVO = new EquityQuote(indexCode, date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
 
         mockQuoteDAO.expects(once()).method("getQuotes").with(eq(indexCode)).will(returnValue(new Vector()));
         mockQuoteDAO.expects(once()).method("insertQuote").with(eq(quoteVO));
@@ -56,7 +56,7 @@ public class QuoteBOTest extends MockObjectTestCase {
                 return iterator();
             }
         };
-        Vector<QuoteVO> quoteVOs = new Vector<QuoteVO>();
+        Vector<EquityQuote> quoteVOs = new Vector<EquityQuote>();
         quoteVOs.add(quoteVO);
         quoteBO.saveIndexQuotes(indexCode, quoteVOs);
         mockQuoteDAO.verify();
@@ -83,7 +83,7 @@ public class QuoteBOTest extends MockObjectTestCase {
     public void testSaveIndexQuotesToInsertQuoteForExistingDate() {
         final PMDate date = new PMDate(2, 1, 2006);
         String indexCode = "INDEXCODE";
-        QuoteVO quoteVO = new QuoteVO(indexCode, date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
+        EquityQuote quoteVO = new EquityQuote(indexCode, date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
 
         mockQuoteDAO.expects(once()).method("getQuotes").with(eq(indexCode)).will(returnValue(new Vector()));
         mockQuoteDAO.expects(once()).method("insertQuote").with(eq(quoteVO));
@@ -109,7 +109,7 @@ public class QuoteBOTest extends MockObjectTestCase {
                 return iterator(date.previous(), date);
             }
         };
-        Vector<QuoteVO> quoteVOs = new Vector<QuoteVO>();
+        Vector<EquityQuote> quoteVOs = new Vector<EquityQuote>();
         quoteVOs.add(quoteVO);
         quoteBO.saveIndexQuotes(indexCode, quoteVOs);
         mockQuoteDAO.verify();
@@ -119,7 +119,7 @@ public class QuoteBOTest extends MockObjectTestCase {
     public void testSaveIndexQuotesToUpdateQuoteOnExistingQuote() {
         final PMDate date = new PMDate(2, 1, 2006);
         String stockCode4 = "STOCKCODE4";
-        QuoteVO quoteVO = new QuoteVO(stockCode4, date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
+        EquityQuote quoteVO = new EquityQuote(stockCode4, date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
         mockQuoteDAO.expects(once()).method("updateQuote").with(eq(quoteVO));
         Vector existingQuotes = new Vector();
         existingQuotes.add(quoteVO);
@@ -147,7 +147,7 @@ public class QuoteBOTest extends MockObjectTestCase {
                 return iterator(date.previous(), date);
             }
         };
-        Vector<QuoteVO> quoteVOs = new Vector<QuoteVO>();
+        Vector<EquityQuote> quoteVOs = new Vector<EquityQuote>();
         quoteVOs.add(quoteVO);
         quoteBO.saveIndexQuotes(stockCode4, quoteVOs);
         mockQuoteDAO.verify();
@@ -167,7 +167,7 @@ public class QuoteBOTest extends MockObjectTestCase {
     public void testSaveIndexQuotesToInsertNewQuote() {
         PMDate date = new PMDate(2, 1, 2006);
         String stockCode4 = "STOCKCODE4";
-        QuoteVO quoteVO = new QuoteVO(stockCode4, date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
+        EquityQuote quoteVO = new EquityQuote(stockCode4, date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
         mockQuoteDAO.expects(once()).method("insertQuote").with(eq(quoteVO));
         Vector existingQuotes = new Vector();
         mockQuoteDAO.expects(once()).method("getQuotes").withAnyArguments().will(returnValue(existingQuotes));
@@ -193,7 +193,7 @@ public class QuoteBOTest extends MockObjectTestCase {
             }
 
         };
-        Vector<QuoteVO> quoteVOs = new Vector<QuoteVO>();
+        Vector<EquityQuote> quoteVOs = new Vector<EquityQuote>();
         quoteVOs.add(quoteVO);
         quoteBO.saveIndexQuotes(stockCode4, quoteVOs);
         mockQuoteDAO.verify();
@@ -228,10 +228,10 @@ public class QuoteBOTest extends MockObjectTestCase {
                 return iterator(date);
             }
         };
-        Vector<QuoteVO> quoteVOs = new Vector<QuoteVO>();
-        quoteVOs.add(new QuoteVO("STOCKCODE1", date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
-        quoteVOs.add(new QuoteVO("STOCKCODE2", date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
-        quoteVOs.add(new QuoteVO("STOCKCODE3", date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
+        Vector<EquityQuote> quoteVOs = new Vector<EquityQuote>();
+        quoteVOs.add(new EquityQuote("STOCKCODE1", date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
+        quoteVOs.add(new EquityQuote("STOCKCODE2", date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
+        quoteVOs.add(new EquityQuote("STOCKCODE3", date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
         quoteBO.saveNseQuotes(date, quoteVOs);
         mockQuoteDAO.verify();
 
@@ -258,15 +258,15 @@ public class QuoteBOTest extends MockObjectTestCase {
                 return (IDateDAO) mockDateDAO.proxy();
             }
 
-            void insertNewStockList(List<QuoteVO> quoteVOs) {
+            void insertNewStockList(List<EquityQuote> quoteVOs) {
 
             }
 
         };
-        Vector<QuoteVO> quoteVOs = new Vector<QuoteVO>();
-        quoteVOs.add(new QuoteVO("STOCKCODE1", date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
-        quoteVOs.add(new QuoteVO("STOCKCODE2", date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
-        quoteVOs.add(new QuoteVO("STOCKCODE3", date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
+        Vector<EquityQuote> quoteVOs = new Vector<EquityQuote>();
+        quoteVOs.add(new EquityQuote("STOCKCODE1", date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
+        quoteVOs.add(new EquityQuote("STOCKCODE2", date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
+        quoteVOs.add(new EquityQuote("STOCKCODE3", date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
         quoteBO.saveNseQuotes(date, quoteVOs);
         mockQuoteDAO.verify();
 
@@ -306,9 +306,9 @@ public class QuoteBOTest extends MockObjectTestCase {
             }
 
         };
-        Vector<QuoteVO> quoteVOs = new Vector<QuoteVO>();
-        quoteVOs.add(new QuoteVO(stockCode3, date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
-        quoteVOs.add(new QuoteVO(stockCode4, date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
+        Vector<EquityQuote> quoteVOs = new Vector<EquityQuote>();
+        quoteVOs.add(new EquityQuote(stockCode3, date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
+        quoteVOs.add(new EquityQuote(stockCode4, date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
         quoteBO.saveNseQuotes(date, quoteVOs);
         mockQuoteDAO.verify();
         mockStockMasterBO.verify();
@@ -323,14 +323,14 @@ public class QuoteBOTest extends MockObjectTestCase {
         String stockCode2 = "CODE7";
         String stockCode3 = "CODE5";
         String[] stockList = {stockCode1, stockCode2, stockCode3};
-        List<QuoteVO> quotesForStk1 = new Vector<QuoteVO>();
-        quotesForStk1.add(new QuoteVO(stockCode1, new PMDate(2, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
-        quotesForStk1.add(new QuoteVO(stockCode1, new PMDate(5, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
-        List<QuoteVO> quotesForStk2 = new Vector<QuoteVO>();
-        quotesForStk2.add(new QuoteVO(stockCode2, new PMDate(2, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
-        quotesForStk2.add(new QuoteVO(stockCode2, new PMDate(3, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
-        quotesForStk2.add(new QuoteVO(stockCode2, new PMDate(4, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
-        List<QuoteVO> quotesForStk3 = new Vector<QuoteVO>();
+        List<EquityQuote> quotesForStk1 = new Vector<EquityQuote>();
+        quotesForStk1.add(new EquityQuote(stockCode1, new PMDate(2, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
+        quotesForStk1.add(new EquityQuote(stockCode1, new PMDate(5, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
+        List<EquityQuote> quotesForStk2 = new Vector<EquityQuote>();
+        quotesForStk2.add(new EquityQuote(stockCode2, new PMDate(2, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
+        quotesForStk2.add(new EquityQuote(stockCode2, new PMDate(3, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
+        quotesForStk2.add(new EquityQuote(stockCode2, new PMDate(4, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f));
+        List<EquityQuote> quotesForStk3 = new Vector<EquityQuote>();
         final Mock mockQuoteDAO = new Mock(IQuoteDAO.class);
         mockQuoteDAO.expects(once()).method("getQuotes").with(eq(stockCode1), eq(frmDate), eq(toDate)).will(returnValue(quotesForStk1));
         mockQuoteDAO.expects(once()).method("getQuotes").with(eq(stockCode2), eq(frmDate), eq(toDate)).will(returnValue(quotesForStk2));
@@ -341,7 +341,7 @@ public class QuoteBOTest extends MockObjectTestCase {
                 return (IQuoteDAO) mockQuoteDAO.proxy();
             }
         };
-        Vector<QuoteVO[]> quotes = quoteBO.getQuotes(frmDate, toDate, stockList);
+        Vector<EquityQuote[]> quotes = quoteBO.getQuotes(frmDate, toDate, stockList);
         assertEquals(3, quotes.size());
         assertEquals(2, quotes.get(0).length);
         assertEquals(stockCode1, quotes.get(0)[0].getStockCode());
@@ -358,9 +358,9 @@ public class QuoteBOTest extends MockObjectTestCase {
         String stockCode3 = "CODE5";
         String[] stockList = {stockCode1, stockCode2, stockCode3};
         final Mock mockQuoteDAO = new Mock(IQuoteDAO.class);
-        QuoteVO[] quoteVOs = {new QuoteVO(stockCode1, new PMDate(1, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f),
-                new QuoteVO(stockCode2, new PMDate(5, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f),
-                new QuoteVO(stockCode3, new PMDate(1, 12, 2005), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f)};
+        EquityQuote[] quoteVOs = {new EquityQuote(stockCode1, new PMDate(1, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f),
+                new EquityQuote(stockCode2, new PMDate(5, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f),
+                new EquityQuote(stockCode3, new PMDate(1, 12, 2005), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f)};
         mockQuoteDAO.expects(once()).method("getQuote").with(eq(stockCode1)).will(returnValue(quoteVOs[0]));
         mockQuoteDAO.expects(once()).method("getQuote").with(eq(stockCode2)).will(returnValue(quoteVOs[1]));
         mockQuoteDAO.expects(once()).method("getQuote").with(eq(stockCode3)).will(returnValue(quoteVOs[2]));
@@ -370,7 +370,7 @@ public class QuoteBOTest extends MockObjectTestCase {
                 return (IQuoteDAO) mockQuoteDAO.proxy();
             }
         };
-        QuoteVO[] quotes = quoteBO.getQuote(stockList);
+        EquityQuote[] quotes = quoteBO.getQuote(stockList);
         for (int i = 0; i < quotes.length; i++) {
             assertEquals(quoteVOs[i], quotes[i]);
         }
@@ -390,7 +390,7 @@ public class QuoteBOTest extends MockObjectTestCase {
                 return (IQuoteDAO) mockQuoteDAO.proxy();
             }
         };
-        QuoteVO[] quotes = quoteBO.getQuote(stockList);
+        EquityQuote[] quotes = quoteBO.getQuote(stockList);
         assertNotNull(quotes[0]);
         mockQuoteDAO.verify();
 
@@ -414,12 +414,12 @@ public class QuoteBOTest extends MockObjectTestCase {
         };
 
 
-        HashMap<PMDate, QuoteVO> existingQuotesMap = new HashMap<PMDate, QuoteVO>();
-        existingQuotesMap.put(prevDate, new QuoteVO("STOCKCODE", prevDate, 10f, 20f, 9f, 15.5f, 100f, 0f, 100f, 10f));
-        QuoteVO nextDateQuote = new QuoteVO("STOCKCODE", nextDate, 10f, 20f, 9f, 15.5f, 100f, 0f, 100f, 10f);
-        QuoteVO updatedNextDateQuote = new QuoteVO("STOCKCODE", nextDate, 10f, 20f, 9f, 15.5f, 100f, 15f, 100f, 10f);
+        HashMap<PMDate, EquityQuote> existingQuotesMap = new HashMap<PMDate, EquityQuote>();
+        existingQuotesMap.put(prevDate, new EquityQuote("STOCKCODE", prevDate, 10f, 20f, 9f, 15.5f, 100f, 0f, 100f, 10f));
+        EquityQuote nextDateQuote = new EquityQuote("STOCKCODE", nextDate, 10f, 20f, 9f, 15.5f, 100f, 0f, 100f, 10f);
+        EquityQuote updatedNextDateQuote = new EquityQuote("STOCKCODE", nextDate, 10f, 20f, 9f, 15.5f, 100f, 15f, 100f, 10f);
         existingQuotesMap.put(nextDate, nextDateQuote);
-        QuoteVO currQuote = new QuoteVO("STOCKCODE", currDate, 10f, 20f, 9f, 15f, 100f, 0f, 100f, 10f);
+        EquityQuote currQuote = new EquityQuote("STOCKCODE", currDate, 10f, 20f, 9f, 15f, 100f, 0f, 100f, 10f);
         mockQuoteDAO.expects(once()).method("updateQuote").with(eq(updatedNextDateQuote));
         mockQuoteDAO.expects(once()).method("getQuote").with(eq("STOCKCODE"), eq(prevDate)).will(returnValue(existingQuotesMap.get(prevDate)));
         mockQuoteDAO.expects(once()).method("getQuote").with(eq("STOCKCODE"), eq(nextDate)).will(returnValue(existingQuotesMap.get(nextDate)));
@@ -446,9 +446,9 @@ public class QuoteBOTest extends MockObjectTestCase {
             }
         };
 
-        HashMap<PMDate, QuoteVO> existingQuotesMap = new HashMap<PMDate, QuoteVO>();
-        existingQuotesMap.put(prevDate, new QuoteVO("STOCKCODE", prevDate, 10f, 20f, 9f, 15.5f, 100f, 6f, 100f, 10f));
-        QuoteVO currQuote = new QuoteVO("STOCKCODE", currDate, 10f, 20f, 9f, 15f, 100f, 1000f, 100f, 10f);
+        HashMap<PMDate, EquityQuote> existingQuotesMap = new HashMap<PMDate, EquityQuote>();
+        existingQuotesMap.put(prevDate, new EquityQuote("STOCKCODE", prevDate, 10f, 20f, 9f, 15.5f, 100f, 6f, 100f, 10f));
+        EquityQuote currQuote = new EquityQuote("STOCKCODE", currDate, 10f, 20f, 9f, 15f, 100f, 1000f, 100f, 10f);
         mockQuoteDAO.expects(once()).method("getQuote").with(eq("STOCKCODE"), eq(currDate.next())).will(returnValue(null));
         getQuoteBO().updatePrevClose(currQuote, iterator);
         assertEquals(1000f, currQuote.getPrevClose());
@@ -468,8 +468,8 @@ public class QuoteBOTest extends MockObjectTestCase {
         };
 
         PMDate currDate = new PMDate(1, 1, 2006);
-        QuoteVO currQuote = new QuoteVO("STOCKCODE", currDate, 10f, 20f, 9f, 15f, 100f, 0f, 100f, 10f);
-        mockQuoteDAO.expects(once()).method("getQuote").with(eq("STOCKCODE"), eq(currDate.previous())).will(returnValue(new QuoteVO("STOCKCODE", prevDate, 10f, 20f, 9f, 15.5f, 100f, 6f, 100f, 10f)));
+        EquityQuote currQuote = new EquityQuote("STOCKCODE", currDate, 10f, 20f, 9f, 15f, 100f, 0f, 100f, 10f);
+        mockQuoteDAO.expects(once()).method("getQuote").with(eq("STOCKCODE"), eq(currDate.previous())).will(returnValue(new EquityQuote("STOCKCODE", prevDate, 10f, 20f, 9f, 15.5f, 100f, 6f, 100f, 10f)));
         getQuoteBO().updatePrevClose(currQuote, iterator);
         assertEquals(15.5f, currQuote.getPrevClose());
     }
@@ -493,7 +493,7 @@ public class QuoteBOTest extends MockObjectTestCase {
         };
 
         PMDate currDate = new PMDate(1, 1, 2006);
-        QuoteVO currQuote = new QuoteVO("STOCKCODE", currDate, 10f, 20f, 9f, 15f, 100f, 0f, 100f, 10f);
+        EquityQuote currQuote = new EquityQuote("STOCKCODE", currDate, 10f, 20f, 9f, 15f, 100f, 0f, 100f, 10f);
         getQuoteBO().updatePrevClose(currQuote, iterator);
         assertEquals(0, 0f, currQuote.getPrevClose());
     }

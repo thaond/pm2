@@ -6,7 +6,7 @@ package pm.net;
 
 import pm.dao.ibatis.dao.DAOManager;
 import pm.util.PMDateFormatter;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,9 +21,9 @@ import java.text.ParseException;
  */
 public class ICICIQuoteDownloader extends AbstractQuoteDownloader {
 
-    protected QuoteVO parseData(String symbol, Reader reader) throws IOException, ParseException {
+    protected EquityQuote parseData(String symbol, Reader reader) throws IOException, ParseException {
         BufferedReader inBr = new BufferedReader(reader);
-        QuoteVO quoteVO = new QuoteVO(symbol);
+        EquityQuote quoteVO = new EquityQuote(symbol);
         String line = null;
         while ((line = inBr.readLine()) != null && !isStop()) {
             if (line.equals("DATE")) {

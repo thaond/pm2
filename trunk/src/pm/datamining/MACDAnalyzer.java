@@ -2,7 +2,7 @@ package pm.datamining;
 
 import pm.bo.QuoteBO;
 import pm.util.PMDate;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 import java.util.Vector;
 
@@ -14,14 +14,14 @@ public class MACDAnalyzer {
     }
 
     private static void analyze(String stockCode) {
-        QuoteVO[] quoteVOs = new QuoteBO().getQuotes(stockCode, new PMDate(1, 1, 1999), null);
+        EquityQuote[] quoteVOs = new QuoteBO().getQuotes(stockCode, new PMDate(1, 1, 1999), null);
         if (quoteVOs.length < 71) {
             System.out.println("Not enough data");
             return;
         }
-        Vector<QuoteVO> histData = new Vector<QuoteVO>(70);
+        Vector<EquityQuote> histData = new Vector<EquityQuote>(70);
         for (int i = 0; i < 70; i++) histData.add(quoteVOs[i]);
-        Vector<QuoteVO> data = new Vector<QuoteVO>();
+        Vector<EquityQuote> data = new Vector<EquityQuote>();
         for (int i = 70; i < quoteVOs.length; i++) data.add(quoteVOs[i]);
 
 //		if (new MACDBO().markData(data, histData)) {
@@ -29,7 +29,7 @@ public class MACDAnalyzer {
 //			float overAllPer = 0;
 //			int successCount = 0;
 //			for (int i=0;i<data.size();i++) {
-//				QuoteVO quoteVO = data.get(i);
+//				EquityQuote quoteVO = data.get(i);
 //				if (quoteVO.getPickDetails().equals("MAb ")) {
 //					buyPrice = quoteVO.getLastPrice();
 //					System.out.println("Buy " + quoteVO.getDate());

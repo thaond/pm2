@@ -10,7 +10,7 @@ import pm.util.AppConst.ANALYZER_LIST;
 import pm.util.DateIterator;
 import pm.util.PMDate;
 import pm.util.QuoteIterator;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 /**
  * @author thiyagu
@@ -34,7 +34,7 @@ public class MACDBO extends AbsStockAnalyzerBO {
         if (signal == null) return false;
         if (!quoteIterator.movePtrToDate(stDate)) return false;
         for (int i = 0; quoteIterator.hasNext(); i++) {
-            QuoteVO quoteVO = quoteIterator.next();
+            EquityQuote quoteVO = quoteIterator.next();
 
             if (quoteVO.after(enDate)) break;
             if (signal[i] * signal[i + 1] < 0) {
@@ -80,7 +80,7 @@ public class MACDBO extends AbsStockAnalyzerBO {
         double prevClose = 0;
         double N = mAVG, M = mAVG, N_M = 0.0, S = 0.0;
         for (; quoteIterator.hasNext();) {
-            QuoteVO quoteVO = quoteIterator.next();
+            EquityQuote quoteVO = quoteIterator.next();
             if (!quoteVO.getDate().before(stDate)) break;
             double close = quoteVO.getLastPrice();
             N = close * fastS + N * fastD;
@@ -98,7 +98,7 @@ public class MACDBO extends AbsStockAnalyzerBO {
         retVal[count++] = prevClose - cross;
         quoteIterator.movePtr(-1);
         for (; quoteIterator.hasNext();) {
-            QuoteVO quoteVO = quoteIterator.next();
+            EquityQuote quoteVO = quoteIterator.next();
             //System.out.println(quoteVO.getDate());
             if (quoteVO.after(enDate)) break;
             double close = quoteVO.getLastPrice();

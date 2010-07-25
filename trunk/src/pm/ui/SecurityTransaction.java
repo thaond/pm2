@@ -190,7 +190,7 @@ public class SecurityTransaction extends AbstractPMPanel {
             return false;
         }
         StockVO stockVO = (StockVO) stockField.getSelectedItem();
-        QuoteVO quote = QuoteManager.eodQuote(stockVO, dateField.pmDate());
+        EquityQuote quote = QuoteManager.eodQuote(stockVO, dateField.pmDate());
         if (quote != null) {
             float upperPricelimit = quote.getClose() * 1.2f;
             float lowerPricelimit = quote.getClose() * 0.8f;

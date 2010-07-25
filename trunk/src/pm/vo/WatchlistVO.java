@@ -16,7 +16,7 @@ public class WatchlistVO implements Comparable {
     private String stockCode;
     private float ceil = 0f;
     private float floor = 0f;
-    private QuoteVO currQuote = null;
+    private EquityQuote currQuote = null;
     private int watchlistGroupId;
 
     public WatchlistVO() {
@@ -93,6 +93,7 @@ public class WatchlistVO implements Comparable {
     /* (non-Javadoc)
       * @see java.lang.Comparable#compareTo(java.lang.Object)
       */
+
     public int compareTo(Object o) {
         if (o instanceof WatchlistVO)
             return hashCode() - ((WatchlistVO) o).hashCode();
@@ -107,11 +108,11 @@ public class WatchlistVO implements Comparable {
         return sb.toString();
     }
 
-    public QuoteVO getCurrQuote() {
+    public EquityQuote getCurrQuote() {
         return currQuote;
     }
 
-    public void setCurrQuote(QuoteVO currQuote) {
+    public void setCurrQuote(EquityQuote currQuote) {
         this.currQuote = currQuote;
     }
 

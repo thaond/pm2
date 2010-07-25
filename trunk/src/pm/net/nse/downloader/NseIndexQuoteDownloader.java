@@ -15,7 +15,7 @@ import pm.net.eod.EODDownloadManager;
 import pm.net.eod.IndexQuoteDownloader;
 import pm.util.PMDate;
 import pm.util.PMDateFormatter;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 import pm.vo.StockVO;
 
 import java.io.IOException;
@@ -39,7 +39,7 @@ public class NseIndexQuoteDownloader extends IndexQuoteDownloader {
     public void downloadData(PMDate stDate, PMDate enDate) {
         try {
             String postData = postData(stDate, enDate, stockVO.getCompanyName());
-            List<QuoteVO> quotes = parse(getData(postData));
+            List<EquityQuote> quotes = parse(getData(postData));
             store(quotes);
         } catch (ParserException e) {
             logger.error(e, e);
@@ -93,14 +93,14 @@ public class NseIndexQuoteDownloader extends IndexQuoteDownloader {
         return new InputStreamReader(new HTTPHelper().getDataStream(linkStr));
     }
 
-    void store(List<QuoteVO> quotes) {
+    void store(List<EquityQuote> quotes) {
         if (!quotes.isEmpty()) {
             new QuoteBO().saveIndexQuotes(stockVO.getStockCode(), quotes);
         }
     }
 
-    List<QuoteVO> parse(Reader reader) throws IOException {
-        List<QuoteVO> quoteVOs = new ArrayList<QuoteVO>();
+    List<EquityQuote> parse(Reader reader) throws IOException {
+        List<EquityQuote> quoteVOs = new ArrayList<EquityQuote>();
         CSVReader csvReader = new CSVReader(reader, ',', '"', 1);
         List<String[]> list = csvReader.readAll();
         for (String[] values : list) {
@@ -110,7 +110,7 @@ public class NseIndexQuoteDownloader extends IndexQuoteDownloader {
             float low = parseFloatWithErrorMasking(values[3]);
             float close = parseFloatWithErrorMasking(values[4]);
             float volume = values.length >= 6 ? parseFloatWithErrorMasking(values[5]) : 0f;
-            quoteVOs.add(new QuoteVO(stockVO.getStockCode(), date, open, high, low, close, volume, 0f, 0f, 0f));
+            quoteVOs.add(new EquityQuote(stockVO.getStockCode(), date, open, high, low, close, volume, 0f, 0f, 0f));
         }
         return quoteVOs;
     }

@@ -1,6 +1,6 @@
 package pm.net;
 
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,14 +14,15 @@ import java.text.ParseException;
  * Created on Aug 3, 2004
  *
  */
+
 /**
  * @author thiyagu1
  */
 public class NSEQuoteDownloader extends AbstractQuoteDownloader {
 
-    protected QuoteVO parseData(String symbol, Reader reader) throws IOException, ParseException {
+    protected EquityQuote parseData(String symbol, Reader reader) throws IOException, ParseException {
         BufferedReader inBr = new BufferedReader(reader);
-        QuoteVO quoteVO = new QuoteVO(symbol);
+        EquityQuote quoteVO = new EquityQuote(symbol);
         String line = null;
         boolean line1Flag = false;
         boolean line2Flag = false;
@@ -42,7 +43,7 @@ public class NSEQuoteDownloader extends AbstractQuoteDownloader {
         return quoteVO;
     }
 
-    private void processLine2(String line, QuoteVO quoteVO) {
+    private void processLine2(String line, EquityQuote quoteVO) {
         //Eg:[ <TABLE BORDER="0" ALIGN="CENTER" CELLPADDING="4" CELLSPACING="1" bgcolor="#FFFFFF" width="100%"> <tr><th class=specialhead2>Last Price</th><th class=specialhead2>Change from prev close</th><th class=specialhead2>% Change from prev close</th><th class=specialhead2>Total traded quantity</th><th class=specialhead2>Turnover in Rs.Lakhs</th></tr><tr><td class=t1>775.50</td><td class=t1>1.05</td><td class=t1>0.14</td><td class=t1>250197</td><td class=t1>1935.07</td></tr></table>]
         int st = line.indexOf("<td class=") + 13;
         int ed = line.indexOf("</td>", st);
@@ -70,7 +71,7 @@ public class NSEQuoteDownloader extends AbstractQuoteDownloader {
 
     }
 
-    private void processLine1(String line, QuoteVO quoteVO) {
+    private void processLine1(String line, EquityQuote quoteVO) {
         //Eg:[ <TABLE BORDER="0" ALIGN="CENTER" CELLPADDING="4" CELLSPACING="1" bgcolor="#FFFFFF" width="100%"> <tr><th class=specialhead2>Prev. Close</th><th class=specialhead2>Open</th><th class=specialhead2>High</th><th class=specialhead2>Low</th><th class=specialhead2>Average Price</th></tr><tr><td class=t1>774.45</td><td class=t1>778.80</td><td class=t1>778.80</td><td class=t1>770.00</td><td class=t1>773.42</td></tr></table>]
         int st = line.indexOf("<td class=") + 13;
         int ed = line.indexOf("</td>", st);

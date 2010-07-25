@@ -7,7 +7,7 @@ import pm.dao.ibatis.dao.IQuoteDAO;
 import pm.net.nse.FileNameUtil;
 import pm.net.nse.downloader.DeliveryPositionDownloader;
 import pm.util.*;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -147,14 +147,14 @@ public class EquityBhavToPMConverter {
 
     void storeData(Vector<String[]> data, String sDate) throws ApplicationException {
         PMDate pmDate = PMDateFormatter.parseYYYYMMDD(sDate);
-        Vector<QuoteVO> quoteVOs = convertStringToQuoteVOs(data, pmDate);
+        Vector<EquityQuote> quoteVOs = convertStringToQuoteVOs(data, pmDate);
         new QuoteBO().saveNseQuotes(pmDate, quoteVOs);
     }
 
-    private Vector<QuoteVO> convertStringToQuoteVOs(Vector<String[]> data, PMDate pmDate) {
-        Vector<QuoteVO> quoteVOs = new Vector<QuoteVO>();
+    private Vector<EquityQuote> convertStringToQuoteVOs(Vector<String[]> data, PMDate pmDate) {
+        Vector<EquityQuote> quoteVOs = new Vector<EquityQuote>();
         for (String[] strings : data) {
-            QuoteVO quoteVO = new QuoteVO();
+            EquityQuote quoteVO = new EquityQuote();
             quoteVO.setDate(pmDate);
             quoteVO.setStockCode(strings[0]);
             quoteVO.setOpen(Float.parseFloat(strings[1]));
@@ -237,9 +237,9 @@ public class EquityBhavToPMConverter {
         skipLastSuccessfullDeliveryPositionDate(iterator);
         for (; iterator.hasNext();) {
             PMDate date = iterator.next();
-            List<QuoteVO> dailyData = quoteDAO.getQuotes(date);
+            List<EquityQuote> dailyData = quoteDAO.getQuotes(date);
             if (loadDeliveryPositionData(date, dailyData)) {
-                for (QuoteVO quoteVO : dailyData) {
+                for (EquityQuote quoteVO : dailyData) {
                     if (quoteVO.getDate() != null) {
                         quoteDAO.updateQuote(quoteVO);
                     }
@@ -283,7 +283,7 @@ public class EquityBhavToPMConverter {
         return true;
     }
 
-    boolean loadDeliveryPositionData(PMDate date, List<QuoteVO> dailyData) {
+    boolean loadDeliveryPositionData(PMDate date, List<EquityQuote> dailyData) {
         Hashtable<String, String> htDelivery;
         try {
             htDelivery = loadDeliveryPositionDataFromFile(getDeliveryPostionReader(date.getJavaDate()));
@@ -291,7 +291,7 @@ public class EquityBhavToPMConverter {
             logger.warn("Delivery data missing for " + date);
             return false;
         }
-        for (QuoteVO quoteVO : dailyData) {
+        for (EquityQuote quoteVO : dailyData) {
             String devPer = htDelivery.get(quoteVO.getStockCode());
             if (devPer != null) {
                 quoteVO.setPerDeliveryQty(Float.parseFloat(devPer));

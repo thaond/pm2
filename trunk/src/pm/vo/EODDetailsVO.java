@@ -6,7 +6,7 @@ import java.util.Vector;
 
 public class EODDetailsVO {
 
-    private QuoteVO quoteVO;
+    private EquityQuote quoteVO;
 
     private float eps;
 
@@ -18,7 +18,7 @@ public class EODDetailsVO {
 
     private Vector<TradeVO> sellTradeList = new Vector<TradeVO>();
 
-    public EODDetailsVO(QuoteVO quoteVO) {
+    public EODDetailsVO(EquityQuote quoteVO) {
         this.quoteVO = quoteVO;
     }
 
@@ -38,7 +38,7 @@ public class EODDetailsVO {
         return movingAverageList;
     }
 
-    public QuoteVO getQuoteVO() {
+    public EquityQuote getQuoteVO() {
         return quoteVO;
     }
 

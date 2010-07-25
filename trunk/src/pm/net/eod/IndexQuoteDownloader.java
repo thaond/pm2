@@ -4,7 +4,7 @@ import pm.dao.ibatis.dao.DAOManager;
 import pm.dao.ibatis.dao.IQuoteDAO;
 import pm.net.AbstractDownloader;
 import pm.util.PMDate;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 import pm.vo.StockVO;
 
 public abstract class IndexQuoteDownloader extends AbstractDownloader {
@@ -33,7 +33,7 @@ public abstract class IndexQuoteDownloader extends AbstractDownloader {
     }
 
     PMDate findStartDate(String indexCode) {
-        QuoteVO iQuoteVO = quoteDAO().getQuote(indexCode);
+        EquityQuote iQuoteVO = quoteDAO().getQuote(indexCode);
         if ((iQuoteVO != null) && (iQuoteVO.getDate() != null)) {
             return iQuoteVO.getDate();
         } else {

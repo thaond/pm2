@@ -2,7 +2,7 @@ package pm.net;
 
 import junit.framework.TestCase;
 import pm.util.PMDate;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 /**
  * @author Thiyagu
@@ -23,7 +23,7 @@ public class YahooQuoteDownloaderExternalTest extends TestCase {
     }
 
     private void verifyResult(YahooQuoteDownloader quoteDownloader, String stockCode) throws Exception {
-        QuoteVO quoteVO = quoteDownloader.getQuote(stockCode);
+        EquityQuote quoteVO = quoteDownloader.getQuote(stockCode);
         assertTrue(quoteVO.getLastPrice() != 0);
         assertNotNull(quoteVO.getDate());
         if (quoteVO.getDate().equals(new PMDate())) {

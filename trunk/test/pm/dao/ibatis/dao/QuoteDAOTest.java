@@ -1,7 +1,7 @@
 package pm.dao.ibatis.dao;
 
 import pm.util.PMDate;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 import pm.vo.StockVO;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class QuoteDAOTest extends PMDBTestCase {
     public void testGetQuotes() throws Exception {
         IQuoteDAO quoteDAO = DAOManager.getQuoteDAO();
         String stockCode = "CODE1";
-        List<QuoteVO> quoteVOs = quoteDAO.getQuotes(stockCode);
+        List<EquityQuote> quoteVOs = quoteDAO.getQuotes(stockCode);
         assertEquals(1, quoteVOs.size());
         assertEquals(stockCode, quoteVOs.get(0).getStockCode());
         assertEquals(20060101, quoteVOs.get(0).getDateVal());
@@ -57,7 +57,7 @@ public class QuoteDAOTest extends PMDBTestCase {
     public void testGetQuoteForStock() {
         IQuoteDAO quoteDAO = DAOManager.getQuoteDAO();
         String stockCode = "CODE2";
-        QuoteVO quoteVOs = quoteDAO.getQuote(stockCode);
+        EquityQuote quoteVOs = quoteDAO.getQuote(stockCode);
         assertEquals(stockCode, quoteVOs.getStockCode());
         assertEquals(20060103, quoteVOs.getDateVal());
         stockCode = "CODE1";
@@ -72,7 +72,7 @@ public class QuoteDAOTest extends PMDBTestCase {
         StockVO stockVO2 = new StockVO("");
         stockVO2.setId(2);
         PMDate date1 = new PMDate(3, 1, 2006);
-        QuoteVO quoteVOs = quoteDAO.quote(stockVO2, date1);
+        EquityQuote quoteVOs = quoteDAO.quote(stockVO2, date1);
         assertEquals(stockCode, quoteVOs.getStockCode());
         assertEquals(date1, quoteVOs.getDate());
         StockVO stockVO1 = new StockVO("");
@@ -88,7 +88,7 @@ public class QuoteDAOTest extends PMDBTestCase {
         IQuoteDAO quoteDAO = DAOManager.getQuoteDAO();
         String stockCode = "CODE2";
         IStockDAO stockDAO = DAOManager.getStockDAO();
-        QuoteVO quoteVO = quoteDAO.getQuote(stockDAO.getStock(stockCode));
+        EquityQuote quoteVO = quoteDAO.getQuote(stockDAO.getStock(stockCode));
         assertEquals(stockCode, quoteVO.getStockCode());
         assertEquals(20060103, quoteVO.getDateVal());
         stockCode = "CODE1";
@@ -104,7 +104,7 @@ public class QuoteDAOTest extends PMDBTestCase {
     public void testGetQuoteForStockForDate() {
         IQuoteDAO quoteDAO = DAOManager.getQuoteDAO();
         String stockCode = "CODE2";
-        QuoteVO quoteVOs = quoteDAO.getQuote(stockCode, new PMDate(3, 1, 2006));
+        EquityQuote quoteVOs = quoteDAO.getQuote(stockCode, new PMDate(3, 1, 2006));
         assertEquals(stockCode, quoteVOs.getStockCode());
         assertEquals(20060103, quoteVOs.getDateVal());
         assertEquals(50f, quoteVOs.getOpen());
@@ -118,7 +118,7 @@ public class QuoteDAOTest extends PMDBTestCase {
     public void testGetQuoteForStockForDateRange() {
         IQuoteDAO quoteDAO = DAOManager.getQuoteDAO();
         String stockCode = "CODE4";
-        List<QuoteVO> quoteVOs = quoteDAO.getQuotes(stockCode, new PMDate(1, 1, 2006), new PMDate(2, 1, 2006));
+        List<EquityQuote> quoteVOs = quoteDAO.getQuotes(stockCode, new PMDate(1, 1, 2006), new PMDate(2, 1, 2006));
         assertEquals(2, quoteVOs.size());
         assertEquals(20060101, quoteVOs.get(0).getDateVal());
         assertEquals(5f, quoteVOs.get(0).getOpen());
@@ -142,7 +142,7 @@ public class QuoteDAOTest extends PMDBTestCase {
     public void testGetQuoteForStockForDateRangeSupportingNull() {
         IQuoteDAO quoteDAO = DAOManager.getQuoteDAO();
         String stockCode = "CODE4";
-        List<QuoteVO> quoteVOs = quoteDAO.getQuotes(stockCode, null, new PMDate(2, 1, 2006));
+        List<EquityQuote> quoteVOs = quoteDAO.getQuotes(stockCode, null, new PMDate(2, 1, 2006));
         assertEquals(2, quoteVOs.size());
         assertEquals(20060101, quoteVOs.get(0).getDateVal());
         assertEquals(5f, quoteVOs.get(0).getOpen());
@@ -166,10 +166,10 @@ public class QuoteDAOTest extends PMDBTestCase {
     public void testInsertQuote() throws Exception {
         IQuoteDAO quoteDAO = DAOManager.getQuoteDAO();
         String stockCode = "CODE1";
-        QuoteVO quoteVO = new QuoteVO(stockCode, new PMDate(2, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
+        EquityQuote quoteVO = new EquityQuote(stockCode, new PMDate(2, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
         quoteVO.setStockVO(DAOManager.getStockDAO().getStock(stockCode));
         quoteDAO.insertQuote(quoteVO);
-        List<QuoteVO> quoteVOs = quoteDAO.getQuotes(stockCode);
+        List<EquityQuote> quoteVOs = quoteDAO.getQuotes(stockCode);
         assertEquals(2, quoteVOs.size());
         assertTrue(quoteVOs.contains(quoteVO));
     }
@@ -178,11 +178,11 @@ public class QuoteDAOTest extends PMDBTestCase {
         IQuoteDAO quoteDAO = DAOManager.getQuoteDAO();
         String stockCode = "CODE1";
         PMDate date = new PMDate(2, 1, 2006);
-        QuoteVO quoteVO = new QuoteVO(stockCode, date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
+        EquityQuote quoteVO = new EquityQuote(stockCode, date, 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
         quoteVO.setStockVO(DAOManager.getStockDAO().getStock(stockCode));
         quoteDAO.insertQuote(quoteVO);
 
-        QuoteVO actualQuoteVO = quoteDAO.getQuote(stockCode, date);
+        EquityQuote actualQuoteVO = quoteDAO.getQuote(stockCode, date);
         assertEquals(7.5f, actualQuoteVO.getAdjustedClose());
     }
 
@@ -192,12 +192,12 @@ public class QuoteDAOTest extends PMDBTestCase {
         PMDate date = new PMDate(2, 1, 2006);
         createQuote(quoteDAO, stockCode, date);
         quoteDAO.updateAdjustedClose(stockCode, date.next(), 1f / 5f);
-        QuoteVO actualQuoteVO = quoteDAO.getQuote(stockCode, date);
+        EquityQuote actualQuoteVO = quoteDAO.getQuote(stockCode, date);
         assertEquals(2f, actualQuoteVO.getAdjustedClose());
     }
 
     private void createQuote(IQuoteDAO quoteDAO, String stockCode, PMDate date) {
-        QuoteVO quoteVO = new QuoteVO(stockCode, date, 10f, 15f, 5f, 10f, 100f, 15f, 1000f, 98f);
+        EquityQuote quoteVO = new EquityQuote(stockCode, date, 10f, 15f, 5f, 10f, 100f, 15f, 1000f, 98f);
         quoteVO.setStockVO(DAOManager.getStockDAO().getStock(stockCode));
         quoteDAO.insertQuote(quoteVO);
     }
@@ -205,17 +205,17 @@ public class QuoteDAOTest extends PMDBTestCase {
     public void testInsertQuotes() throws Exception {
         IQuoteDAO quoteDAO = DAOManager.getQuoteDAO();
         String stockCode = "CODE1";
-        QuoteVO quoteVO1 = new QuoteVO(stockCode, new PMDate(2, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
-        QuoteVO quoteVO2 = new QuoteVO(stockCode, new PMDate(3, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
-        QuoteVO quoteVO3 = new QuoteVO(stockCode, new PMDate(4, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
-        QuoteVO quoteVO4 = new QuoteVO("CODE2", new PMDate(2, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
-        Vector<QuoteVO> quoteVOs = new Vector<QuoteVO>();
+        EquityQuote quoteVO1 = new EquityQuote(stockCode, new PMDate(2, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
+        EquityQuote quoteVO2 = new EquityQuote(stockCode, new PMDate(3, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
+        EquityQuote quoteVO3 = new EquityQuote(stockCode, new PMDate(4, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
+        EquityQuote quoteVO4 = new EquityQuote("CODE2", new PMDate(2, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
+        Vector<EquityQuote> quoteVOs = new Vector<EquityQuote>();
         quoteVOs.add(quoteVO1);
         quoteVOs.add(quoteVO2);
         quoteVOs.add(quoteVO3);
         quoteVOs.add(quoteVO4);
         quoteDAO.insertQuotes(quoteVOs);
-        List<QuoteVO> actualQuoteVOs = quoteDAO.getQuotes(stockCode);
+        List<EquityQuote> actualQuoteVOs = quoteDAO.getQuotes(stockCode);
         assertEquals(4, actualQuoteVOs.size());
         assertTrue(quoteVOs.contains(quoteVO1));
         assertTrue(quoteVOs.contains(quoteVO2));
@@ -227,12 +227,12 @@ public class QuoteDAOTest extends PMDBTestCase {
     public void testUpdateQuotes() throws Exception {
         IQuoteDAO quoteDAO = DAOManager.getQuoteDAO();
         String stockCode = "CODE1";
-        QuoteVO quoteVO = new QuoteVO(stockCode, new PMDate(1, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
+        EquityQuote quoteVO = new EquityQuote(stockCode, new PMDate(1, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
         quoteVO.setStockVO(DAOManager.getStockDAO().getStock(stockCode));
-        Vector<QuoteVO> quoteVOs = new Vector<QuoteVO>();
+        Vector<EquityQuote> quoteVOs = new Vector<EquityQuote>();
         quoteVOs.add(quoteVO);
         assertTrue(quoteDAO.updateQuote(quoteVO));
-        List<QuoteVO> actualQuoteVOs = quoteDAO.getQuotes(stockCode);
+        List<EquityQuote> actualQuoteVOs = quoteDAO.getQuotes(stockCode);
         assertEquals(1, actualQuoteVOs.size());
         assertTrue(actualQuoteVOs.contains(quoteVO));
     }
@@ -240,10 +240,10 @@ public class QuoteDAOTest extends PMDBTestCase {
     public void testUpdateQuote() throws Exception {
         IQuoteDAO quoteDAO = DAOManager.getQuoteDAO();
         String stockCode = "CODE1";
-        QuoteVO quoteVO = new QuoteVO(stockCode, new PMDate(1, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
+        EquityQuote quoteVO = new EquityQuote(stockCode, new PMDate(1, 1, 2006), 10f, 15f, 5f, 7.5f, 100f, 15f, 1000f, 98f);
         quoteVO.setStockVO(DAOManager.getStockDAO().getStock(stockCode));
         assertTrue(quoteDAO.updateQuote(quoteVO));
-        List<QuoteVO> quoteVOs = quoteDAO.getQuotes(stockCode);
+        List<EquityQuote> quoteVOs = quoteDAO.getQuotes(stockCode);
         assertEquals(1, quoteVOs.size());
         assertTrue(quoteVOs.contains(quoteVO));
     }
@@ -261,7 +261,7 @@ public class QuoteDAOTest extends PMDBTestCase {
         dates.add(new PMDate(8, 1, 2006));
         dates.add(new PMDate(9, 1, 2006));
 
-        Map<StockVO, List<QuoteVO>> map = quoteDAO.quotes(dates.get(0), dates.get(2));
+        Map<StockVO, List<EquityQuote>> map = quoteDAO.quotes(dates.get(0), dates.get(2));
         IStockDAO iStockDAO = DAOManager.getStockDAO();
         verify(map, iStockDAO.getStock("CODE1"), 1, dates, 0);
         verify(map, iStockDAO.getStock("CODE2"), 3, dates, 0);
@@ -292,15 +292,15 @@ public class QuoteDAOTest extends PMDBTestCase {
 
     }
 
-    private void verify(Map<StockVO, List<QuoteVO>> map, StockVO stockVO1, int size, List<PMDate> dates, int startingIndex) {
-        List<QuoteVO> list = map.get(stockVO1);
+    private void verify(Map<StockVO, List<EquityQuote>> map, StockVO stockVO1, int size, List<PMDate> dates, int startingIndex) {
+        List<EquityQuote> list = map.get(stockVO1);
         assertEquals(size, list.size());
         for (int i = startingIndex; i < size; i++) {
             verify(dates.get(i), list.get(i), stockVO1);
         }
     }
 
-    private void verify(PMDate stDate, QuoteVO quote, StockVO stockVO2) {
+    private void verify(PMDate stDate, EquityQuote quote, StockVO stockVO2) {
         assertEquals(stDate, quote.getDate());
         assertEquals(stockVO2, quote.getStockVO());
     }

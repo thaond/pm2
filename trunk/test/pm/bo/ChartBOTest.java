@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import pm.util.AppConst;
 import pm.util.PMDate;
 import pm.vo.EODDetailsVO;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 import pm.vo.TradeVO;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class ChartBOTest extends TestCase {
                 new PMDate(5, 1, 2007), new PMDate(8, 1, 2007), new PMDate(11, 1, 2007), new PMDate(17, 1, 2007),
                 new PMDate(31, 1, 2007), new PMDate(2, 2, 2007)};
         for (int i = 0; i < dates.length; i++) {
-            detailsVOs.add(new EODDetailsVO(new QuoteVO("", new PMDate(1, 1, 2007), decimal(i, 6f), decimal(i, 15f),
+            detailsVOs.add(new EODDetailsVO(new EquityQuote("", new PMDate(1, 1, 2007), decimal(i, 6f), decimal(i, 15f),
                     decimal(i, 5f), decimal(i, 10f), decimal(i, 100f), 0f, decimal(i, 200f), decimal(i, 60f))));
         }
 
@@ -55,7 +55,7 @@ public class ChartBOTest extends TestCase {
 
         for (int i = 0; i < dates.length; i++) {
             float volume = decimal(i, 100f);
-            detailsVOs.add(new EODDetailsVO(new QuoteVO("", dates[i], decimal(i, 6f), decimal(i, 15f),
+            detailsVOs.add(new EODDetailsVO(new EquityQuote("", dates[i], decimal(i, 6f), decimal(i, 15f),
                     decimal(i, 5f), decimal(i, 10f), volume, decimal(i, 7f), decimal(i, 200f), decimal(i, 60f))));
         }
 
@@ -73,7 +73,7 @@ public class ChartBOTest extends TestCase {
 
         assertEquals(4, filteredDetailsVO.size());
 
-        EODDetailsVO firstWeek = new EODDetailsVO(new QuoteVO("", dates[0], 6f, 15.4f, 5f, 10.4f, 501f, 7f, 1001f, 60.2f));
+        EODDetailsVO firstWeek = new EODDetailsVO(new EquityQuote("", dates[0], 6f, 15.4f, 5f, 10.4f, 501f, 7f, 1001f, 60.2f));
         firstWeek.addBuyTradeVO(trade1);
         firstWeek.addBuyTradeVO(buy2);
         firstWeek.addBuyTradeVO(buy3);
@@ -81,14 +81,14 @@ public class ChartBOTest extends TestCase {
         firstWeek.addSellTradeVO(sell2);
         assertEquals(firstWeek, filteredDetailsVO.get(0));
 
-        EODDetailsVO secondWeek = new EODDetailsVO(new QuoteVO("", dates[5], 6.5f, 15.6f, 5.5f, 10.6f, 201.1f, 7.5f, 401.1f, 60.55f));
+        EODDetailsVO secondWeek = new EODDetailsVO(new EquityQuote("", dates[5], 6.5f, 15.6f, 5.5f, 10.6f, 201.1f, 7.5f, 401.1f, 60.55f));
         secondWeek.addBuyTradeVO(buy5);
         assertEquals(secondWeek, filteredDetailsVO.get(1));
 
-        EODDetailsVO thirdWeek = new EODDetailsVO(new QuoteVO("", dates[7], 6.7f, 15.7f, 5.7f, 10.7f, 100.7f, 7.7f, 200.7f, 60.7f));
+        EODDetailsVO thirdWeek = new EODDetailsVO(new EquityQuote("", dates[7], 6.7f, 15.7f, 5.7f, 10.7f, 100.7f, 7.7f, 200.7f, 60.7f));
         assertEquals(thirdWeek, filteredDetailsVO.get(2));
 
-        EODDetailsVO fourthWeek = new EODDetailsVO(new QuoteVO("", dates[8], 6.8f, 15.9f, 5.8f, 10.9f, 201.7f, 7.8f, 401.7f, 60.85f));
+        EODDetailsVO fourthWeek = new EODDetailsVO(new EquityQuote("", dates[8], 6.8f, 15.9f, 5.8f, 10.9f, 201.7f, 7.8f, 401.7f, 60.85f));
         fourthWeek.addBuyTradeVO(buy6);
         fourthWeek.addSellTradeVO(trade1);
         assertEquals(fourthWeek, filteredDetailsVO.get(3));

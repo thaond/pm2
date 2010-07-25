@@ -10,7 +10,7 @@ import pm.util.AppConst.ANALYZER_LIST;
 import pm.util.DateIterator;
 import pm.util.PMDate;
 import pm.util.QuoteIterator;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 /**
  * @author thiyagu
@@ -30,7 +30,7 @@ public class CloseAbove52WeekHighBO extends AbsStockAnalyzerBO {
 
             double high52W = 0;
             for (; quoteIterator.hasNext();) {
-                QuoteVO quoteVO = quoteIterator.next();
+                EquityQuote quoteVO = quoteIterator.next();
                 if (quoteVO.getDate().equals(date)) {
                     double close = quoteVO.getClose();
                     if (close > high52W) {
@@ -42,7 +42,7 @@ public class CloseAbove52WeekHighBO extends AbsStockAnalyzerBO {
                 }
                 if (high52W < quoteVO.getClose()) high52W = quoteVO.getClose();
             }
-            QuoteVO quoteVO = quoteIterator.next();
+            EquityQuote quoteVO = quoteIterator.next();
         }
         return retFlag;
     }

@@ -14,7 +14,7 @@ public class StopLossVO {
     private float stopLoss2;
     private float target1;
     private float target2;
-    private QuoteVO quoteVO;
+    private EquityQuote quoteVO;
     private String portfolioName;
 
     public StopLossVO() {
@@ -32,14 +32,14 @@ public class StopLossVO {
     /**
      * @return Returns the quoteVO.
      */
-    public QuoteVO getQuoteVO() {
+    public EquityQuote getQuoteVO() {
         return quoteVO;
     }
 
     /**
      * @param quoteVO The quoteVO to set.
      */
-    public void setQuoteVO(QuoteVO quoteVO) {
+    public void setQuoteVO(EquityQuote quoteVO) {
         this.quoteVO = quoteVO;
     }
 

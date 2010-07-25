@@ -1,7 +1,7 @@
 package pm.util;
 
 import pm.bo.QuoteBO;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 import pm.vo.StockVO;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.Vector;
 public class QuoteIterator {
 
     private String stockCode;
-    protected QuoteVO[] quoteVOs = null;
+    protected EquityQuote[] quoteVOs = null;
     protected int index = 0;
     protected int mark = -1;
 
@@ -28,9 +28,9 @@ public class QuoteIterator {
         init(stDate, enDate, stockCode);
     }
 
-    private QuoteIterator(StockVO stockVO, List<QuoteVO> quotes) {
+    private QuoteIterator(StockVO stockVO, List<EquityQuote> quotes) {
         stockCode = stockVO.getStockCode();
-        quoteVOs = quotes.toArray(new QuoteVO[0]);
+        quoteVOs = quotes.toArray(new EquityQuote[0]);
     }
 
     protected void init(PMDate stDate, PMDate enDate, String stockCode) {
@@ -38,7 +38,7 @@ public class QuoteIterator {
         if (stockCode != null)
             quoteVOs = new QuoteBO().getQuotes(stockCode, stDate, enDate);
         else
-            quoteVOs = new QuoteVO[0];
+            quoteVOs = new EquityQuote[0];
     }
 
     public String getStockCode() {
@@ -49,7 +49,7 @@ public class QuoteIterator {
         return index < quoteVOs.length;
     }
 
-    public QuoteVO next() {
+    public EquityQuote next() {
         if (hasNext()) return quoteVOs[index++];
         else return null;
     }
@@ -58,12 +58,12 @@ public class QuoteIterator {
         return (index > 0);
     }
 
-    public QuoteVO previous() {
+    public EquityQuote previous() {
         if (hasPrevious()) return quoteVOs[--index];
         else return null;
     }
 
-    public QuoteVO last() {
+    public EquityQuote last() {
         if (quoteVOs.length > 0) return quoteVOs[quoteVOs.length - 1];
         return null;
     }
@@ -120,7 +120,7 @@ public class QuoteIterator {
      * @param diff
      * @return
      */
-    public QuoteVO getItemFrmCurrPos(int diff) {
+    public EquityQuote getItemFrmCurrPos(int diff) {
         int newPos = index + diff;
         if (newPos >= 0 && newPos < quoteVOs.length) {
             return quoteVOs[newPos];
@@ -145,15 +145,15 @@ public class QuoteIterator {
     }
 
     public boolean setDataRange(PMDate frmDate, PMDate toDate) {
-        Vector<QuoteVO> tmpData = new Vector<QuoteVO>();
+        Vector<EquityQuote> tmpData = new Vector<EquityQuote>();
         movePtrToDate(frmDate);
         for (; hasNext();) {
-            QuoteVO quoteVO = next();
+            EquityQuote quoteVO = next();
             if (quoteVO.after(toDate)) break;
             tmpData.add(quoteVO);
         }
         quoteVOs = null;
-        quoteVOs = new QuoteVO[tmpData.size()];
+        quoteVOs = new EquityQuote[tmpData.size()];
         quoteVOs = tmpData.toArray(quoteVOs);
         index = 0;
 //		System.out.println(tmpData.size());
@@ -161,7 +161,7 @@ public class QuoteIterator {
     }
 
     public static List<QuoteIterator> getIterators(PMDate stDate, PMDate enDate) {
-        Map<StockVO, List<QuoteVO>> quotes = new QuoteBO().getQuotes(stDate, enDate);
+        Map<StockVO, List<EquityQuote>> quotes = new QuoteBO().getQuotes(stDate, enDate);
         List<QuoteIterator> quoteIterators = new ArrayList<QuoteIterator>();
         for (StockVO stockVO : quotes.keySet()) {
             quoteIterators.add(new QuoteIterator(stockVO, quotes.get(stockVO)));

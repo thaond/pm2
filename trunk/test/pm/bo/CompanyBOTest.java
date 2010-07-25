@@ -1189,9 +1189,9 @@ public class CompanyBOTest extends PMDBTestCase {
     public void testDoActionForUpdatingAdjustedCloseForSplit() throws Exception {
         PMDate exDate = new PMDate(3, 1, 2008);
         String stockCode = "CODE4";
-        new QuoteBO().saveNseQuotes(exDate, Arrays.asList(new QuoteVO(stockCode, exDate, 10f, 11f, 9f, 10.5f, 10f, 0f, 100f, 20f)));
-        new QuoteBO().saveNseQuotes(exDate.previous(), Arrays.asList(new QuoteVO(stockCode, exDate.previous(), 10f, 11f, 9f, 10.5f, 10f, 0f, 100f, 20f)));
-        new QuoteBO().saveNseQuotes(exDate.previous().previous(), Arrays.asList(new QuoteVO(stockCode, exDate.previous().previous(), 10f, 11f, 9f, 10.5f, 10f, 0f, 100f, 20f)));
+        new QuoteBO().saveNseQuotes(exDate, Arrays.asList(new EquityQuote(stockCode, exDate, 10f, 11f, 9f, 10.5f, 10f, 0f, 100f, 20f)));
+        new QuoteBO().saveNseQuotes(exDate.previous(), Arrays.asList(new EquityQuote(stockCode, exDate.previous(), 10f, 11f, 9f, 10.5f, 10f, 0f, 100f, 20f)));
+        new QuoteBO().saveNseQuotes(exDate.previous().previous(), Arrays.asList(new EquityQuote(stockCode, exDate.previous().previous(), 10f, 11f, 9f, 10.5f, 10f, 0f, 100f, 20f)));
         CompanyActionVO splitAction = new CompanyActionVO(AppConst.COMPANY_ACTION_TYPE.Split, exDate, stockCode, 2f, 10f);
         new CompanyBO().doAction(splitAction);
         assertEquals(10.5f, DAOManager.getQuoteDAO().getQuote(stockCode, exDate).getAdjustedClose());
@@ -1202,10 +1202,10 @@ public class CompanyBOTest extends PMDBTestCase {
     public void testDoActionForUpdatingAdjustedCloseForBonus() throws Exception {
         PMDate exDate = new PMDate(3, 1, 2007);
         String stockCode = "CODE4";
-        new QuoteBO().saveNseQuotes(exDate.next(), Arrays.asList(new QuoteVO(stockCode, exDate.next(), 10f, 11f, 9f, 10.5f, 10f, 0f, 100f, 20f)));
-        new QuoteBO().saveNseQuotes(exDate, Arrays.asList(new QuoteVO(stockCode, exDate, 10f, 11f, 9f, 10.5f, 10f, 0f, 100f, 20f)));
-        new QuoteBO().saveNseQuotes(exDate.previous(), Arrays.asList(new QuoteVO(stockCode, exDate.previous(), 10f, 11f, 9f, 10.5f, 10f, 0f, 100f, 20f)));
-        new QuoteBO().saveNseQuotes(exDate.previous().previous(), Arrays.asList(new QuoteVO(stockCode, exDate.previous().previous(), 10f, 11f, 9f, 10.5f, 10f, 0f, 100f, 20f)));
+        new QuoteBO().saveNseQuotes(exDate.next(), Arrays.asList(new EquityQuote(stockCode, exDate.next(), 10f, 11f, 9f, 10.5f, 10f, 0f, 100f, 20f)));
+        new QuoteBO().saveNseQuotes(exDate, Arrays.asList(new EquityQuote(stockCode, exDate, 10f, 11f, 9f, 10.5f, 10f, 0f, 100f, 20f)));
+        new QuoteBO().saveNseQuotes(exDate.previous(), Arrays.asList(new EquityQuote(stockCode, exDate.previous(), 10f, 11f, 9f, 10.5f, 10f, 0f, 100f, 20f)));
+        new QuoteBO().saveNseQuotes(exDate.previous().previous(), Arrays.asList(new EquityQuote(stockCode, exDate.previous().previous(), 10f, 11f, 9f, 10.5f, 10f, 0f, 100f, 20f)));
         CompanyActionVO splitAction = new CompanyActionVO(AppConst.COMPANY_ACTION_TYPE.Bonus, exDate, stockCode, 2f, 3f);
         new CompanyBO().doAction(splitAction);
         assertEquals(10.5f, DAOManager.getQuoteDAO().getQuote(stockCode, exDate.next()).getAdjustedClose());

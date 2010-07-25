@@ -15,7 +15,7 @@ public class ConsolidatedTradeVO implements Comparable {
     private float cost;
     private float divident;
     private float profitLoss;
-    private QuoteVO currQuote;
+    private EquityQuote currQuote;
 
 
     /**
@@ -33,12 +33,12 @@ public class ConsolidatedTradeVO implements Comparable {
         this.profitLoss = totProfLoss;
     }
 
-    public QuoteVO getCurrQuote() {
+    public EquityQuote getCurrQuote() {
         return currQuote;
     }
 
-    public void setCurrQuote(QuoteVO currQuote) {
-        if (currQuote == null) currQuote = new QuoteVO();
+    public void setCurrQuote(EquityQuote currQuote) {
+        if (currQuote == null) currQuote = new EquityQuote();
         this.currQuote = currQuote;
     }
 
@@ -74,6 +74,7 @@ public class ConsolidatedTradeVO implements Comparable {
     /*
       * This method return current days profit or loss
       */
+
     public float getTodaysPL() {
         if (currQuote == null) return 0f;
         return currQuote.getLastPrice() * getQty() - currQuote.getPrevClose() * getQty();
@@ -95,6 +96,7 @@ public class ConsolidatedTradeVO implements Comparable {
     /* (non-Javadoc)
       * @see java.lang.Comparable#compareTo(java.lang.Object)
       */
+
     public int compareTo(Object o) {
         ConsolidatedTradeVO target = (ConsolidatedTradeVO) o;
         return this.stockCode.compareTo(target.stockCode);

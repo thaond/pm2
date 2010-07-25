@@ -5,7 +5,7 @@
 package pm.net;
 
 import org.apache.log4j.Logger;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,21 +21,21 @@ public abstract class AbstractQuoteDownloader {
 
     private boolean stopFlag = false;
 
-    public QuoteVO getQuote(String symbol) throws Exception {
+    public EquityQuote getQuote(String symbol) throws Exception {
         String url = getURL(symbol);
         if (url == null) {
-            return new QuoteVO(symbol);
+            return new EquityQuote(symbol);
         }
         Reader reader = new HTTPHelper().getHTMLContentReader(url);
         if (reader != null) {
             return parseData(symbol, reader);
         } else {
             logger.error("Error getting Quote Data  from " + url);
-            return new QuoteVO(symbol);
+            return new EquityQuote(symbol);
         }
     }
 
-    protected abstract QuoteVO parseData(String symbol, Reader reader) throws IOException, ParseException;
+    protected abstract EquityQuote parseData(String symbol, Reader reader) throws IOException, ParseException;
 
     public String getQuotePage(String symbol) {
         String url = getURL(symbol);

@@ -3,7 +3,7 @@ package pm.datamining;
 import pm.datamining.vo.SupportResistanceVO;
 import pm.util.PMDate;
 import pm.util.QuoteIterator;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 import java.util.Comparator;
 import java.util.TreeSet;
@@ -23,9 +23,9 @@ public class SupportResistanceAnalyzer {
         QuoteIterator dataHolder = new QuoteIterator(new PMDate(1, 12, 2003), stockCode);
         Vector<SupportResistanceVO> vector = new Vector<SupportResistanceVO>();
         for (; dataHolder.hasNext();) {
-            QuoteVO quoteVO = dataHolder.next();
+            EquityQuote quoteVO = dataHolder.next();
             dataHolder.mark();
-            QuoteVO nextDayQuote = dataHolder.next();
+            EquityQuote nextDayQuote = dataHolder.next();
             if (nextDayQuote == null) break;
             boolean highflag = false;
             boolean lowflag = false;

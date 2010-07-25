@@ -314,9 +314,9 @@ public class Alert extends JPanel {
         for (int count = 0; count < list.size(); count++) {
             stockCodes[count] = list.get(count).getStockCode();
         }
-        QuoteVO[] quotes = QuoteManager.getLiveQuote(stockCodes);
+        EquityQuote[] quotes = QuoteManager.getLiveQuote(stockCodes);
         for (int i = 0; i < quotes.length; i++) {
-            QuoteVO quoteVO = quotes[i];
+            EquityQuote quoteVO = quotes[i];
             if (quoteVO.getLastPrice() == 0f) continue;
             try {
                 gbc.gridx = 0;

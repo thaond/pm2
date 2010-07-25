@@ -616,7 +616,7 @@ public class CompanyBO {
         return DAOManager.getCompanyActionDAO();
     }
 
-    public List<QuoteVO> applyCompanyAction(String stockCode, List<QuoteVO> quoteVOs) {
+    public List<EquityQuote> applyCompanyAction(String stockCode, List<EquityQuote> quoteVOs) {
         List<CompanyActionVO> actionInfo = getDAO().getCompanyAction(stockCode);
         for (CompanyActionVO actionVO : actionInfo) {
             if (actionVO.getAction() == COMPANY_ACTION_TYPE.Divident) {
@@ -624,7 +624,7 @@ public class CompanyBO {
             }
 
             float priceFactor = actionVO.getPriceFactor();
-            for (QuoteVO quoteVO : quoteVOs) {
+            for (EquityQuote quoteVO : quoteVOs) {
                 if (quoteVO.before(actionVO.getExDate())) {
                     quoteVO.applyPriceFactor(priceFactor);
                 } else if (quoteVO.dateEquals(actionVO.getExDate())) {
@@ -719,7 +719,7 @@ public class CompanyBO {
         if (finResult.isEmpty()) {
             return retVal;
         }
-        List<QuoteVO> quoteVOs = DAOManager.getQuoteDAO().getQuotes(stockCode, finResult.firstElement()
+        List<EquityQuote> quoteVOs = DAOManager.getQuoteDAO().getQuotes(stockCode, finResult.firstElement()
                 .getStartDate(), finResult.lastElement().getEndDate());
         applyCompanyAction(stockCode, quoteVOs);
         for (CorpResultVO resultVO : finResult) {
@@ -730,13 +730,13 @@ public class CompanyBO {
             return retVal;
         }
         int perfIndex = 0;
-        QuoteVO quoteVO = new QuoteVO(stockCode);
+        EquityQuote quoteVO = new EquityQuote(stockCode);
         quoteVO.setLow(1000000);
         quoteVO.setPrevClose(getAdjustedPrevClose(quoteVOs.get(0)));
         for (int i = 0; i < quoteVOs.size() && perfIndex < retVal.size(); i++) {
             if (quoteVOs.get(i).getDate().after(retVal.get(perfIndex).getEndDate())) {
                 retVal.get(perfIndex).setQuote(quoteVO);
-                quoteVO = new QuoteVO(stockCode);
+                quoteVO = new EquityQuote(stockCode);
                 quoteVO.setPrevClose(getAdjustedPrevClose(quoteVOs.get(i)));
                 quoteVO.setLow(-1);
                 perfIndex++;
@@ -766,7 +766,7 @@ public class CompanyBO {
         return retVal;
     }
 
-    private float getAdjustedPrevClose(QuoteVO quoteVO) {
+    private float getAdjustedPrevClose(EquityQuote quoteVO) {
         float prevClose = quoteVO.getPrevClose();
         if (prevClose < (quoteVO.getOpen() * 0.8)) {
             prevClose = quoteVO.getOpen();
@@ -818,9 +818,9 @@ public class CompanyBO {
                 actionStockList.add(actionVO.getStockCode());
             }
         }
-        Hashtable<String, QuoteVO> htLiveQuotes = new Hashtable<String, QuoteVO>();
-        QuoteVO[] liveQuote = QuoteManager.getLiveQuote(actionStockList.toArray(new String[actionStockList.size()]));
-        for (QuoteVO quoteVO : liveQuote) {
+        Hashtable<String, EquityQuote> htLiveQuotes = new Hashtable<String, EquityQuote>();
+        EquityQuote[] liveQuote = QuoteManager.getLiveQuote(actionStockList.toArray(new String[actionStockList.size()]));
+        for (EquityQuote quoteVO : liveQuote) {
             if (quoteVO != null) {
                 htLiveQuotes.put(quoteVO.getStockCode(), quoteVO);
             }
@@ -841,7 +841,7 @@ public class CompanyBO {
                 } else {
                     divident = actionVO.getDsbValue();
                 }
-                QuoteVO quoteVO = htLiveQuotes.get(actionVO.getStockCode());
+                EquityQuote quoteVO = htLiveQuotes.get(actionVO.getStockCode());
                 if (quoteVO != null) {
                     float valueAtCurrPrice = divident / quoteVO.getLastPrice() * 100f;
                     actionVO.setValueAtCurrentPrice(valueAtCurrPrice);

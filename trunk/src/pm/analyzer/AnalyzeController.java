@@ -59,7 +59,7 @@ public class AnalyzeController {
     public static void main(String[] arg) {
         ANALYZER_LIST[] analyzerList = new ANALYZER_LIST[1];
         analyzerList[0] = ANALYZER_LIST.MACD;
-//    	Vector<QuoteVO> dataItem = getAnalyzedData("ACC",new PMDate(26,8,2005),new PMDate(26,8,2005),analyzerList,STOCK_PICK_TYPE.And,
+//    	Vector<EquityQuote> dataItem = getAnalyzedData("ACC",new PMDate(26,8,2005),new PMDate(26,8,2005),analyzerList,STOCK_PICK_TYPE.And,
 //    			true,true);
     }
 }

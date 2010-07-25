@@ -2,14 +2,15 @@ package pm.ui;
 
 import pm.action.Controller;
 import pm.dao.ibatis.dao.DAOManager;
-import static pm.ui.UIHelper.*;
 import pm.util.PMDateFormatter;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 import pm.vo.StockVO;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+
+import static pm.ui.UIHelper.*;
 
 
 public class DisplayInfo extends JPanel {
@@ -115,7 +116,7 @@ public class DisplayInfo extends JPanel {
             panel.add(createLabel(stockVO.getStockCode()), gbc);
             gbc.gridx = 1;
             gbc.anchor = GridBagConstraints.WEST;
-            QuoteVO quote = Controller.getLastQuote(stockVO.getStockCode());
+            EquityQuote quote = Controller.getLastQuote(stockVO.getStockCode());
             if (quote != null) {
                 panel.add(createLabel(PMDateFormatter.displayFormat(quote.getDate())), gbc);
             }

@@ -5,7 +5,7 @@ import pm.util.PMDate;
 public class CompanyPerfVO {
 
     private CorpResultVO resultVO;
-    private QuoteVO quoteVO;
+    private EquityQuote quoteVO;
     private float epsGrowth;
 
     public float getEpsGrowth() {
@@ -32,7 +32,7 @@ public class CompanyPerfVO {
         return resultVO.getStartDate();
     }
 
-    public void setQuote(QuoteVO quoteVO) {
+    public void setQuote(EquityQuote quoteVO) {
         this.quoteVO = quoteVO;
     }
 
