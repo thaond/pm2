@@ -6,7 +6,7 @@ import pm.dao.ibatis.dao.IDateDAO;
 import pm.dao.ibatis.dao.IQuoteDAO;
 import pm.util.DateIterator;
 import pm.util.PMDate;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 import pm.vo.StockVO;
 
 import java.util.*;
@@ -19,7 +19,7 @@ public class QuoteBO {
 
     private Logger logger = Logger.getLogger(QuoteBO.class);
 
-    public void saveNseQuotes(PMDate date, List<QuoteVO> quoteVOs) {
+    public void saveNseQuotes(PMDate date, List<EquityQuote> quoteVOs) {
         if (insertIfNewDate(date) || isNewQuote(date)) {
             insertNseQuotes(date, quoteVOs);
         } else {
@@ -35,21 +35,21 @@ public class QuoteBO {
         return !getDateDAO().getNSEQuoteStatusFor(date);
     }
 
-    private void insertNseQuotes(PMDate date, List<QuoteVO> quoteVOs) {
+    private void insertNseQuotes(PMDate date, List<EquityQuote> quoteVOs) {
         insertNewStockList(quoteVOs);
         IQuoteDAO quoteDAO = getDAO();
         quoteDAO.insertQuotes(quoteVOs);
         getDateDAO().setNSEQuoteStatusFor(date);
     }
 
-    public void saveIndexQuotes(String stockCode, List<QuoteVO> quoteVOs) {
-        List<QuoteVO> existingQuotes = getDAO().getQuotes(stockCode);
-        Map<PMDate, QuoteVO> existingQuotesMap = new HashMap<PMDate, QuoteVO>();
-        for (QuoteVO quoteVO : existingQuotes) {
+    public void saveIndexQuotes(String stockCode, List<EquityQuote> quoteVOs) {
+        List<EquityQuote> existingQuotes = getDAO().getQuotes(stockCode);
+        Map<PMDate, EquityQuote> existingQuotesMap = new HashMap<PMDate, EquityQuote>();
+        for (EquityQuote quoteVO : existingQuotes) {
             existingQuotesMap.put(quoteVO.getDate(), quoteVO);
         }
         DateIterator dateIterator = getDateIterator();
-        for (QuoteVO quoteVO : quoteVOs) {
+        for (EquityQuote quoteVO : quoteVOs) {
             updatePrevClose(quoteVO, dateIterator);
             if (insertIfNewDate(quoteVO.getDate()) || existingQuotesMap.get(quoteVO.getDate()) == null) {
                 getDAO().insertQuote(quoteVO);
@@ -63,7 +63,7 @@ public class QuoteBO {
         return new DateIterator();
     }
 
-    void updatePrevClose(QuoteVO quoteVO, DateIterator dateIterator) {
+    void updatePrevClose(EquityQuote quoteVO, DateIterator dateIterator) {
         PMDate nextDate = null;
         PMDate prevDate;
         if (dateIterator.movePtrToDate(quoteVO.getDate())) {
@@ -77,14 +77,14 @@ public class QuoteBO {
         }
 
         if (quoteVO.getPrevClose() == 0.0f && prevDate != null) {
-            QuoteVO prevQuote = getDAO().getQuote(quoteVO.getStockCode(), prevDate);
+            EquityQuote prevQuote = getDAO().getQuote(quoteVO.getStockCode(), prevDate);
             if (prevQuote != null) {
                 quoteVO.setPrevClose(prevQuote.getClose());
             }
         }
 
         if (nextDate != null) {
-            QuoteVO nextQuote = getDAO().getQuote(quoteVO.getStockCode(), nextDate);
+            EquityQuote nextQuote = getDAO().getQuote(quoteVO.getStockCode(), nextDate);
             if (nextQuote != null && nextQuote.getPrevClose() != quoteVO.getClose()) {
                 nextQuote.setPrevClose(quoteVO.getClose());
                 getDAO().updateQuote(nextQuote);
@@ -92,9 +92,9 @@ public class QuoteBO {
         }
     }
 
-    void insertNewStockList(List<QuoteVO> quoteVOs) {
+    void insertNewStockList(List<EquityQuote> quoteVOs) {
         HashSet<String> stockList = new HashSet<String>();
-        for (QuoteVO quoteVO : quoteVOs) {
+        for (EquityQuote quoteVO : quoteVOs) {
             stockList.add(quoteVO.getStockCode());
         }
         getStockMasterBO().insertMissingStockCodes(stockList);
@@ -116,35 +116,35 @@ public class QuoteBO {
         return DAOManager.getDateDAO();
     }
 
-    public QuoteVO[] getQuote(String[] stockCodes) {
-        QuoteVO[] quoteVOs = new QuoteVO[stockCodes.length];
+    public EquityQuote[] getQuote(String[] stockCodes) {
+        EquityQuote[] quoteVOs = new EquityQuote[stockCodes.length];
         IQuoteDAO dao = getDAO();
         for (int i = 0; i < stockCodes.length; i++) {
             String stockCode = stockCodes[i];
             quoteVOs[i] = dao.getQuote(stockCode);
             if (quoteVOs[i] == null) {
-                quoteVOs[i] = new QuoteVO(stockCode);
+                quoteVOs[i] = new EquityQuote(stockCode);
             }
         }
         return quoteVOs;
     }
 
-    public Vector<QuoteVO[]> getQuotes(PMDate frmDate, PMDate toDate, String[] stockList) {
-        Vector<QuoteVO[]> quoteVOsList = new Vector<QuoteVO[]>();
+    public Vector<EquityQuote[]> getQuotes(PMDate frmDate, PMDate toDate, String[] stockList) {
+        Vector<EquityQuote[]> quoteVOsList = new Vector<EquityQuote[]>();
         for (String stockCode : stockList) {
-            QuoteVO[] quoteVOs = getQuotes(stockCode, frmDate, toDate);
+            EquityQuote[] quoteVOs = getQuotes(stockCode, frmDate, toDate);
             quoteVOsList.add(quoteVOs);
         }
         return quoteVOsList;
     }
 
-    public QuoteVO[] getQuotes(String stockCode, PMDate frmDate, PMDate toDate) {
+    public EquityQuote[] getQuotes(String stockCode, PMDate frmDate, PMDate toDate) {
         IQuoteDAO dao = getDAO();
-        List<QuoteVO> quotes = dao.getQuotes(stockCode, frmDate, toDate);
-        return quotes.toArray(new QuoteVO[quotes.size()]);
+        List<EquityQuote> quotes = dao.getQuotes(stockCode, frmDate, toDate);
+        return quotes.toArray(new EquityQuote[quotes.size()]);
     }
 
-    public Map<StockVO, List<QuoteVO>> getQuotes(PMDate stDate, PMDate enDate) {
+    public Map<StockVO, List<EquityQuote>> getQuotes(PMDate stDate, PMDate enDate) {
         return getDAO().quotes(stDate, enDate);
     }
 }

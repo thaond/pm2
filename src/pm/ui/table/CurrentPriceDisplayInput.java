@@ -1,7 +1,7 @@
 package pm.ui.table;
 
 import pm.util.Helper;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 /**
  * @author Thiyagu
@@ -16,7 +16,7 @@ public class CurrentPriceDisplayInput extends TableDisplayInput {
 
     public AbstractTableCellDisplay display(Object data, boolean isTotalCell) {
         if (isTotalCell) return new TableCellDisplay("", isTotalCell);
-        QuoteVO quoteVO = getQuote(data);
+        EquityQuote quoteVO = getQuote(data);
         float perChange = quoteVO != null ? quoteVO.getPerChange() : 0f;
         float lastPrice = quoteVO != null ? quoteVO.getLastPrice() : 0f;
         String dispStr = Helper.formatFloat(lastPrice) + "  "
@@ -24,8 +24,8 @@ public class CurrentPriceDisplayInput extends TableDisplayInput {
         return new TableCellDisplay(perChange, 2, dispStr);
     }
 
-    protected QuoteVO getQuote(Object data) {
-        QuoteVO quoteVO = (QuoteVO) data;
+    protected EquityQuote getQuote(Object data) {
+        EquityQuote quoteVO = (EquityQuote) data;
         return quoteVO;
     }
 }

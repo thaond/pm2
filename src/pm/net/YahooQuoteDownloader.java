@@ -8,7 +8,7 @@ import pm.dao.ibatis.dao.DAOManager;
 import pm.util.ApplicationException;
 import pm.util.PMDate;
 import pm.util.PMDateFormatter;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,8 +26,8 @@ public class YahooQuoteDownloader extends AbstractQuoteDownloader {
     private final static String baseURL = "http://in.finance.yahoo.com/q?s=";
     private final static String urlExtn = "&d=d&o=t";
 
-    protected QuoteVO parseData(String symbol, Reader reader) throws IOException, ParseException {
-        QuoteVO quoteVO = new QuoteVO(symbol);
+    protected EquityQuote parseData(String symbol, Reader reader) throws IOException, ParseException {
+        EquityQuote quoteVO = new EquityQuote(symbol);
         BufferedReader br = new BufferedReader(reader);
         String line;
         boolean startProcess = false;

@@ -4,10 +4,9 @@ import pm.util.PMDate;
 import pm.util.enumlist.FOTYPE;
 
 
-public class FOQuote extends QuoteVO {
+public class FOQuote extends Quote {
 
     private PMDate expiryDate;
-    private Integer activeContracts;
     private Integer openInterest;
     private Integer changeInOpenInterest;
     private FOTYPE fotype;
@@ -16,23 +15,14 @@ public class FOQuote extends QuoteVO {
     public FOQuote() {
     }
 
-    public FOQuote(PMDate date, StockVO stockVO, FOTYPE fotype, float open, float high, float low, float lastPrice, Integer activeContracts,
+    public FOQuote(PMDate date, StockVO stockVO, FOTYPE fotype, float open, float high, float low, float lastPrice, float volume,
                    Integer openInterest, Integer changeInOpenInterest, Float strikePrice, PMDate expiryDate) {
-        super(date, high, lastPrice, low, open, stockVO);
+        super(date, high, lastPrice, low, open, volume, stockVO);
         this.fotype = fotype;
-        this.activeContracts = activeContracts;
         this.changeInOpenInterest = changeInOpenInterest;
         this.strikePrice = strikePrice;
         this.expiryDate = expiryDate;
         this.openInterest = openInterest;
-    }
-
-    public Integer getActiveContracts() {
-        return activeContracts;
-    }
-
-    public void setActiveContracts(Integer activeContracts) {
-        this.activeContracts = activeContracts;
     }
 
     public Integer getChangeInOpenInterest() {

@@ -9,7 +9,7 @@ package pm.analyzer.bo;
 import pm.util.AppConst.ANALYZER_LIST;
 import pm.util.PMDate;
 import pm.util.QuoteIterator;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 /**
  * @author thiyagu
@@ -23,8 +23,8 @@ public class OpenHighBO extends AbsStockAnalyzerBO {
         boolean retFlag = false;
         if (!quoteIterator.movePtrToDate(stDate)) return false;
         for (; quoteIterator.hasNext();) {
-            QuoteVO quoteVO = quoteIterator.next();
-            QuoteVO pervQuote = quoteIterator.getItemFrmCurrPos(-2);
+            EquityQuote quoteVO = quoteIterator.next();
+            EquityQuote pervQuote = quoteIterator.getItemFrmCurrPos(-2);
             if (quoteVO.after(enDate)) break;
             if (pervQuote != null && quoteVO.getOpen() > pervQuote.getHigh()) {
                 retFlag = true;

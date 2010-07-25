@@ -6,7 +6,7 @@ package pm.net;
 
 import pm.util.AppConfig;
 import pm.util.AppConst.enumQServer;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 
 /**
@@ -20,10 +20,10 @@ public class LiveQuoteLoader {
      * @param stockCode
      * @return
      */
-    public static QuoteVO[] getQuote(String[] stockCode) {
+    public static EquityQuote[] getQuote(String[] stockCode) {
         Class QServerClass = enumQServer.valueOf(AppConfig.quoteServer.Value).getQClass();
         workerThread = new WorkerThread[stockCode.length];
-        QuoteVO[] quoteVOs = new QuoteVO[stockCode.length];
+        EquityQuote[] quoteVOs = new EquityQuote[stockCode.length];
         try {
             for (int i = 0; i < stockCode.length; i++) {
                 if (stockCode[i].startsWith("^"))  // TODO broken because index doesn't start with ^

@@ -1,7 +1,7 @@
 package pm.net;
 
 import junit.framework.TestCase;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 /**
  * @author Thiyagu
@@ -16,7 +16,7 @@ public class ICICIQuoteDownloaderExternalTest extends TestCase {
                 return "RELIND";
             }
         };
-        QuoteVO quoteVO = quoteDownloader.getQuote("RELIANCE");
+        EquityQuote quoteVO = quoteDownloader.getQuote("RELIANCE");
         System.out.println(quoteVO);
         assertTrue(quoteVO.getLastPrice() != 0f);
     }

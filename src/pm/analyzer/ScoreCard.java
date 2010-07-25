@@ -5,7 +5,7 @@ import pm.util.AppConst.ANALYZER_LIST;
 import pm.util.AppConst.STOCK_PICK_TYPE;
 import pm.util.PMDate;
 import pm.util.QuoteIterator;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 public class ScoreCard {
 
@@ -28,7 +28,7 @@ public class ScoreCard {
         String picks = sb.toString();
         data.movePtrToFirst();
         for (; data.hasNext();) {
-            QuoteVO quoteVO = data.next();
+            EquityQuote quoteVO = data.next();
             if (quoteVO.getPickDetails().equals(picks)) {
                 occurrence++;
                 if (checkSucess(data, quoteVO)) sucess++;
@@ -37,13 +37,13 @@ public class ScoreCard {
         return (float) sucess / (float) occurrence;
     }
 
-    private static boolean checkSucess(QuoteIterator data, QuoteVO quoteVO) {
+    private static boolean checkSucess(QuoteIterator data, EquityQuote quoteVO) {
         boolean retVal = false;
         data.mark();
         data.movePtrToDate(quoteVO.getDate());
         data.next();
         if (data.hasNext()) {
-            QuoteVO nextDay = data.next();
+            EquityQuote nextDay = data.next();
             System.out.println(nextDay.getPerChange());
             if (nextDay.getPerChange() >= 1.0f) retVal = true;
         }

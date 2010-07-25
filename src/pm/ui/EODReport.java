@@ -4,7 +4,7 @@ import pm.action.Controller;
 import pm.ui.table.QuoteTableDisplay;
 import pm.util.Helper;
 import pm.util.QuoteIterator;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
@@ -51,8 +51,8 @@ public class EODReport extends AbstractSplitPanel {
     protected void doDisplay(Object retVal, String actionCommand) {
         if (retVal != null) {
             java.util.List<QuoteIterator> data = (java.util.List<QuoteIterator>) retVal;
-            Vector<QuoteVO> dailyData = getSingleDayData(data);
-            Map<Float, java.util.List<QuoteVO>> dayDataGroupedByScore = getDayDataGroupedByScore(sortData(dailyData));
+            Vector<EquityQuote> dailyData = getSingleDayData(data);
+            Map<Float, java.util.List<EquityQuote>> dayDataGroupedByScore = getDayDataGroupedByScore(sortData(dailyData));
 
             bottomSplitPane = createSplitPane(JSplitPane.HORIZONTAL_SPLIT);
             bottomSplitPane.setLeftComponent(buildBottomLeftPanel(dayDataGroupedByScore));
@@ -70,7 +70,7 @@ public class EODReport extends AbstractSplitPanel {
     }
 
 
-    private Component buildBottomLeftPanel(Map<Float, java.util.List<QuoteVO>> transDetails) {
+    private Component buildBottomLeftPanel(Map<Float, java.util.List<EquityQuote>> transDetails) {
         JPanel treePanel = createPanel();
         treePanel.setMinimumSize(new Dimension((UIHelper.WIDTH) / 5 - 3, UIHelper.HEIGHT - 70));
         GridLayout layout = new GridLayout();
@@ -83,14 +83,14 @@ public class EODReport extends AbstractSplitPanel {
         return scrollPane;
     }
 
-    private Component getTreeDisplay(Map<Float, java.util.List<QuoteVO>> scoreDetails) {
+    private Component getTreeDisplay(Map<Float, java.util.List<EquityQuote>> scoreDetails) {
         DefaultMutableTreeNode top = new DefaultMutableTreeNode("EOD Score");
         SortedSet<Float> sortedKeys = new TreeSet<Float>(scoreDetails.keySet());
         for (Float score : sortedKeys) {
-            List<QuoteVO> quoteVOs = scoreDetails.get(score);
+            List<EquityQuote> quoteVOs = scoreDetails.get(score);
             DefaultMutableTreeNode child = new DefaultMutableTreeNode(new QuotesWrapper(quoteVOs, score));
             top.add(child);
-            for (QuoteVO quoteVO : quoteVOs) {
+            for (EquityQuote quoteVO : quoteVOs) {
                 child.add(new DefaultMutableTreeNode(new QuoteWrapper(quoteVO)));
             }
         }
@@ -114,11 +114,11 @@ public class EODReport extends AbstractSplitPanel {
         bottomSplitPane.setRightComponent(tablePanel);
     }
 
-    private Map<Float, List<QuoteVO>> getDayDataGroupedByScore(Vector<QuoteVO> dailyData) {
-        Map<Float, List<QuoteVO>> dayDataGroupedByScore = new Hashtable<Float, List<QuoteVO>>();
-        for (QuoteVO quoteVO : dailyData) {
-            List<QuoteVO> quoteVOs = dayDataGroupedByScore.get(quoteVO.getScoreCard());
-            if (quoteVOs == null) quoteVOs = new ArrayList<QuoteVO>();
+    private Map<Float, List<EquityQuote>> getDayDataGroupedByScore(Vector<EquityQuote> dailyData) {
+        Map<Float, List<EquityQuote>> dayDataGroupedByScore = new Hashtable<Float, List<EquityQuote>>();
+        for (EquityQuote quoteVO : dailyData) {
+            List<EquityQuote> quoteVOs = dayDataGroupedByScore.get(quoteVO.getScoreCard());
+            if (quoteVOs == null) quoteVOs = new ArrayList<EquityQuote>();
             quoteVOs.add(quoteVO);
             dayDataGroupedByScore.put(quoteVO.getScoreCard(), quoteVOs);
         }
@@ -129,10 +129,10 @@ public class EODReport extends AbstractSplitPanel {
      * @param dailyData
      * @return
      */
-    private Vector<QuoteVO> sortData(Vector<QuoteVO> dailyData) {
+    private Vector<EquityQuote> sortData(Vector<EquityQuote> dailyData) {
         Comparator comparator = new Comparator() {
             public int compare(Object o1, Object o2) {
-                int val = Float.compare(((QuoteVO) o1).getScoreCard(), ((QuoteVO) o2).getScoreCard());
+                int val = Float.compare(((EquityQuote) o1).getScoreCard(), ((EquityQuote) o2).getScoreCard());
                 if (val == 0) return 1;
                 return -val;
             }
@@ -141,10 +141,10 @@ public class EODReport extends AbstractSplitPanel {
                 return false;
             }
         };
-        TreeSet<QuoteVO> set = new TreeSet<QuoteVO>(comparator);
+        TreeSet<EquityQuote> set = new TreeSet<EquityQuote>(comparator);
         set.addAll(dailyData);
-        Vector<QuoteVO> retVal = new Vector<QuoteVO>();
-        for (QuoteVO quoteVO : set) {
+        Vector<EquityQuote> retVal = new Vector<EquityQuote>();
+        for (EquityQuote quoteVO : set) {
             retVal.add(quoteVO);
         }
         return retVal;
@@ -154,8 +154,8 @@ public class EODReport extends AbstractSplitPanel {
      * @param data
      * @return
      */
-    private Vector<QuoteVO> getSingleDayData(java.util.List<QuoteIterator> data) {
-        Vector<QuoteVO> dailyData = new Vector<QuoteVO>();
+    private Vector<EquityQuote> getSingleDayData(java.util.List<QuoteIterator> data) {
+        Vector<EquityQuote> dailyData = new Vector<EquityQuote>();
         for (QuoteIterator vector : data) {
             dailyData.add(vector.next());
         }
@@ -178,15 +178,15 @@ abstract class DataWrapper {
         return new QuoteTableDisplay(getData()).table();
     }
 
-    abstract List<QuoteVO> getData();
+    abstract List<EquityQuote> getData();
 
 }
 
 class QuoteWrapper extends DataWrapper {
 
-    private QuoteVO quoteVO;
+    private EquityQuote quoteVO;
 
-    public QuoteWrapper(QuoteVO quoteVO) {
+    public QuoteWrapper(EquityQuote quoteVO) {
         this.quoteVO = quoteVO;
     }
 
@@ -194,8 +194,8 @@ class QuoteWrapper extends DataWrapper {
         return quoteVO.getStockCode();
     }
 
-    protected List<QuoteVO> getData() {
-        List<QuoteVO> quoteVOs = new ArrayList<QuoteVO>();
+    protected List<EquityQuote> getData() {
+        List<EquityQuote> quoteVOs = new ArrayList<EquityQuote>();
         quoteVOs.add(quoteVO);
         return quoteVOs;
     }
@@ -204,10 +204,10 @@ class QuoteWrapper extends DataWrapper {
 
 class QuotesWrapper extends DataWrapper {
 
-    private List<QuoteVO> quoteVOs;
+    private List<EquityQuote> quoteVOs;
     private Float score;
 
-    public QuotesWrapper(List<QuoteVO> quoteVOs, Float score) {
+    public QuotesWrapper(List<EquityQuote> quoteVOs, Float score) {
         this.quoteVOs = quoteVOs;
         this.score = score;
     }
@@ -216,7 +216,7 @@ class QuotesWrapper extends DataWrapper {
         return Helper.formatFloat(score);
     }
 
-    protected List<QuoteVO> getData() {
+    protected List<EquityQuote> getData() {
         return quoteVOs;
     }
 }

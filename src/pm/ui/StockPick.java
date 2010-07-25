@@ -10,7 +10,7 @@ import pm.ui.table.TableCellDisplay;
 import pm.util.AppConst.ANALYZER_LIST;
 import pm.util.AppConst.STOCK_PICK_TYPE;
 import pm.util.QuoteIterator;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -226,14 +226,14 @@ public class StockPick extends AbstractSplitPanel {
      */
     protected void displayTable(String strTreeNode) {
 
-        Vector<QuoteVO> vQuoteDetails = new Vector<QuoteVO>();
+        Vector<EquityQuote> vQuoteDetails = new Vector<EquityQuote>();
         boolean dispStockCode = false;
 
         if (strTreeNode.equals(ALL)) { // get the list of all the transcations
             for (QuoteIterator quoteIterator : dataToDisplay) {
                 quoteIterator.movePtrToFirst();
                 for (; quoteIterator.hasNext();) {
-                    QuoteVO quoteVO = quoteIterator.next();
+                    EquityQuote quoteVO = quoteIterator.next();
                     vQuoteDetails.add(quoteVO);
                 }
             }
@@ -243,7 +243,7 @@ public class StockPick extends AbstractSplitPanel {
                 if (quoteIterator.getStockCode().equals(strTreeNode)) {
                     quoteIterator.movePtrToFirst();
                     for (; quoteIterator.hasNext();) {
-                        QuoteVO quoteVO = quoteIterator.next();
+                        EquityQuote quoteVO = quoteIterator.next();
                         vQuoteDetails.add(quoteVO);
                     }
                 }
@@ -270,10 +270,10 @@ public class StockPick extends AbstractSplitPanel {
 class AnalyzerViewTableModel extends AbstractTableModel {
     private static final long serialVersionUID = 1L;
     private final boolean dispStockCode;
-    private Vector<QuoteVO> vData;
+    private Vector<EquityQuote> vData;
     private String[] colName = {"Date", "Open", "High", "Low", "Close", "Volume", "PickList"};
 
-    public AnalyzerViewTableModel(Vector<QuoteVO> data, boolean dispStockCode) {
+    public AnalyzerViewTableModel(Vector<EquityQuote> data, boolean dispStockCode) {
         vData = data;
         this.dispStockCode = dispStockCode;
     }
@@ -306,7 +306,7 @@ class AnalyzerViewTableModel extends AbstractTableModel {
 
     public Object getValueAt(int rowIndex, int columnIndex) {
 
-        QuoteVO quoteVO = vData.elementAt(rowIndex);
+        EquityQuote quoteVO = vData.elementAt(rowIndex);
         if (dispStockCode) { //special condition to display all transaction
             if (columnIndex == 0) {
                 return new StockCodeDisplay(quoteVO.getStockCode());

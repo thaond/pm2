@@ -3,7 +3,7 @@ package pm.net.eod;
 import org.junit.Test;
 import pm.dao.ibatis.dao.DAOManager;
 import pm.util.PMDate;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 import java.util.Calendar;
 import java.util.List;
@@ -61,7 +61,7 @@ public class EODDownloadManagerExternalTest {
         }
         executor.shutdown();
 
-        List<QuoteVO> quotes = DAOManager.getQuoteDAO().getQuotes("RELIANCE", stDate, enDate);
+        List<EquityQuote> quotes = DAOManager.getQuoteDAO().getQuotes("RELIANCE", stDate, enDate);
         assertEquals(1, 063.50f, quotes.get(0).getClose());
         assertEquals(1, 098.00f, quotes.get(1).getClose());
     }

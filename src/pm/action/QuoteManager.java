@@ -9,7 +9,7 @@ import pm.bo.EODQuoteLoader;
 import pm.net.LiveQuoteLoader;
 import pm.util.AppConfig;
 import pm.util.PMDate;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 import pm.vo.StockVO;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.Vector;
  */
 public class QuoteManager {
 
-    public static QuoteVO[] getLiveQuote(String[] stockCode) {
+    public static EquityQuote[] getLiveQuote(String[] stockCode) {
         if (Boolean.parseBoolean(AppConfig.liveQuote.Value)) {
             return LiveQuoteLoader.getQuote(stockCode);
         } else {
@@ -28,7 +28,7 @@ public class QuoteManager {
         }
     }
 
-    public static Vector<QuoteVO[]> getEODQuote(PMDate frmDate, PMDate toDate, String[] stockList) {
+    public static Vector<EquityQuote[]> getEODQuote(PMDate frmDate, PMDate toDate, String[] stockList) {
         return EODQuoteLoader.getQuote(frmDate, toDate, stockList);
     }
 
@@ -36,15 +36,15 @@ public class QuoteManager {
         return LiveQuoteLoader.getQuotePage(stockCode);
     }
 
-    public static QuoteVO eodQuote(StockVO stockVO) {
+    public static EquityQuote eodQuote(StockVO stockVO) {
         return EODQuoteLoader.getLastQuote(stockVO);
     }
 
-    public static QuoteVO eodQuote(StockVO stockVO, PMDate date) {
+    public static EquityQuote eodQuote(StockVO stockVO, PMDate date) {
         return EODQuoteLoader.getQuote(stockVO, date);
     }
 
-    public static List<QuoteVO> eodQuotes(PMDate date) {
+    public static List<EquityQuote> eodQuotes(PMDate date) {
         return EODQuoteLoader.getQuote(date);
     }
 }

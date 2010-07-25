@@ -8,7 +8,7 @@ import pm.util.AppConfig;
 import pm.util.ApplicationException;
 import pm.util.Helper;
 import pm.util.PMDate;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 import java.io.*;
 import java.util.Calendar;
@@ -360,8 +360,8 @@ public class EquityBhavToPMConverterTest extends MockObjectTestCase {
             }
         };
         final Vector<Integer> orderList = new Vector<Integer>();
-        Vector<QuoteVO> data = new Vector<QuoteVO>();
-        QuoteVO quoteVO = new QuoteVO("");
+        Vector<EquityQuote> data = new Vector<EquityQuote>();
+        EquityQuote quoteVO = new EquityQuote("");
         quoteVO.setDate(pmDate);
         data.add(quoteVO);
 
@@ -380,7 +380,7 @@ public class EquityBhavToPMConverterTest extends MockObjectTestCase {
                 return (IQuoteDAO) quoteDAOMock.proxy();
             }
             @Override
-            boolean loadDeliveryPositionData(PMDate date, List<QuoteVO> dailyData) {
+            boolean loadDeliveryPositionData(PMDate date, List<EquityQuote> dailyData) {
                 orderList.add(3);
                 return true;
             }
@@ -423,7 +423,7 @@ public class EquityBhavToPMConverterTest extends MockObjectTestCase {
             }
         };
 
-        final Vector<QuoteVO> quoteDAOwriteDataList = new Vector<QuoteVO>();
+        final Vector<EquityQuote> quoteDAOwriteDataList = new Vector<EquityQuote>();
         final Vector quoteDAOgetQuoteList = new Vector();
         final Vector<PMDate> moveFileList = new Vector<PMDate>();
 
@@ -436,25 +436,25 @@ public class EquityBhavToPMConverterTest extends MockObjectTestCase {
             QuoteDAO getQuoteDAO() {
                 return new QuoteDAO() {
                     @Override
-                    public Vector<QuoteVO> getQuote(PMDate date) {
+                    public Vector<EquityQuote> getQuote(PMDate date) {
                         quoteDAOgetQuoteList.add(date);
-                        Vector<QuoteVO> data = new Vector<QuoteVO>();
-                        QuoteVO quoteVO1 = new QuoteVO(date.toString()+"1");
+                        Vector<EquityQuote> data = new Vector<EquityQuote>();
+                        EquityQuote quoteVO1 = new EquityQuote(date.toString()+"1");
                         quoteVO1.setDate(new PMDate());
                         data.add(quoteVO1);
-                        QuoteVO quoteVO2 = new QuoteVO(date.toString()+"2");
+                        EquityQuote quoteVO2 = new EquityQuote(date.toString()+"2");
                         quoteVO2.setDate(new PMDate());
                         data.add(quoteVO2);
                         return data;
                     }
                     @Override
-                    public void writeData(QuoteVO quoteVO) {
+                    public void writeData(EquityQuote quoteVO) {
                         quoteDAOwriteDataList.add(quoteVO);
                     }
                 };
             }
             @Override
-            boolean loadDeliveryPositionData(PMDate date, List<QuoteVO> dailyData) {
+            boolean loadDeliveryPositionData(PMDate date, List<EquityQuote> dailyData) {
                 return true;
             }
             @Override
@@ -501,7 +501,7 @@ public class EquityBhavToPMConverterTest extends MockObjectTestCase {
             }
         };
 
-        final Vector<QuoteVO> quoteDAOwriteDataList = new Vector<QuoteVO>();
+        final Vector<EquityQuote> quoteDAOwriteDataList = new Vector<EquityQuote>();
         final Vector quoteDAOgetQuoteList = new Vector();
 
         BhavToPMConverter converter = new BhavToPMConverter() {
@@ -513,20 +513,20 @@ public class EquityBhavToPMConverterTest extends MockObjectTestCase {
             QuoteDAO getQuoteDAO() {
                 return new QuoteDAO() {
                     @Override
-                    public Vector<QuoteVO> getQuote(PMDate date) {
+                    public Vector<EquityQuote> getQuote(PMDate date) {
                         quoteDAOgetQuoteList.add(date);
-                        Vector<QuoteVO> data = new Vector<QuoteVO>();
-                        data.add(new QuoteVO(date.toString()));
+                        Vector<EquityQuote> data = new Vector<EquityQuote>();
+                        data.add(new EquityQuote(date.toString()));
                         return data;
                     }
                     @Override
-                    public void writeData(QuoteVO quoteVO) {
+                    public void writeData(EquityQuote quoteVO) {
                         fail("should not come here");
                     }
                 };
             }
             @Override
-            boolean loadDeliveryPositionData(PMDate date, List<QuoteVO> dailyData) {
+            boolean loadDeliveryPositionData(PMDate date, List<EquityQuote> dailyData) {
                 return false;
             }
             @Override
@@ -588,16 +588,16 @@ public class EquityBhavToPMConverterTest extends MockObjectTestCase {
 
     /*
       * Test method for
-      * 'pm.tools.BhavToPMConverter.loadDeliveryPositionData(PMDate, Vector<QuoteVO>)'
+      * 'pm.tools.BhavToPMConverter.loadDeliveryPositionData(PMDate, Vector<EquityQuote>)'
       */
     public void testLoadDeliveryPositionDataPMDateVectorOfQuoteVO() {
-        Vector<QuoteVO> dailyData = new Vector<QuoteVO>();
+        Vector<EquityQuote> dailyData = new Vector<EquityQuote>();
         final String stock1 = "STOCK1";
         String stock2 = "STOCK2";
         final String data1 = "40.28";
         String data2 = "81.03";
-        dailyData.add(new QuoteVO(stock1));
-        dailyData.add(new QuoteVO(stock2));
+        dailyData.add(new EquityQuote(stock1));
+        dailyData.add(new EquityQuote(stock2));
         PMDate date = new PMDate();
         EquityBhavToPMConverter converter = new EquityBhavToPMConverter() {
             @Override

@@ -3,7 +3,7 @@ package pm.net.eod;
 import pm.net.NSE;
 import pm.net.YahooQuoteDownloader;
 import pm.util.PMDate;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 import pm.vo.StockVO;
 
 public class YahooQuoteDownloadHandler extends IndexQuoteDownloader {
@@ -43,7 +43,7 @@ public class YahooQuoteDownloadHandler extends IndexQuoteDownloader {
 
     void downloadLiveQuote(String indexCode, PMDate date) {
         try {
-            QuoteVO quoteVO = getQuote(indexCode);
+            EquityQuote quoteVO = getQuote(indexCode);
             if (date.equals(quoteVO.getDate()))
                 quoteDAO().insertQuote(quoteVO);
         } catch (Exception e) {
@@ -51,8 +51,8 @@ public class YahooQuoteDownloadHandler extends IndexQuoteDownloader {
         }
     }
 
-    QuoteVO getQuote(String indexCode) throws Exception {
-        QuoteVO quoteVO = new YahooQuoteDownloader().getQuote(indexCode);
+    EquityQuote getQuote(String indexCode) throws Exception {
+        EquityQuote quoteVO = new YahooQuoteDownloader().getQuote(indexCode);
         quoteVO.setStockCode(indexCode);
         return quoteVO;
     }

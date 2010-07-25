@@ -1,7 +1,7 @@
 package pm.ui.table;
 
 import pm.ui.UIFactory;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -38,13 +38,13 @@ public class QuoteTableDisplay {
 
     private List<TableDisplayInput> displayInputs = new ArrayList<TableDisplayInput>();
 
-    private List<QuoteVO> quoteVOs;
+    private List<EquityQuote> quoteVOs;
 
-    public QuoteTableDisplay(List<QuoteVO> quoteVOs) {
+    public QuoteTableDisplay(List<EquityQuote> quoteVOs) {
         this(new String[]{STOCK_CODE, OPEN, HIGH, LOW, CLOSE, CURRENT_PRICE, PICK_DETAILS}, quoteVOs);
     }
 
-    public QuoteTableDisplay(String[] fields, List<QuoteVO> quoteVOs) {
+    public QuoteTableDisplay(String[] fields, List<EquityQuote> quoteVOs) {
         for (String field : fields) {
             displayInputs.add(fieldsMap.get(field));
         }

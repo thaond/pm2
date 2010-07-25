@@ -9,7 +9,7 @@ package pm.analyzer.bo;
 import pm.util.AppConst.ANALYZER_LIST;
 import pm.util.PMDate;
 import pm.util.QuoteIterator;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 /**
  * @author thiyagu
@@ -23,7 +23,7 @@ public class FlashQuoteBO extends AbsStockAnalyzerBO {
         boolean retFlag = false;
         if (!quoteIterator.movePtrToDate(stDate)) return false;
         for (; quoteIterator.hasNext();) {
-            QuoteVO quoteVO = quoteIterator.next();
+            EquityQuote quoteVO = quoteIterator.next();
             if (quoteVO.after(enDate)) break;
             if (quoteVO.getHigh() > (quoteVO.getPrevClose() * 1.1)) {
                 retFlag = true;

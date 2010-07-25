@@ -9,7 +9,7 @@ package pm.analyzer.bo;
 import pm.util.AppConst.ANALYZER_LIST;
 import pm.util.PMDate;
 import pm.util.QuoteIterator;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 /**
  * @author thiyagu
@@ -24,9 +24,9 @@ public class CloseAbovePrevHighBO extends AbsStockAnalyzerBO {
         if (!quoteIterator.movePtrToDate(stDate)) return false;
 
         for (; quoteIterator.hasNext();) {
-            QuoteVO prevQuote = quoteIterator.getItemFrmCurrPos(-1);
+            EquityQuote prevQuote = quoteIterator.getItemFrmCurrPos(-1);
             if (prevQuote == null) break;
-            QuoteVO quoteVO = quoteIterator.next();
+            EquityQuote quoteVO = quoteIterator.next();
             if (quoteVO.getLastPrice() > prevQuote.getHigh()) {
                 retFlag = true;
                 quoteVO.addPickDetail(ANALYZER_LIST.CloseAbovePrevHigh.getPosDisplay());

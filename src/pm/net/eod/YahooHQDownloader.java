@@ -6,7 +6,7 @@ import pm.net.HTTPHelper;
 import pm.util.ApplicationException;
 import pm.util.PMDate;
 import pm.util.PMDateFormatter;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 import java.io.*;
 import java.net.URLEncoder;
@@ -29,9 +29,9 @@ public class YahooHQDownloader {
         try {
             BufferedReader inBr = new BufferedReader(reader);
             String line = inBr.readLine();
-            List<QuoteVO> quoteVOs = new Vector<QuoteVO>();
+            List<EquityQuote> quoteVOs = new Vector<EquityQuote>();
             while ((line = inBr.readLine()) != null) {
-                QuoteVO quoteVO = getQuoteVO(line, indexCode);
+                EquityQuote quoteVO = getQuoteVO(line, indexCode);
                 if (quoteVO != null) {
                     quoteVOs.add(quoteVO);
                     retFlag = true;
@@ -49,7 +49,7 @@ public class YahooHQDownloader {
         return retFlag;
     }
 
-    private QuoteVO getQuoteVO(String line, String indexCode) {
+    private EquityQuote getQuoteVO(String line, String indexCode) {
         StringTokenizer stk = new StringTokenizer(line, _DELIMITER);
         PMDate date;
         try {
@@ -63,7 +63,7 @@ public class YahooHQDownloader {
         float low = Float.parseFloat(stk.nextToken());
         float close = Float.parseFloat(stk.nextToken());
         float totV = Float.parseFloat(stk.nextToken());
-        return new QuoteVO(indexCode, date, open, high, low, close, totV, 0f, 0f, 0f);
+        return new EquityQuote(indexCode, date, open, high, low, close, totV, 0f, 0f, 0f);
 
     }
 

@@ -1,7 +1,7 @@
 package pm.net;
 
 import junit.framework.TestCase;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -80,7 +80,7 @@ public class ICICIQuoteDownloaderTest extends TestCase {
                 "NCDEX Membership No.00034 | MCX Membership No.16065";
 
         StringReader reader = new StringReader(data);
-        QuoteVO quoteVO = new ICICIQuoteDownloader().parseData("RELIND", reader);
+        EquityQuote quoteVO = new ICICIQuoteDownloader().parseData("RELIND", reader);
         assertEquals(1818f, quoteVO.getLastPrice());
         assertEquals(1820f, quoteVO.getOpen());
         assertEquals(1820f, quoteVO.getHigh());

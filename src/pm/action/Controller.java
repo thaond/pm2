@@ -109,7 +109,7 @@ public class Controller {
         return DAOManager.getWatchlistDAO().getWatchlistVos(wlgID);
     }
 
-    public static QuoteVO getLastQuote(String code) {
+    public static EquityQuote getLastQuote(String code) {
         return EODQuoteLoader.getLastQuote(code);
     }
 

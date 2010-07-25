@@ -5,7 +5,7 @@ import pm.dao.ibatis.dao.DAOManager;
 import pm.util.AppConst;
 import pm.util.PMDate;
 import pm.util.QuoteIterator;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 public class TestMACDBO extends TestCase {
 
@@ -22,7 +22,7 @@ public class TestMACDBO extends TestCase {
         QuoteIterator iterator = new QuoteIterator(hisFrmDt, "INFOSYSTCH");
         new MACDBO().markData(iterator, frmDate, toDate, true, true);
         iterator.movePtrToDate(frmDate);
-        QuoteVO quoteVO = iterator.next();
+        EquityQuote quoteVO = iterator.next();
         assertEquals("", quoteVO.getPickDetails());
         quoteVO = iterator.next();
         assertEquals(AppConst.ANALYZER_LIST.MACD.getNegDisplay() + " ", quoteVO.getPickDetails());

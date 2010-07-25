@@ -9,7 +9,7 @@ import pm.action.QuoteManager;
 import pm.dao.ibatis.dao.DAOManager;
 import pm.dao.ibatis.dao.IWatchlistDAO;
 import pm.util.PMDate;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 import pm.vo.WatchlistDetailsVO;
 import pm.vo.WatchlistPerfVO;
 import pm.vo.WatchlistVO;
@@ -42,7 +42,7 @@ public class WatchlistBO {
         for (int i = 0; i < stockCodes.length; i++) {
             stockCodes[i] = vWatchlist.get(i).getStockCode();
         }
-        QuoteVO[] quoteVOs = QuoteManager.getLiveQuote(stockCodes);
+        EquityQuote[] quoteVOs = QuoteManager.getLiveQuote(stockCodes);
         for (int i = 0; i < quoteVOs.length; i++) {
             vWatchlist.get(i).setCurrQuote(quoteVOs[i]);
         }
@@ -76,8 +76,8 @@ public class WatchlistBO {
         Vector<WatchlistPerfVO> retVal = new Vector<WatchlistPerfVO>(vWatchlist.size());
         for (WatchlistVO aVWatchlist : vWatchlist) {
             String ticker = aVWatchlist.getStockCode();
-            QuoteVO hQuoteVO1 = (QuoteVO) htStData.get(ticker);
-            QuoteVO hQuoteVO2 = (QuoteVO) htEndData.get(ticker);
+            EquityQuote hQuoteVO1 = (EquityQuote) htStData.get(ticker);
+            EquityQuote hQuoteVO2 = (EquityQuote) htEndData.get(ticker);
             if (hQuoteVO1 != null && hQuoteVO2 != null) {
                 WatchlistPerfVO perfVO = new WatchlistPerfVO(ticker, hQuoteVO1.getLastPrice(), hQuoteVO2.getLastPrice());
                 retVal.add(perfVO);

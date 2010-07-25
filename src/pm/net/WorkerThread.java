@@ -4,14 +4,14 @@
  */
 package pm.net;
 
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 /**
  * @author thiyagu1
  */
 public class WorkerThread extends Thread {
     private AbstractQuoteDownloader iQuote;
-    private QuoteVO quoteVO;
+    private EquityQuote quoteVO;
     private String stockCode;
 
     public WorkerThread(AbstractQuoteDownloader iQuote, String stockCode) {
@@ -27,7 +27,7 @@ public class WorkerThread extends Thread {
         }
     }
 
-    public QuoteVO getQuote() {
+    public EquityQuote getQuote() {
         return quoteVO;
     }
 

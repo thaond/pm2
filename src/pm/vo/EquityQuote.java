@@ -9,21 +9,7 @@ import pm.util.PMDate;
 /**
  * @author thiyagu1
  */
-public class QuoteVO {
-
-    private StockVO stockVO;
-
-    private PMDate date;
-
-    private float open;
-
-    private float high;
-
-    private float low;
-
-    private float lastPrice;
-
-    private float volume;
+public class EquityQuote extends Quote {
 
     private float prevClose;
 
@@ -37,30 +23,14 @@ public class QuoteVO {
 
     private float scoreCard;
 
-    public QuoteVO() {
+    public EquityQuote() {
 
     }
 
-    public QuoteVO(PMDate date, float high, float lastPrice, float low, float open, StockVO stockVO) {
-        this.date = date;
-        this.high = high;
-        this.lastPrice = lastPrice;
-        this.low = low;
-        this.open = open;
-        this.stockVO = stockVO;
-    }
-
-    public QuoteVO(String stockCode, PMDate date, float open, float high,
-                   float low, float lastPrice, float volume, float prevClose,
-                   float tradeValue, float perDeliveryQty) {
-        this.stockVO = new StockVO(stockCode);
-        this.stockVO.setStockCode(stockCode);
-        this.date = date;
-        this.open = open;
-        this.high = high;
-        this.low = low;
-        this.lastPrice = lastPrice;
-        this.volume = volume;
+    public EquityQuote(String stockCode, PMDate date, float open, float high,
+                       float low, float lastPrice, float volume, float prevClose,
+                       float tradeValue, float perDeliveryQty) {
+        super(date, high, lastPrice, low, open, volume, new StockVO(stockCode));
         this.prevClose = prevClose;
         this.tradeValue = tradeValue;
         this.perDeliveryQty = perDeliveryQty;
@@ -91,43 +61,8 @@ public class QuoteVO {
     /**
      * @param stockCode
      */
-    public QuoteVO(String stockCode) {
+    public EquityQuote(String stockCode) {
         this.stockVO = new StockVO(stockCode);
-    }
-
-    /**
-     * @return Returns the date.
-     */
-    public PMDate getDate() {
-        return date;
-    }
-
-    /**
-     * @param date The date to set.
-     */
-    public void setDate(PMDate date) {
-        this.date = date;
-    }
-
-    /**
-     * @return Returns the high.
-     */
-    public float getHigh() {
-        return high;
-    }
-
-    /**
-     * @param high The high to set.
-     */
-    public void setHigh(float high) {
-        this.high = high;
-    }
-
-    /**
-     * @return Returns the lastPrice.
-     */
-    public float getLastPrice() {
-        return lastPrice;
     }
 
     /**
@@ -135,41 +70,6 @@ public class QuoteVO {
      */
     public float getClose() {
         return lastPrice;
-    }
-
-    /**
-     * @param lastPrice The lastPrice to set.
-     */
-    public void setLastPrice(float lastPrice) {
-        this.lastPrice = lastPrice;
-    }
-
-    /**
-     * @return Returns the low.
-     */
-    public float getLow() {
-        return low;
-    }
-
-    /**
-     * @param low The low to set.
-     */
-    public void setLow(float low) {
-        this.low = low;
-    }
-
-    /**
-     * @return Returns the open.
-     */
-    public float getOpen() {
-        return open;
-    }
-
-    /**
-     * @param open The open to set.
-     */
-    public void setOpen(float open) {
-        this.open = open;
     }
 
     /**
@@ -201,20 +101,6 @@ public class QuoteVO {
             this.stockVO = new StockVO();
         }
         this.stockVO.setStockCode(stockCode);
-    }
-
-    /**
-     * @return Returns the volume.
-     */
-    public float getVolume() {
-        return volume;
-    }
-
-    /**
-     * @param volume The volume to set.
-     */
-    public void setVolume(float volume) {
-        this.volume = volume;
     }
 
     public void resetPick() {
@@ -305,7 +191,7 @@ public class QuoteVO {
             return false;
         }
 
-        QuoteVO quoteVO = (QuoteVO) o;
+        EquityQuote quoteVO = (EquityQuote) o;
 
         if (Float.compare(quoteVO.high, high) != 0) {
             return false;
@@ -349,7 +235,7 @@ public class QuoteVO {
 
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        sb.append("QuoteVO -> ");
+        sb.append("Quote -> ");
         sb.append("StockCode:").append(stockVO.getStockCode()).append(" ");
         sb.append("PMDate:").append(date).append(" ");
         sb.append("lastPrice:").append(lastPrice).append(" ");
@@ -376,14 +262,6 @@ public class QuoteVO {
 
     public void applyPreviousDayPriceFactor(float priceFactor) {
         prevClose *= priceFactor;
-    }
-
-    public StockVO getStockVO() {
-        return stockVO;
-    }
-
-    public void setStockVO(StockVO stockVO) {
-        this.stockVO = stockVO;
     }
 
     public int getDateVal() {

@@ -4,7 +4,7 @@
  */
 package pm.tools;
 
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 import java.util.Vector;
 
@@ -20,7 +20,7 @@ public class HTMLGenerator {
      * @param data
      * @return
      */
-    public static String generateHTML(Vector<QuoteVO> data) {
+    public static String generateHTML(Vector<EquityQuote> data) {
         StringBuffer sb = new StringBuffer();
         sb.append("<HTML>");
         sb.append("<HEAD>");
@@ -29,7 +29,7 @@ public class HTMLGenerator {
         sb.append("<BODY>");
         sb.append("<TABLE BORDER=1>");
         sb.append("<TR><TH>StockCode</TD><TD>Score</TH></TR>");
-        for (QuoteVO quoteVO : data) {
+        for (EquityQuote quoteVO : data) {
             sb.append("<TR>");
             sb.append("<TD><B>").append(quoteVO.getStockCode()).append("</B></TD>");
             sb.append("<TD>").append(quoteVO.getScoreCard()).append("</TD>");

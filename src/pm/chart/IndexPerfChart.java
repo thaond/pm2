@@ -8,7 +8,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import pm.action.Controller;
 import pm.action.QuoteManager;
 import pm.util.PMDate;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 import pm.vo.StockVO;
 
 import javax.swing.*;
@@ -25,8 +25,8 @@ public class IndexPerfChart {
         PMDate stDate = enDate.getDateAddingDays(-30);
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (StockVO stockVO : indexList) {
-            QuoteVO stQuote = QuoteManager.eodQuote(stockVO, stDate);
-            QuoteVO enQuote = QuoteManager.eodQuote(stockVO);
+            EquityQuote stQuote = QuoteManager.eodQuote(stockVO, stDate);
+            EquityQuote enQuote = QuoteManager.eodQuote(stockVO);
             if (stQuote == null || enQuote == null) continue;
             float perf = (enQuote.getClose() - stQuote.getClose()) / stQuote.getClose() * 100f;
             dataset.addValue(perf, stockVO.getStockCode(), stockVO.getStockCode());

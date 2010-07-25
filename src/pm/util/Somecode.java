@@ -249,8 +249,8 @@ public class Somecode {
             () {
 
 //		long stTime = System.currentTimeMillis();
-//		QuoteVO[] quotes = new QuoteDAO().getQuotes(new PMDate(1,1,1999), new PMDate(16,6,2006), "ONGC");
-//		for (QuoteVO quoteVO : quotes) {
+//		EquityQuote[] quotes = new QuoteDAO().getQuotes(new PMDate(1,1,1999), new PMDate(16,6,2006), "ONGC");
+//		for (EquityQuote quoteVO : quotes) {
 //			System.out.println(quoteVO);
 //		}
 

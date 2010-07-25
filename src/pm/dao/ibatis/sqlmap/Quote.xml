@@ -2,7 +2,7 @@
 <!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
 
 <sqlMap namespace="Quote">
-    <resultMap id="quoteMapping" class="pm.vo.QuoteVO">
+    <resultMap id="quoteMapping" class="pm.vo.EquityQuote">
         <result property="dateVal" column="DATEID"/>
         <result property="open" column="SOPEN"/>
         <result property="high" column="SHIGH"/>
@@ -75,7 +75,7 @@
         SELECT * FROM QUOTE WHERE DATEID=#value#
     </select>
 
-    <parameterMap id="quote-insert" class="pm.vo.QuoteVO">
+    <parameterMap id="quote-insert" class="pm.vo.EquityQuote">
         <parameter property="dateVal"/>
         <parameter property="open"/>
         <parameter property="high"/>
@@ -97,7 +97,7 @@
         LISTED = 1), ?)
     </insert>
 
-    <update id="updateQuote" parameterClass="pm.vo.QuoteVO">
+    <update id="updateQuote" parameterClass="pm.vo.EquityQuote">
         UPDATE QUOTE SET SOPEN=#open#, SHIGH= #high#, SLOW= #low#,
         SCLOSE=#lastPrice#, SVOLUME=#volume#,
         SPREVCLOSE=#prevClose#, STRADEVALUE=#tradeValue#, SPERDELIVERYQTY

@@ -27,14 +27,14 @@ public class ChartBO {
     }
 
     public static Vector<MovAvgVO> getMovAvgData(String stockCode, int[] days, PMDate stDate, PMDate enDate, boolean applyCompanyAction) {
-        List<QuoteVO> quoteVOs = DAOManager.getQuoteDAO().getQuotes(stockCode, null, enDate);
+        List<EquityQuote> quoteVOs = DAOManager.getQuoteDAO().getQuotes(stockCode, null, enDate);
         if (applyCompanyAction) {
             new CompanyBO().applyCompanyAction(stockCode, quoteVOs);
         }
         return buildMovAvg(quoteVOs, days, stDate);
     }
 
-    private static Vector<MovAvgVO> buildMovAvg(List<QuoteVO> quoteVOs, int[] daysList, PMDate stDate) {
+    private static Vector<MovAvgVO> buildMovAvg(List<EquityQuote> quoteVOs, int[] daysList, PMDate stDate) {
         Vector<MovAvgVO> retVal = new Vector<MovAvgVO>();
         float[] totals = new float[daysList.length];
         for (int i = 0; i < quoteVOs.size(); i++) {
@@ -60,7 +60,7 @@ public class ChartBO {
     }
 
     public EODChartVO getEODChartData(String stockCode, int[] days, PMDate stDate, PMDate enDate, boolean applyCompanyAction, String portfolioName, AppConst.TIMEPERIOD timePeriod) {
-        List<QuoteVO> quoteVOs = DAOManager.getQuoteDAO().getQuotes(stockCode, null, enDate);
+        List<EquityQuote> quoteVOs = DAOManager.getQuoteDAO().getQuotes(stockCode, null, enDate);
         if (applyCompanyAction) {
             new CompanyBO().applyCompanyAction(stockCode, quoteVOs);
         }
@@ -87,7 +87,7 @@ public class ChartBO {
                 count = 0;
             } else {
                 EODDetailsVO filteredDetailsVO = filteredDetailsVOs.get(filteredDetailsVOs.size() - 1);
-                QuoteVO filteredDetailsQuote = filteredDetailsVO.getQuoteVO();
+                EquityQuote filteredDetailsQuote = filteredDetailsVO.getQuoteVO();
                 if (filteredDetailsVO.getLow() > detailsVO.getLow()) {
                     filteredDetailsQuote.setLow(detailsVO.getLow());
                 }
@@ -154,7 +154,7 @@ public class ChartBO {
         return hasHolding;
     }
 
-    Vector<EODDetailsVO> buildEODChartVOWithMovingAverage(List<QuoteVO> quoteVOs, PMDate stDate) {
+    Vector<EODDetailsVO> buildEODChartVOWithMovingAverage(List<EquityQuote> quoteVOs, PMDate stDate) {
         int daysList[] = {10, 50, 200};
         Vector<EODDetailsVO> retVal = new Vector<EODDetailsVO>();
         float[] totals = new float[daysList.length];

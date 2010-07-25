@@ -5,7 +5,7 @@ import org.junit.Test;
 import pm.net.eod.EODDownloadManager;
 import pm.util.PMDate;
 import pm.util.enumlist.SERIESTYPE;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 import pm.vo.StockVO;
 
 import java.io.IOException;
@@ -28,14 +28,14 @@ public class NseIndexQuoteDownloaderTest {
     @Test
     public void parse() throws IOException {
         StockVO stockVO = new StockVO("NIFTY", "S&P CNX NIFTY", 0f, SERIESTYPE.nseindex, 0f, (short) 0, "", new PMDate(), true);
-        List<QuoteVO> quotes = new NseIndexQuoteDownloader(null, stockVO).parse(new StringReader(getCSVContent()));
+        List<EquityQuote> quotes = new NseIndexQuoteDownloader(null, stockVO).parse(new StringReader(getCSVContent()));
         verifyQuotes(quotes, false);
     }
 
     @Test
     public void parseToHandleWithoutTradedColumn() throws IOException {
         StockVO stockVO = new StockVO("NIFTY", "S&P CNX NIFTY", 0f, SERIESTYPE.nseindex, 0f, (short) 0, "", new PMDate(), true);
-        List<QuoteVO> quotes = new NseIndexQuoteDownloader(null, stockVO).parse(new StringReader(getCSVContentWithoutVolume()));
+        List<EquityQuote> quotes = new NseIndexQuoteDownloader(null, stockVO).parse(new StringReader(getCSVContentWithoutVolume()));
         verifyQuotes(quotes, true);
     }
 
@@ -72,9 +72,9 @@ public class NseIndexQuoteDownloaderTest {
                 "\"12-Aug-2009\",\"     4473.80\",\"     4473.80\",\"     4359.40\",\"     4457.50\",\"      274149382\",\"         9375.42\"";
     }
 
-    private void verifyQuotes(List<QuoteVO> quotes, boolean noVolume) {
+    private void verifyQuotes(List<EquityQuote> quotes, boolean noVolume) {
         assertEquals(6, quotes.size());
-        QuoteVO quote = quotes.get(0);
+        EquityQuote quote = quotes.get(0);
         assertEquals(new PMDate(5, 8, 2009), quote.getDate());
         assertEquals(4680.95f, quote.getOpen());
         assertEquals(4717.20f, quote.getHigh());

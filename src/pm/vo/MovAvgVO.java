@@ -1,12 +1,12 @@
 package pm.vo;
 
-public class MovAvgVO extends QuoteVO {
+public class MovAvgVO extends EquityQuote {
     private float EPS;
 
     private int[] daysList;
     private float[] mvgAvg;
 
-    public MovAvgVO(QuoteVO quoteVO, int[] daysList) {
+    public MovAvgVO(EquityQuote quoteVO, int[] daysList) {
         super(quoteVO.getStockCode());
         setDate(quoteVO.getDate());
         setOpen(quoteVO.getOpen());

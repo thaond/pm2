@@ -2,7 +2,7 @@ package pm.ui;
 
 import pm.action.QuoteManager;
 import pm.ui.table.QuoteTableDisplay;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,7 +28,7 @@ public class EODQuote extends AbstractSplitPanel {
         JPanel panel = UIHelper.childPanelWithGridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(2, 2, 10, 10), 0, 0);
         String[] fields = {STOCK_CODE, OPEN, HIGH, LOW, CLOSE, CURRENT_PRICE};
-        List<QuoteVO> quoteVOs = (List<QuoteVO>) retVal;
+        List<EquityQuote> quoteVOs = (List<EquityQuote>) retVal;
         JTable table = new QuoteTableDisplay(fields, quoteVOs).table();
         panel.add(UIHelper.createScrollPane(table), gbc);
         splitPane.setBottomComponent(panel);

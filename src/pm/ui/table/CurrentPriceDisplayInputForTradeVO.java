@@ -1,10 +1,10 @@
 package pm.ui.table;
 
 import pm.vo.ConsolidatedTradeVO;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 public class CurrentPriceDisplayInputForTradeVO extends CurrentPriceDisplayInput {
-    protected QuoteVO getQuote(Object data) {
+    protected EquityQuote getQuote(Object data) {
         return ((ConsolidatedTradeVO) data).getCurrQuote();
     }
 }

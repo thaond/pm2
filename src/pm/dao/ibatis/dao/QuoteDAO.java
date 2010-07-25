@@ -4,7 +4,7 @@ import com.ibatis.dao.client.DaoManager;
 import com.ibatis.dao.client.template.SqlMapDaoTemplate;
 import org.apache.log4j.Logger;
 import pm.util.PMDate;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 import pm.vo.StockVO;
 
 import java.util.ArrayList;
@@ -24,16 +24,16 @@ public class QuoteDAO extends SqlMapDaoTemplate implements IQuoteDAO {
         super(daoManager);
     }
 
-    public List<QuoteVO> getQuotes(String stockCode) {
-        return (List<QuoteVO>) super.queryForList("getQuote", stockCode);
+    public List<EquityQuote> getQuotes(String stockCode) {
+        return (List<EquityQuote>) super.queryForList("getQuote", stockCode);
     }
 
-    public void insertQuote(QuoteVO quoteVO) {
+    public void insertQuote(EquityQuote quoteVO) {
         logger.info(quoteVO);
         super.insert("insertQuote", quoteVO);
     }
 
-    public boolean updateQuote(QuoteVO quoteVO) {
+    public boolean updateQuote(EquityQuote quoteVO) {
         int rowCount = super.update("updateQuote", quoteVO);
         boolean flag = rowCount == 1;
         if (!flag) {
@@ -42,29 +42,29 @@ public class QuoteDAO extends SqlMapDaoTemplate implements IQuoteDAO {
         return flag;
     }
 
-    public void insertQuotes(List<QuoteVO> quoteVOs) {
+    public void insertQuotes(List<EquityQuote> quoteVOs) {
         super.startBatch();
-        for (QuoteVO quoteVO : quoteVOs) {
+        for (EquityQuote quoteVO : quoteVOs) {
             insertQuote(quoteVO);
         }
         super.executeBatch();
     }
 
-    public void updateQuotes(List<QuoteVO> quoteVOs) {
+    public void updateQuotes(List<EquityQuote> quoteVOs) {
         super.startBatch();
-        for (QuoteVO quoteVO : quoteVOs) {
+        for (EquityQuote quoteVO : quoteVOs) {
             updateQuote(quoteVO);
         }
         super.executeBatch();
     }
 
-    public List<QuoteVO> getQuotes(PMDate date) {
-        return (List<QuoteVO>) super.queryForList("getQuoteForDate", date.getIntVal());
+    public List<EquityQuote> getQuotes(PMDate date) {
+        return (List<EquityQuote>) super.queryForList("getQuoteForDate", date.getIntVal());
     }
 
-    public List<QuoteVO> getQuotes(String stockCode, PMDate frmDate, PMDate toDate) {
+    public List<EquityQuote> getQuotes(String stockCode, PMDate frmDate, PMDate toDate) {
         Map paramMap = map(stockCode, frmDate, toDate);
-        return (List<QuoteVO>) super.queryForList("getQuoteForStockDateRange", paramMap);
+        return (List<EquityQuote>) super.queryForList("getQuoteForStockDateRange", paramMap);
     }
 
     private Map map(String stockCode, PMDate frmDate, PMDate toDate) {
@@ -75,18 +75,18 @@ public class QuoteDAO extends SqlMapDaoTemplate implements IQuoteDAO {
         return paramMap;
     }
 
-    public QuoteVO getQuote(StockVO stockVO) {
-        return (QuoteVO) super.queryForObject("getLastQuoteForID", stockVO.getId());
+    public EquityQuote getQuote(StockVO stockVO) {
+        return (EquityQuote) super.queryForObject("getLastQuoteForID", stockVO.getId());
     }
 
-    public Map<StockVO, List<QuoteVO>> quotes(PMDate stDate, PMDate enDate) {
+    public Map<StockVO, List<EquityQuote>> quotes(PMDate stDate, PMDate enDate) {
         Map paramMap = map(null, stDate, enDate);
-        List<QuoteVO> quotes = (List<QuoteVO>) super.queryForList("getQuoteForDateRange", paramMap);
-        Map<StockVO, List<QuoteVO>> quotesMap = new HashMap<StockVO, List<QuoteVO>>();
-        for (QuoteVO quote : quotes) {
-            List<QuoteVO> quoteList = quotesMap.get(quote.getStockVO());
+        List<EquityQuote> quotes = (List<EquityQuote>) super.queryForList("getQuoteForDateRange", paramMap);
+        Map<StockVO, List<EquityQuote>> quotesMap = new HashMap<StockVO, List<EquityQuote>>();
+        for (EquityQuote quote : quotes) {
+            List<EquityQuote> quoteList = quotesMap.get(quote.getStockVO());
             if (quoteList == null) {
-                quoteList = new ArrayList<QuoteVO>();
+                quoteList = new ArrayList<EquityQuote>();
                 quotesMap.put(quote.getStockVO(), quoteList);
             }
             quoteList.add(quote);
@@ -94,11 +94,11 @@ public class QuoteDAO extends SqlMapDaoTemplate implements IQuoteDAO {
         return quotesMap;
     }
 
-    public QuoteVO quote(StockVO stockVO, PMDate date) {
+    public EquityQuote quote(StockVO stockVO, PMDate date) {
         Map paramMap = new HashMap();
         paramMap.put("StockID", stockVO.getId());
         paramMap.put("PMDate", date.getIntVal());
-        return (QuoteVO) super.queryForObject("getQuoteForStockIDDate", paramMap);
+        return (EquityQuote) super.queryForObject("getQuoteForStockIDDate", paramMap);
 
     }
 
@@ -118,15 +118,15 @@ public class QuoteDAO extends SqlMapDaoTemplate implements IQuoteDAO {
         super.update("updateAdjustedClose", params);
     }
 
-    public QuoteVO getQuote(String stockCode) {
-        return (QuoteVO) super.queryForObject("getLastQuote", stockCode);
+    public EquityQuote getQuote(String stockCode) {
+        return (EquityQuote) super.queryForObject("getLastQuote", stockCode);
     }
 
-    public QuoteVO getQuote(String stockCode, PMDate date) {
+    public EquityQuote getQuote(String stockCode, PMDate date) {
         Map paramMap = new HashMap();
         paramMap.put("StockCode", stockCode);
         paramMap.put("PMDate", date.getIntVal());
-        return (QuoteVO) super.queryForObject("getQuoteForStockDate", paramMap);
+        return (EquityQuote) super.queryForObject("getQuoteForStockDate", paramMap);
     }
 
 }

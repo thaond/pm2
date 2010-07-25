@@ -6,33 +6,33 @@ import pm.dao.ibatis.dao.DAOManager;
 import pm.dao.ibatis.dao.IQuoteDAO;
 import pm.util.PMDate;
 import pm.vo.EODStatistics;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 import pm.vo.StockVO;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TestHelper {
-    public static float findMovAvg(List<QuoteVO> quotes, int days) {
+    public static float findMovAvg(List<EquityQuote> quotes, int days) {
         float movAvg = 0f;
         int startIndex = quotes.size() - days;
         if (startIndex < 0) startIndex = 0;
         int count = 0;
         for (int index = startIndex; index < quotes.size(); index++) {
             count++;
-            QuoteVO quote = quotes.get(index);
+            EquityQuote quote = quotes.get(index);
             movAvg += quote.getAdjustedClose();
         }
         return movAvg / count;
 
     }
 
-    public static float findLow(List<QuoteVO> quotes, int days) {
+    public static float findLow(List<EquityQuote> quotes, int days) {
         float low = 100000f;
         int startIndex = quotes.size() - days;
         if (startIndex < 0) startIndex = 0;
         for (int index = startIndex; index < quotes.size(); index++) {
-            QuoteVO quote = quotes.get(index);
+            EquityQuote quote = quotes.get(index);
             if (quote.getAdjustedClose() < low) {
                 low = quote.getAdjustedClose();
             }
@@ -40,12 +40,12 @@ public class TestHelper {
         return low;
     }
 
-    public static float findHigh(List<QuoteVO> quotes, int days) {
+    public static float findHigh(List<EquityQuote> quotes, int days) {
         float high = 0f;
         int startIndex = quotes.size() - days;
         if (startIndex < 0) startIndex = 0;
         for (int index = startIndex; index < quotes.size(); index++) {
-            QuoteVO quote = quotes.get(index);
+            EquityQuote quote = quotes.get(index);
             if (quote.getAdjustedClose() > high) {
                 high = quote.getAdjustedClose();
             }
@@ -57,7 +57,7 @@ public class TestHelper {
         float currPrice = startPrice;
         IQuoteDAO quoteDAO = DAOManager.getQuoteDAO();
         for (PMDate pmDate : pmDates) {
-            quoteDAO.insertQuote(new QuoteVO(stockCode, pmDate, currPrice, currPrice, currPrice, currPrice, 0f, 0f, 1000f, 100f));
+            quoteDAO.insertQuote(new EquityQuote(stockCode, pmDate, currPrice, currPrice, currPrice, currPrice, 0f, 0f, 1000f, 100f));
             currPrice += priceInc;
         }
     }
@@ -85,7 +85,7 @@ public class TestHelper {
     }
 
     public static void validateStatistics(StockVO stockVO, PMDate statDate, EODStatistics eodStatistics, PMDate quoteStartDate) {
-        List<QuoteVO> quotes = DAOManager.getQuoteDAO().getQuotes(stockVO.getStockCode(), quoteStartDate, statDate);
+        List<EquityQuote> quotes = DAOManager.getQuoteDAO().getQuotes(stockVO.getStockCode(), quoteStartDate, statDate);
 
         Assert.assertEquals(stockVO, eodStatistics.getStock());
         Assert.assertEquals(statDate, eodStatistics.getDate());

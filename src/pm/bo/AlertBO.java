@@ -77,8 +77,8 @@ public class AlertBO {
             htStockCodes.put(slVO.getStockCode(), slVO.getStockCode());
         }
         String[] stockCodes = htStockCodes.values().toArray(new String[htStockCodes.size()]);
-        QuoteVO[] quoteVOs = QuoteManager.getLiveQuote(stockCodes);
-        Hashtable<String, QuoteVO> htQuoteVOs = new Hashtable<String, QuoteVO>(quoteVOs.length);
+        EquityQuote[] quoteVOs = QuoteManager.getLiveQuote(stockCodes);
+        Hashtable<String, EquityQuote> htQuoteVOs = new Hashtable<String, EquityQuote>(quoteVOs.length);
         for (int i = 0; i < quoteVOs.length; i++) {
             htQuoteVOs.put(stockCodes[i], quoteVOs[i]);
         }

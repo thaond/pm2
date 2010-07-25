@@ -9,7 +9,7 @@ package pm.analyzer.bo;
 import pm.util.AppConst.ANALYZER_LIST;
 import pm.util.PMDate;
 import pm.util.QuoteIterator;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 /**
  * @author thiyagu
@@ -22,7 +22,7 @@ public class BuySellBO extends AbsStockAnalyzerBO {
     public boolean markData(QuoteIterator quoteIterator, PMDate stDate, PMDate enDate, boolean positive, boolean negative) {
         boolean retFlag = false;
         for (; quoteIterator.hasNext();) {
-            QuoteVO quoteVO = quoteIterator.next();
+            EquityQuote quoteVO = quoteIterator.next();
             if (quoteVO.before(stDate)) continue;
             if (quoteVO.after(enDate)) break;
             if (positive && quoteVO.getLastPrice() > quoteVO.getAvgTradePrice()) {

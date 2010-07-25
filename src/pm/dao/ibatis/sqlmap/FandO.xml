@@ -8,14 +8,14 @@
     </select>
 
     <resultMap id="FandOQuoteMapping" class="pm.vo.FOQuote">
-        <result property="dateVal" column="DATEID"/>
+        <result property="date" column="DATEID"/>
         <result property="open" column="SOPEN"/>
         <result property="high" column="SHIGH"/>
         <result property="low" column="SLOW"/>
         <result property="lastPrice" column="SCLOSE"/>
         <result property="openInterest" column="OPENINTEREST"/>
         <result property="changeInOpenInterest" column="CHANGEINOPENINTEREST"/>
-        <result property="activeContracts" column="ACTIVECONTRACTS"/>
+        <result property="volume" column="SVOLUME"/>
         <result property="expiryDate" column="EXPIRYDATE"/>
         <result property="fotype" column="FOTYPE" typeHandler="pm.dao.ibatis.handler.FOTypeHandler"/>
         <result property="strikePrice" column="STRIKEPRICE"/>
@@ -29,12 +29,12 @@
 
     <parameterMap id="future-quote-insert" class="pm.vo.FOQuote">
         <parameter property="stockVO.id"/>
-        <parameter property="dateVal"/>
+        <parameter property="date"/>
         <parameter property="open"/>
         <parameter property="high"/>
         <parameter property="low"/>
         <parameter property="lastPrice"/>
-        <parameter property="activeContracts"/>
+        <parameter property="volume"/>
         <parameter property="openInterest"/>
         <parameter property="changeInOpenInterest"/>
         <parameter property="strikePrice"/>
@@ -43,7 +43,7 @@
     </parameterMap>
 
     <insert id="insertFutureQuote" parameterMap="future-quote-insert">
-        INSERT INTO FO_QUOTES (STOCKID,DATEID,SOPEN,SHIGH,SLOW,SCLOSE,ACTIVECONTRACTS,OPENINTEREST,CHANGEINOPENINTEREST,
+        INSERT INTO FO_QUOTES (STOCKID,DATEID,SOPEN,SHIGH,SLOW,SCLOSE,SVOLUME,OPENINTEREST,CHANGEINOPENINTEREST,
         STRIKEPRICE, EXPIRYDATE, FOTYPE)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     </insert>

@@ -42,7 +42,7 @@ public class PortfolioBO {
         }
         //getting live quote
         logger.info(Calendar.getInstance().getTime());
-        QuoteVO[] quoteVOs = QuoteManager.getLiveQuote(stockCodes);
+        EquityQuote[] quoteVOs = QuoteManager.getLiveQuote(stockCodes);
         logger.info(Calendar.getInstance().getTime());
         //setting live quote to the report object
         for (int i = 0; i < consolidatedList.size(); i++) {
@@ -90,7 +90,7 @@ public class PortfolioBO {
             totProfit += tradeVO.getProfitLoss();
         }
         ConsolidatedTradeVO tradeVO = new ConsolidatedTradeVO(DAYTRADING, 0, 0, 0, totProfit);
-        tradeVO.setCurrQuote(new QuoteVO(DAYTRADING));
+        tradeVO.setCurrQuote(new EquityQuote(DAYTRADING));
         return tradeVO;
     }
 
@@ -151,7 +151,7 @@ public class PortfolioBO {
         for (; iterator.hasNext();) {
 //			Loading Historic Quote for the stocks which has transaction
             PMDate date = iterator.next();
-            Hashtable<String, QuoteVO> htDailyData = portfolioBO.getQuote(stkKeySet, date);
+            Hashtable<String, EquityQuote> htDailyData = portfolioBO.getQuote(stkKeySet, date);
             if (htDailyData.size() == 0) {
                 continue;
             }
@@ -162,7 +162,7 @@ public class PortfolioBO {
 //			Calculating current days value			
             for (HoldingVO holdingVO : daysHoldingDetail) {
                 if (!holdingVO.getTicker().equals(DAYTRADING)) {
-                    QuoteVO hQuoteVO = htDailyData.get(holdingVO.getTicker());
+                    EquityQuote hQuoteVO = htDailyData.get(holdingVO.getTicker());
                     if (hQuoteVO != null) {
                         marketValue += holdingVO.getQty() * hQuoteVO.getLastPrice();
                     }
@@ -176,7 +176,7 @@ public class PortfolioBO {
         return vPerDetails;
     }
 
-    Hashtable<String, QuoteVO> getQuote(Set stkKeySet, PMDate date) {
+    Hashtable<String, EquityQuote> getQuote(Set stkKeySet, PMDate date) {
         return EODQuoteLoader.getQuote(date, stkKeySet);
     }
 
@@ -222,7 +222,7 @@ public class PortfolioBO {
         }
 
         logger.info(Calendar.getInstance().getTime());
-        QuoteVO[] quoteVOs = QuoteManager.getLiveQuote(stockList);
+        EquityQuote[] quoteVOs = QuoteManager.getLiveQuote(stockList);
         logger.info(Calendar.getInstance().getTime());
 
         count = 0;

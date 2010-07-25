@@ -5,7 +5,7 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import pm.dao.ibatis.dao.IQuoteDAO;
 import pm.util.PMDate;
-import pm.vo.QuoteVO;
+import pm.vo.EquityQuote;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +19,11 @@ public class YahooQuoteDownloadHandlerTest extends MockObjectTestCase {
 
     public void testDownloadLiveQuoteGettingaCurrentDaysQuote() {
         final PMDate currDate = new PMDate();
-        final QuoteVO quote = new QuoteVO("STOCK", currDate, 0f, 0f, 0, 0f, 0f, 0f, 0f, 0f);
+        final EquityQuote quote = new EquityQuote("STOCK", currDate, 0f, 0f, 0, 0f, 0f, 0f, 0f, 0f);
         final Mock mockQuoteDAO = mock(IQuoteDAO.class);
         mockQuoteDAO.expects(once()).method("insertQuote").with(eq(quote));
         YahooQuoteDownloadHandler quoteDownloader = new YahooQuoteDownloadHandler(null, null) {
-            QuoteVO getQuote(String indexCode) throws Exception {
+            EquityQuote getQuote(String indexCode) throws Exception {
                 return quote;
             }
 
@@ -37,11 +37,11 @@ public class YahooQuoteDownloadHandlerTest extends MockObjectTestCase {
 
     public void testDownloadLiveQuoteGettingaPreviousDaysQuote() {
         final PMDate currDate = new PMDate();
-        final QuoteVO quote = new QuoteVO("STOCK", currDate.previous(), 0f, 0f, 0, 0f, 0f, 0f, 0f, 0f);
+        final EquityQuote quote = new EquityQuote("STOCK", currDate.previous(), 0f, 0f, 0, 0f, 0f, 0f, 0f, 0f);
         final Mock mockQuoteDAO = mock(IQuoteDAO.class);
 
         YahooQuoteDownloadHandler quoteDownloader = new YahooQuoteDownloadHandler(null, null) {
-            QuoteVO getQuote(String indexCode) throws Exception {
+            EquityQuote getQuote(String indexCode) throws Exception {
                 return quote;
             }
 
