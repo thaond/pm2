@@ -1,12 +1,17 @@
 package pm.net.nse;
 
+import pm.util.Helper;
+import pm.util.PMDate;
 import pm.util.enumlist.AppConfigWrapper;
 
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
-public class FileNameUtil {
+public class BhavFileUtil {
     public static SimpleDateFormat dateFormatMMM = new SimpleDateFormat("MMM");
     private static final String EQUITYPREFIX = "cm";
     private static final String FOPREFIX = "fo";
@@ -62,4 +67,45 @@ public class FileNameUtil {
         return sURL;
     }
 
+    public static Reader openReader(String filePath) throws IOException {
+        if (filePath.endsWith(".zip")) {
+            unzip(filePath);
+            filePath = filePath.substring(0, filePath.lastIndexOf("."));
+        }
+        return new FileReader(filePath);
+    }
+
+    private static void unzip(String filePath) throws IOException {
+        File zipFile = new File(filePath);
+        FileInputStream fin = new FileInputStream(zipFile);
+        ZipInputStream zin = new ZipInputStream(fin);
+        ZipEntry ze = null;
+        while ((ze = zin.getNextEntry()) != null) {
+            FileOutputStream fout = new FileOutputStream(new File(zipFile.getParentFile(), ze.getName()));
+            for (int c = zin.read(); c != -1; c = zin.read()) {
+                fout.write(c);
+            }
+            zin.closeEntry();
+            fout.close();
+        }
+        zin.close();
+
+    }
+
+    public static Reader getFandOFile(Date date) throws IOException {
+        return openReader(getFandOFilePath(date));
+    }
+
+    public static void moveFileToBackup(PMDate date, String downloadedFilePath) {
+        String backupFolder = Helper.backupFolder(date);
+
+        File bhavSourceFile = new File(downloadedFilePath);
+        File bhavDestFile = new File(backupFolder + "/" + bhavSourceFile.getName());
+        if (bhavSourceFile.exists()) {
+            bhavSourceFile.renameTo(bhavDestFile);
+        }
+        if (downloadedFilePath.endsWith(".zip")) {
+            new File(downloadedFilePath.substring(0, downloadedFilePath.lastIndexOf("."))).delete();
+        }
+    }
 }

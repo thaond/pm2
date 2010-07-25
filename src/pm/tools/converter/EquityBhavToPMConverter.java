@@ -1,10 +1,10 @@
-package pm.tools;
+package pm.tools.converter;
 
 import org.apache.log4j.Logger;
 import pm.bo.QuoteBO;
 import pm.dao.ibatis.dao.DAOManager;
 import pm.dao.ibatis.dao.IQuoteDAO;
-import pm.net.nse.FileNameUtil;
+import pm.net.nse.BhavFileUtil;
 import pm.net.nse.downloader.DeliveryPositionDownloader;
 import pm.util.*;
 import pm.vo.EquityQuote;
@@ -12,8 +12,6 @@ import pm.vo.EquityQuote;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 public class EquityBhavToPMConverter {
 
@@ -96,53 +94,22 @@ public class EquityBhavToPMConverter {
         moveFileToBackup(date, true, true);
     }
 
-    void moveFileToBackup(Date date, boolean moveBhavFile, boolean moveDelivFile) {
-        String backupFolder = Helper.backupFolder(new PMDate(date));
+    protected void moveFileToBackup(Date date, boolean moveBhavFile, boolean moveDelivFile) {
 
         if (moveBhavFile) {
-            String downloadedFilePath = FileNameUtil.getEquityFilePath(date);
-            File bhavSourceFile = new File(downloadedFilePath);
-            File bhavDestFile = new File(backupFolder + "/" + bhavSourceFile.getName());
-            bhavSourceFile.renameTo(bhavDestFile);
-            if (downloadedFilePath.endsWith(".zip")) {
-                new File(downloadedFilePath.substring(0, downloadedFilePath.lastIndexOf("."))).delete();
-            }
+            String downloadedFilePath = BhavFileUtil.getEquityFilePath(date);
+            BhavFileUtil.moveFileToBackup(new PMDate(date), downloadedFilePath);
         }
 
         if (moveDelivFile) {
-            File deliveryPostionFile = new File(DeliveryPositionDownloader.getFilePath(date));
-            if (deliveryPostionFile.exists()) {
-                File delivDest = new File(backupFolder + "/" + deliveryPostionFile.getName());
-                deliveryPostionFile.renameTo(delivDest);
-            }
+            BhavFileUtil.moveFileToBackup(new PMDate(date), DeliveryPositionDownloader.getFilePath(date));
         }
 
     }
 
     Reader getBhavCopyAsReader(Date date) throws IOException {
-        String filePath = FileNameUtil.getEquityFilePath(date);
-        if (filePath.endsWith(".zip")) {
-            unzip(filePath);
-            filePath = filePath.substring(0, filePath.lastIndexOf("."));
-        }
-        return new FileReader(filePath);
-    }
-
-    private void unzip(String filePath) throws IOException {
-        File zipFile = new File(filePath);
-        FileInputStream fin = new FileInputStream(zipFile);
-        ZipInputStream zin = new ZipInputStream(fin);
-        ZipEntry ze = null;
-        while ((ze = zin.getNextEntry()) != null) {
-            FileOutputStream fout = new FileOutputStream(new File(zipFile.getParentFile(), ze.getName()));
-            for (int c = zin.read(); c != -1; c = zin.read()) {
-                fout.write(c);
-            }
-            zin.closeEntry();
-            fout.close();
-        }
-        zin.close();
-
+        String filePath = BhavFileUtil.getEquityFilePath(date);
+        return BhavFileUtil.openReader(filePath);
     }
 
     void storeData(Vector<String[]> data, String sDate) throws ApplicationException {

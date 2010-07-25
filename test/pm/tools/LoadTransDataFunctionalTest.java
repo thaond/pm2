@@ -6,6 +6,7 @@ import pm.bo.CompanyBO;
 import pm.bo.PortfolioBO;
 import pm.net.NSESymbolChangeDownloader;
 import pm.net.nse.StockListDownloader;
+import pm.tools.converter.EquityBhavToPMConverter;
 import pm.util.AppConst;
 import pm.util.BusinessLogger;
 import pm.util.enumlist.AppConfigWrapper;
@@ -62,7 +63,7 @@ public class LoadTransDataFunctionalTest extends TestCase {
             EquityBhavToPMConverter bhavToPMConverter() {
                 return new EquityBhavToPMConverter() {
                     @Override
-                    void moveFileToBackup(Date date, boolean moveBhavFile, boolean moveDelivFile) {
+                    protected void moveFileToBackup(Date date, boolean moveBhavFile, boolean moveDelivFile) {
                     }
                 };
             }

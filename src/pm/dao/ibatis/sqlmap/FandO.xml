@@ -28,7 +28,7 @@
     </select>
 
     <parameterMap id="future-quote-insert" class="pm.vo.FOQuote">
-        <parameter property="stockVO.id"/>
+        <parameter property="stockVO.stockCode"/>
         <parameter property="date"/>
         <parameter property="open"/>
         <parameter property="high"/>
@@ -45,7 +45,7 @@
     <insert id="insertFutureQuote" parameterMap="future-quote-insert">
         INSERT INTO FO_QUOTES (STOCKID,DATEID,SOPEN,SHIGH,SLOW,SCLOSE,SVOLUME,OPENINTEREST,CHANGEINOPENINTEREST,
         STRIKEPRICE, EXPIRYDATE, FOTYPE)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES ((SELECT ID FROM STOCKMASTER WHERE STOCKCODE=? AND LISTED = 1), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     </insert>
 
 </sqlMap>

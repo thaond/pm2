@@ -1,7 +1,7 @@
 package pm.net.nse.downloader;
 
 import pm.net.eod.EODDownloadManager;
-import pm.net.nse.FileNameUtil;
+import pm.net.nse.BhavFileUtil;
 
 import java.util.Date;
 
@@ -18,7 +18,7 @@ public class BhavCopyDownloader extends AbstractFileDownloader {
     }
 
     protected String getRelativeURL() {
-        return FileNameUtil.getEquityURL(date);
+        return BhavFileUtil.getEquityURL(date);
     }
 
     private String baseURL() {
@@ -30,7 +30,7 @@ public class BhavCopyDownloader extends AbstractFileDownloader {
     }
 
     public String getFilePath() {
-        return FileNameUtil.getEquityFilePath(date);
+        return BhavFileUtil.getEquityFilePath(date);
     }
 
     @Override
