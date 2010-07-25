@@ -1,8 +1,8 @@
-package pm.tools;
+package pm.tools.converter;
 
 import org.jmock.MockObjectTestCase;
 import pm.AppLoader;
-import pm.net.nse.FileNameUtil;
+import pm.net.nse.BhavFileUtil;
 import pm.net.nse.downloader.DeliveryPositionDownloader;
 import pm.util.AppConfig;
 import pm.util.ApplicationException;
@@ -15,63 +15,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Vector;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 public class EquityBhavToPMConverterTest extends MockObjectTestCase {
 
     protected void setUp() throws Exception {
         AppLoader.initConsoleLogger();
-    }
-
-    public void testGetBhavCopyAsReaderForZipFile() throws IOException {
-        EquityBhavToPMConverter converter = new EquityBhavToPMConverter();
-        String content = "some content";
-        Date date = new PMDate(10, 12, 2009).getJavaDate();
-
-        String zipFilePath = FileNameUtil.getEquityFilePath(date);
-        File file = new File(zipFilePath.substring(0, zipFilePath.lastIndexOf('.')));
-        file.createNewFile();
-        storeContent(file, content);
-        compressFile(file, zipFilePath);
-        file.delete();
-
-        Reader reader = converter.getBhavCopyAsReader(date);
-        String fileContent = getContent(reader);
-
-        assertEquals(content, fileContent);
-        file.delete();
-        new File(zipFilePath).delete();
-
-    }
-
-    private void compressFile(File file, String zipFilePath) throws IOException {
-        FileOutputStream fout = new FileOutputStream(zipFilePath);
-        ZipOutputStream zout = new ZipOutputStream(fout);
-        ZipEntry ze = new ZipEntry(file.getName());
-        FileInputStream fin = new FileInputStream(file);
-        try {
-            zout.putNextEntry(ze);
-            for (int c = fin.read(); c != -1; c = fin.read()) {
-                zout.write(c);
-            }
-        } finally {
-            fin.close();
-        }
-        zout.close();
-    }
-
-    private String getContent(Reader reader) throws IOException {
-        BufferedReader br = new BufferedReader(reader);
-        String content = br.readLine();
-        br.close();
-        return content;
-    }
-
-    private void storeContent(File file, String content) throws FileNotFoundException {
-        PrintWriter pw = new PrintWriter(file);
-        pw.print(content);
-        pw.close();
     }
 
     public void testProcessData() {
@@ -162,7 +110,7 @@ public class EquityBhavToPMConverterTest extends MockObjectTestCase {
             }
 
             @Override
-            void moveFileToBackup(Date date, boolean moveBhavFile, boolean moveDelivFile) {
+            protected void moveFileToBackup(Date date, boolean moveBhavFile, boolean moveDelivFile) {
                 orderList.add(5);
                 assertEquals(dummyDate, date);
             }
@@ -204,7 +152,7 @@ public class EquityBhavToPMConverterTest extends MockObjectTestCase {
             }
 
             @Override
-            void moveFileToBackup(Date date, boolean moveBhavFile, boolean moveDelivFile) {
+            protected void moveFileToBackup(Date date, boolean moveBhavFile, boolean moveDelivFile) {
                 fail("should not come here");
             }
         };
@@ -241,7 +189,7 @@ public class EquityBhavToPMConverterTest extends MockObjectTestCase {
             }
 
             @Override
-            void moveFileToBackup(Date date, boolean moveBhavFile, boolean moveDelivFile) {
+            protected void moveFileToBackup(Date date, boolean moveBhavFile, boolean moveDelivFile) {
                 fail("should not come here");
             }
         };
@@ -277,7 +225,7 @@ public class EquityBhavToPMConverterTest extends MockObjectTestCase {
             }
 
             @Override
-            void moveFileToBackup(Date date, boolean moveBhavFile, boolean moveDelivFile) {
+            protected void moveFileToBackup(Date date, boolean moveBhavFile, boolean moveDelivFile) {
             }
         };
         converter.processDayData(dummyDate);
@@ -653,7 +601,7 @@ public class EquityBhavToPMConverterTest extends MockObjectTestCase {
         Calendar cal = Calendar.getInstance();
         cal.set(1901, 5, 12);
         Date date = cal.getTime();
-        String bhavFilePath = FileNameUtil.getEquityFilePath(date);
+        String bhavFilePath = BhavFileUtil.getEquityFilePath(date);
         String deliveryFilePath = DeliveryPositionDownloader.getFilePath(date);
         String backupFolder = Helper.backupFolder(new PMDate(date));
         String newBhavFilePath = backupFolder + File.pathSeparator + bhavFilePath.substring(bhavFilePath.lastIndexOf("/"));
@@ -677,7 +625,7 @@ public class EquityBhavToPMConverterTest extends MockObjectTestCase {
         Calendar cal = Calendar.getInstance();
         cal.set(1901, 6, 12);
         Date date = cal.getTime();
-        String bhavFilePath = FileNameUtil.getEquityFilePath(date);
+        String bhavFilePath = BhavFileUtil.getEquityFilePath(date);
         String deliveryFilePath = DeliveryPositionDownloader.getFilePath(date);
         String backupFolder = Helper.backupFolder(new PMDate(date));
         String newBhavFilePath = backupFolder + "/" + bhavFilePath.substring(bhavFilePath.lastIndexOf("/"));

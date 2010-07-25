@@ -1,7 +1,7 @@
 package pm.net.nse.downloader;
 
 import pm.net.eod.EODDownloadManager;
-import pm.net.nse.FileNameUtil;
+import pm.net.nse.BhavFileUtil;
 
 import java.util.Date;
 
@@ -13,7 +13,7 @@ public class FandODownloader extends BhavCopyDownloader {
 
     @Override
     protected String getRelativeURL() {
-        return FileNameUtil.getFandOURL(date);
+        return BhavFileUtil.getFandOURL(date);
     }
 
     @Override
@@ -28,6 +28,6 @@ public class FandODownloader extends BhavCopyDownloader {
 
     @Override
     public String getFilePath() {
-        return FileNameUtil.getFandOFilePath(date);
+        return BhavFileUtil.getFandOFilePath(date);
     }
 }

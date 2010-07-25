@@ -9,8 +9,11 @@ import pm.vo.EODStatistics;
 import pm.vo.EquityQuote;
 import pm.vo.StockVO;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class TestHelper {
     public static float findMovAvg(List<EquityQuote> quotes, int days) {
@@ -103,5 +106,36 @@ public class TestHelper {
         Assert.assertEquals(findMovAvg(quotes, 10), eodStatistics.getMoving10DAverage(), .001);
         Assert.assertEquals(findMovAvg(quotes, 50), eodStatistics.getMoving50DAverage(), .001);
         Assert.assertEquals(findMovAvg(quotes, 200), eodStatistics.getMoving200DAverage(), .001);
+    }
+
+    public static File createZipFile(String content, String zipFilePath) throws IOException {
+        File file = new File(zipFilePath.substring(0, zipFilePath.lastIndexOf('.')));
+        file.createNewFile();
+        storeContent(file, content);
+        compressFile(file, zipFilePath);
+        file.delete();
+        return file;
+    }
+
+    private static void compressFile(File file, String zipFilePath) throws IOException {
+        FileOutputStream fout = new FileOutputStream(zipFilePath);
+        ZipOutputStream zout = new ZipOutputStream(fout);
+        ZipEntry ze = new ZipEntry(file.getName());
+        FileInputStream fin = new FileInputStream(file);
+        try {
+            zout.putNextEntry(ze);
+            for (int c = fin.read(); c != -1; c = fin.read()) {
+                zout.write(c);
+            }
+        } finally {
+            fin.close();
+        }
+        zout.close();
+    }
+
+    private static void storeContent(File file, String content) throws FileNotFoundException {
+        PrintWriter pw = new PrintWriter(file);
+        pw.print(content);
+        pw.close();
     }
 }

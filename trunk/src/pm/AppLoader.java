@@ -12,7 +12,7 @@ import pm.net.eod.EODDownloadManager;
 import pm.net.nse.CorpActionDownloadManager;
 import pm.net.nse.CorpResultDownloadManager;
 import pm.tools.EODScheduler;
-import pm.tools.EquityBhavToPMConverter;
+import pm.tools.converter.EquityBhavToPMConverter;
 import pm.ui.PortfolioManager;
 import pm.util.AppConfig;
 import pm.util.enumlist.AppConfigWrapper;

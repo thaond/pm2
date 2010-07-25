@@ -25,7 +25,7 @@ public class FandODAOTest extends PMDBTestCase {
     public void testSaveQuotesAndGetQuotes() throws Exception {
         IFandODAO dao = DAOManager.fandoDAO();
         List<FOQuote> quotes = new ArrayList<FOQuote>();
-        StockVO stockVO = DAOManager.getStockDAO().getStock("CODE1");
+        StockVO stockVO = new StockVO("CODE1");
         PMDate date = new PMDate(8, 1, 2006);
         quotes.add(new FOQuote(date, stockVO, Future, 5f, 6f, 4f, 5.5f, 120, 240, 12, 0f, new PMDate(25, 1, 2006)));
         quotes.add(new FOQuote(date, stockVO, Future, 5f, 6f, 4f, 5.6f, 120, 240, 12, 0f, new PMDate(25, 2, 2006)));
@@ -36,7 +36,8 @@ public class FandODAOTest extends PMDBTestCase {
         assertEquals(quotes.size(), savedQuotes.size());
         for (FOQuote quote : quotes) {
             FOQuote savedQuote = find(savedQuotes, quote.getExpiryDate(), quote.getFotype());
-            assertTrue(EqualsBuilder.reflectionEquals(quote, savedQuote, new String[]{"adjustedClose", "pickDetails"}));
+            assertEquals(stockVO.getStockCode(), savedQuote.getStockVO().getStockCode());
+            assertTrue(EqualsBuilder.reflectionEquals(quote, savedQuote, new String[]{"stockVO"}));
         }
     }
 
