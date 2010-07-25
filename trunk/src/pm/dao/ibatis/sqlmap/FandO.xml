@@ -4,7 +4,7 @@
 <sqlMap namespace="FandO">
 
     <select id="latestQuoteDate" resultClass="pm.util.PMDate">
-        SELECT MAX(DATEID) FROM FUTURE_QUOTES
+        SELECT MAX(DATEID) FROM FO_QUOTES
     </select>
 
     <resultMap id="FandOQuoteMapping" class="pm.vo.FOQuote">
