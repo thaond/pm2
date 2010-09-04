@@ -1,12 +1,13 @@
 package pm.tools.converter;
 
+import au.com.bytecode.opencsv.CSVReader;
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.junit.Test;
 import pm.TestHelper;
 import pm.bo.StockMasterBO;
 import pm.dao.ibatis.dao.DAOManager;
 import pm.dao.ibatis.dao.PMDBTestCase;
 import pm.net.nse.BhavFileUtil;
+import pm.util.Helper;
 import pm.util.PMDate;
 import pm.util.enumlist.FOTYPE;
 import pm.vo.FOQuote;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static pm.util.enumlist.FOTYPE.*;
@@ -34,21 +36,12 @@ public class FandOBhavToPMConverterTest extends PMDBTestCase {
     }
 
     public void testProcessFileToReadBhavFileContentAndStoreInDB() throws IOException {
-        StockVO stockVO1 = new StockVO("STOCK1");
-        StockVO stockVO2 = new StockVO("STOCK2");
-        StockMasterBO stockMasterBO = new StockMasterBO();
-        stockMasterBO.insertNewStock(stockVO1.getStockCode());
-        stockMasterBO.insertNewStock(stockVO2.getStockCode());
         PMDate date = new PMDate(1, 4, 2010);
-        DAOManager.getDateDAO().insertDate(date);
-        createInputFile(date);
+        List<FOQuote> quotes = createFOInputFileAndInsertStockCodeAndDateAndReturnExpectedQuotes(date);
 
         new FandOBhavToPMConverter().processFile(date);
 
         List<FOQuote> savedQuotes = DAOManager.fandoDAO().getQuotes(date);
-        List<FOQuote> quotes = new ArrayList<FOQuote>();
-        quotes.add(new FOQuote(date, stockVO1, Future, 9520f, 9551.95f, 9475.05f, 9543.1f, 16161, 1091150, 63500, 0f, new PMDate(29, 4, 2010)));
-        quotes.add(new FOQuote(date, stockVO2, Future, 1165.5f, 1212f, 1165f, 1205.1f, 9711, 3042400, 106000, 0f, new PMDate(29, 4, 2010)));
         assertEquals(quotes.size(), savedQuotes.size());
 
         for (FOQuote quote : quotes) {
@@ -57,6 +50,20 @@ public class FandOBhavToPMConverterTest extends PMDBTestCase {
         }
 
         deleteInputFile(date);
+    }
+
+    private List<FOQuote> createFOInputFileAndInsertStockCodeAndDateAndReturnExpectedQuotes(PMDate date) throws IOException {
+        StockVO stockVO1 = new StockVO("STOCK1");
+        StockVO stockVO2 = new StockVO("STOCK2");
+        StockMasterBO stockMasterBO = new StockMasterBO();
+        stockMasterBO.insertNewStock(stockVO1.getStockCode());
+        stockMasterBO.insertNewStock(stockVO2.getStockCode());
+        DAOManager.getDateDAO().insertDate(date);
+        createInputFile(date);
+        List<FOQuote> quotes = new ArrayList<FOQuote>();
+        quotes.add(new FOQuote(date, stockVO1, Future, 9520f, 9551.95f, 9475.05f, 9543.1f, 16161, 1091150, 63500, 0f, new PMDate(29, 4, 2010)));
+        quotes.add(new FOQuote(date, stockVO2, Future, 1165.5f, 1212f, 1165f, 1205.1f, 9711, 3042400, 106000, 0f, new PMDate(29, 4, 2010)));
+        return quotes;
     }
 
     public void testProcessFileToAlertAnyDateMisMatch() {
@@ -78,9 +85,24 @@ public class FandOBhavToPMConverterTest extends PMDBTestCase {
         }
     }
 
+    public void testProcessFileToHandleMissingQuoteForADay() {
+        FandOBhavToPMConverter converter = new FandOBhavToPMConverter() {
+            @Override
+            List<FOQuote> parseFile(PMDate date, CSVReader csvReader) throws IOException {
+                fail("Should not come here");
+                return null;
+            }
+        };
+        converter.processFile(new PMDate(1, 1, 2001));
+    }
+
     private void deleteInputFile(PMDate date) {
-        String filePath = BhavFileUtil.getFandOFilePath(date.getJavaDate());
-        new File(filePath).delete();
+        File backupFolder = new File(Helper.backupFolder(date));
+        File[] files = backupFolder.listFiles();
+        for (File file : files) {
+            file.delete();
+        }
+        backupFolder.delete();
     }
 
     private FOQuote find(List<FOQuote> quotes, PMDate expiryDate, FOTYPE fotype, String stockCode) {
@@ -112,34 +134,78 @@ public class FandOBhavToPMConverterTest extends PMDBTestCase {
         assertEquals(Call, converter.findType("OPTSTK", "CA"));
     }
 
-    @Test
-    public void processFileToAlertOnColumnChange() {
-
+    public void testProcessFileToAlertOnColumnChange() throws IOException {
+        PMDate date = new PMDate(2, 4, 2010);
+        String filePath = BhavFileUtil.getFandOFilePath(date.getJavaDate());
+        String content = "SOMECHANGE,INSTRUMENT,EXPIRY_DT,STRIKE_PR,OPTION_TYP,OPEN,HIGH,LOW,CLOSE,SETTLE_PR,CONTRACTS,VAL_INLAKH,OPEN_INT,CHG_IN_OI,TIMESTAMP," + "\n";
+        TestHelper.createZipFile(content, filePath);
+        try {
+            new FandOBhavToPMConverter().processFile(date);
+            fail("should have failed on column change");
+        } catch (RuntimeException e) {
+            assertEquals("F&O Bhav file format changed", e.getMessage());
+        } catch (Exception e) {
+            fail("should have thrown only runtime exception");
+        }
     }
 
-    @Test
-    public void processFileToMoveProcessedFileToBackupFolder() {
-
+    public void testProcessFileToMoveProcessedFileToBackupFolder() throws IOException {
+        PMDate date = new PMDate(1, 4, 2010);
+        createFOInputFileAndInsertStockCodeAndDateAndReturnExpectedQuotes(date);
+        new FandOBhavToPMConverter().processFile(date);
+        String filePath = BhavFileUtil.getFandOFilePath(date.getJavaDate());
+        File inputFile = new File(filePath);
+        assertFalse(inputFile.exists());
+        assertTrue(new File(Helper.backupFolder(date) + "/" + inputFile.getName()).exists());
+        deleteInputFile(date);
     }
 
-    @Test
-    public void processFileToMoveOnlyProcessedFileToBackupFolder() {
-
+    public void testProcessFileNotToMoveFailedProcessingFilesToBackupFolder() throws IOException {
+        PMDate date = new PMDate(2, 4, 2010);
+        String filePath = BhavFileUtil.getFandOFilePath(date.getJavaDate());
+        String content = "SOMECHANGE,INSTRUMENT,EXPIRY_DT,STRIKE_PR,OPTION_TYP,OPEN,HIGH,LOW,CLOSE,SETTLE_PR,CONTRACTS,VAL_INLAKH,OPEN_INT,CHG_IN_OI,TIMESTAMP," + "\n";
+        TestHelper.createZipFile(content, filePath);
+        try {
+            new FandOBhavToPMConverter().processFile(date);
+        } catch (RuntimeException e) {
+        }
+        assertTrue(new File(filePath).exists());
     }
 
-    @Test
-    public void processFilesToSkipFODataIfEquityDataIsMissing() {
-
+    public void testProcessFilesToLoadAllDaysDataUptoLatestFandOAvailable() {
+        List<PMDate> dates = Arrays.asList(new PMDate(1, 1, 2010), new PMDate(3, 1, 2010), new PMDate(4, 1, 2010));
+        DAOManager.getDateDAO().insertDates(dates);
+        final List<PMDate> processedDates = new ArrayList<PMDate>();
+        FandOBhavToPMConverter converter = new FandOBhavToPMConverter() {
+            @Override
+            public void processFile(PMDate date) {
+                processedDates.add(date);
+            }
+        };
+        converter.processFiles();
+        for (int i = 0; i < dates.size(); i++) {
+            assertEquals(dates.get(i), processedDates.get(i));
+        }
     }
 
-    @Test
-    public void processFilesToLoadAllDaysDataUptoLatestFandOAvailable() {
+    public void testProcessFilesToStartFromNextDayOfAvailability() {
+        final List<PMDate> dates = Arrays.asList(new PMDate(1, 1, 2010), new PMDate(3, 1, 2010), new PMDate(4, 1, 2010));
+        DAOManager.getDateDAO().insertDates(dates);
+        final List<PMDate> processedDates = new ArrayList<PMDate>();
+        FandOBhavToPMConverter converter = new FandOBhavToPMConverter() {
+            @Override
+            public void processFile(PMDate date) {
+                processedDates.add(date);
+            }
 
+            @Override
+            PMDate latestQuoteDate() {
+                return dates.get(0);
+            }
+        };
+        converter.processFiles();
+        assertEquals(2, processedDates.size());
+        assertEquals(dates.get(1), processedDates.get(0));
+        assertEquals(dates.get(2), processedDates.get(1));
     }
-
-    @Test
-    public void processFilesToLoadAllDaysDataUptoLatestEquityDataAvailable() {
-
-    }
-
 }

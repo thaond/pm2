@@ -108,13 +108,12 @@ public class TestHelper {
         Assert.assertEquals(findMovAvg(quotes, 200), eodStatistics.getMoving200DAverage(), .001);
     }
 
-    public static File createZipFile(String content, String zipFilePath) throws IOException {
+    public static void createZipFile(String content, String zipFilePath) throws IOException {
         File file = new File(zipFilePath.substring(0, zipFilePath.lastIndexOf('.')));
         file.createNewFile();
         storeContent(file, content);
         compressFile(file, zipFilePath);
         file.delete();
-        return file;
     }
 
     private static void compressFile(File file, String zipFilePath) throws IOException {
