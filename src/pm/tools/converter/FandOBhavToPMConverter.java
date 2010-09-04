@@ -23,6 +23,7 @@ public class FandOBhavToPMConverter {
     private Logger logger = Logger.getLogger(FandOBhavToPMConverter.class);
 
     public void processFile(PMDate date) {
+        logger.info("processing f&o : " + date);
         try {
             CSVReader csvReader = new CSVReader(reader(date));
             List<FOQuote> quotes = parseFile(date, csvReader);
@@ -61,9 +62,9 @@ public class FandOBhavToPMConverter {
     }
 
     private void verifyHeaders(String[] headersInFile) {
-        String headersExpected[] = {"INSTRUMENT", "SYMBOL", "EXPIRY_DT", "STRIKE_PR", "OPTION_TYP", "OPEN", "HIGH", "LOW", "CLOSE", "SETTLE_PR", "CONTRACTS", "VAL_INLAKH", "OPEN_INT", "CHG_IN_OI", "TIMESTAMP"};
+        String headersExpected[] = {"INSTRUMENT", "SYMBOL", "EXPIRY_DT", "STRIKE_PR", "OPTION", "OPEN", "HIGH", "LOW", "CLOSE", "SETTLE_PR", "CONTRACTS", "VAL_INLAKH", "OPEN_INT", "CHG_IN_OI", "TIMESTAMP"};
         for (int i = 0; i < headersExpected.length; i++) {
-            if (!headersExpected[i].equals(headersInFile[i])) {
+            if (!headersInFile[i].startsWith(headersExpected[i])) {
                 throw new RuntimeException("F&O Bhav file format changed");
             }
         }
