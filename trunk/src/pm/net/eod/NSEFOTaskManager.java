@@ -1,5 +1,6 @@
 package pm.net.eod;
 
+import pm.dao.ibatis.dao.DAOManager;
 import pm.net.nse.downloader.AbstractFileDownloader;
 import pm.net.nse.downloader.FandODownloader;
 import pm.util.PMDate;
@@ -15,6 +16,6 @@ public class NSEFOTaskManager extends AbstractDateTaskManager {
 
     @Override
     public PMDate getLastCompletedDate() {
-        return new PMDate(1, 1, 2006);
+        return DAOManager.fandoDAO().latestQuoteDate();
     }
 }

@@ -43,13 +43,12 @@ public class BhavFileUtilTest {
         PMDate date = new PMDate(10, 12, 2009);
 
         String zipFilePath = BhavFileUtil.getEquityFilePath(date.getJavaDate());
-        File file = TestHelper.createZipFile(content, zipFilePath);
+        TestHelper.createZipFile(content, zipFilePath);
 
         Reader reader = BhavFileUtil.openReader(zipFilePath);
         String fileContent = getContent(reader);
 
         assertEquals(content, fileContent);
-        file.delete();
         new File(zipFilePath).delete();
 
     }
