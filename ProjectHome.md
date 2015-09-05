@@ -1,0 +1,1 @@
+portfolio manager specific to Indian stock market
